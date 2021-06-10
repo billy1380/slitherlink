@@ -90,8 +90,9 @@ class LoopGen {
   void _genLoop() {
     Coordinates cur = Coordinates(m_ ~/ 2, n_ ~/ 2);
     Coordinates next;
-    List<Coordinates> avail = [];
-    avail.add(cur);
+    List<Coordinates> avail = [
+      cur,
+    ];
 
     while (avail.isNotEmpty) {
       cur = _pickCell(avail);
@@ -140,6 +141,7 @@ class LoopGen {
 
     loop_[newpos.i][newpos.j] =
         (_validCell(newpos, cur)) ? LoopCell.EXP : LoopCell.OUT;
+
     return newpos;
   }
 
@@ -200,7 +202,7 @@ class LoopGen {
       int guessindex = r.nextInt(avail.length);
       guess = avail[guessindex];
 
-      avail.removeRange(0, guessindex);
+      avail.removeAt(guessindex);
       return guess;
     } else {
       return Coordinates(-1, -1);
