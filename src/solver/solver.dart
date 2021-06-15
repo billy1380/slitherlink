@@ -216,8 +216,11 @@ class Solver {
 
       /* make a LINE guess */
       lineGuess.setHLine(i, j, Edge.LINE);
+
       Solver lineSolver = Solver.oldEpq(lineGuess, rules_, contradictions_,
           selectedRules_, selectLength_, depth, epq_);
+      lineSolver.solve();
+
       ruleCounts_ = ruleCounts_ + lineSolver.ruleCounts_;
 
       /* If this guess happens to solve the puzzle we need to make sure that
@@ -227,8 +230,11 @@ class Solver {
         Grid nLineGuess = Grid();
         grid_.copy(nLineGuess);
         nLineGuess.setHLine(i, j, Edge.NLINE);
+
         Solver nLineSolver = Solver.oldEpq(nLineGuess, rules_, contradictions_,
             selectedRules_, selectLength_, max_depth, epq_);
+        nLineSolver.solve();
+
         ruleCounts_ = ruleCounts_ + nLineSolver.ruleCounts_;
         if (nLineSolver.testContradictions()) {
           /* The opposite guess leads to a contradiction
@@ -259,6 +265,8 @@ class Solver {
         nLineGuess.setHLine(i, j, Edge.NLINE);
         Solver nLineSolver = Solver.oldEpq(nLineGuess, rules_, contradictions_,
             selectedRules_, selectLength_, depth, epq_);
+        nLineSolver.solve();
+
         ruleCounts_ = ruleCounts_ + nLineSolver.ruleCounts_;
 
         /* if both guesses led to multiple solutions, we know this puzzle
@@ -274,6 +282,8 @@ class Solver {
         else if (nLineGuess.isSolved) {
           lineSolver = Solver.oldEpq(lineGuess, rules_, contradictions_,
               selectedRules_, selectLength_, max_depth, epq_);
+          lineSolver.solve();
+
           ruleCounts_ = ruleCounts_ + lineSolver.ruleCounts_;
           if (lineSolver.testContradictions()) {
             /* The opposite guess leads to a contradiction
@@ -329,6 +339,8 @@ class Solver {
       lineGuess.setVLine(i, j, Edge.LINE);
       Solver lineSolver = Solver.oldEpq(lineGuess, rules_, contradictions_,
           selectedRules_, selectLength_, depth, epq_);
+      lineSolver.solve();
+      
       ruleCounts_ = ruleCounts_ + lineSolver.ruleCounts_;
 
       /* If this guess happens to solve the puzzle we need to make sure that
@@ -340,6 +352,8 @@ class Solver {
         nLineGuess.setVLine(i, j, Edge.NLINE);
         Solver nLineSolver = Solver.oldEpq(nLineGuess, rules_, contradictions_,
             selectedRules_, selectLength_, max_depth, epq_);
+        nLineSolver.solve();
+
         ruleCounts_ = ruleCounts_ + nLineSolver.ruleCounts_;
         if (nLineSolver.testContradictions()) {
           /* The opposite guess leads to a contradiction
@@ -370,6 +384,8 @@ class Solver {
         nLineGuess.setVLine(i, j, Edge.NLINE);
         Solver nLineSolver = Solver.oldEpq(nLineGuess, rules_, contradictions_,
             selectedRules_, selectLength_, depth, epq_);
+        nLineSolver.solve();
+
         ruleCounts_ = ruleCounts_ + nLineSolver.ruleCounts_;
 
         /* if both guesses led to multiple solutions, we know this puzzle
@@ -385,6 +401,8 @@ class Solver {
         else if (nLineGuess.isSolved) {
           lineSolver = Solver.oldEpq(lineGuess, rules_, contradictions_,
               selectedRules_, selectLength_, max_depth, epq_);
+          lineSolver.solve();
+
           ruleCounts_ = ruleCounts_ + lineSolver.ruleCounts_;
           if (lineSolver.testContradictions()) {
             /* The opposite guess leads to a contradiction

@@ -1,7 +1,10 @@
+import 'package:logging/logging.dart';
+
 import '../shared/enums.dart';
 import 'generator.dart';
 
 void main(List<String> argc) {
+  Logger logger = Logger("Generator.main");
   DateTime startTime, endTime;
 
   if (argc.length == 3) {
@@ -20,8 +23,9 @@ void main(List<String> argc) {
     endTime = DateTime.now();
     double diff = endTime.millisecondsSinceEpoch -
         startTime.millisecondsSinceEpoch / 1000;
-    print("Time to create:\t$diff seconds");
+    logger.info("Time to create:\t$diff seconds");
   } else {
-    print("Incorrect number of arguments, expected 3 found ${argc.length}");
+    logger.severe(
+        "Incorrect number of arguments, expected 3 found ${argc.length}");
   }
 }

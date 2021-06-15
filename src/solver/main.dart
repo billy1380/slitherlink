@@ -1,3 +1,5 @@
+import 'package:logging/logging.dart';
+
 import '../shared/constants.dart';
 import '../shared/export.dart';
 import '../shared/grid.dart';
@@ -9,6 +11,7 @@ import 'rules.dart';
 import 'solver.dart';
 
 void main(List<String> argv) {
+  Logger logger = Logger("Solver.main");
   DateTime startTime, endTime;
   startTime = DateTime.now();
 
@@ -24,7 +27,7 @@ void main(List<String> argv) {
 
   for (int i = 1; i < argv.length; i++) {
     String filename = argv[i];
-    print("Puzzle: $filename");
+    logger.info("Puzzle: $filename");
 
     Grid grid = Grid();
     Import importer = Import(grid);
@@ -34,18 +37,19 @@ void main(List<String> argv) {
 
     Solver solver = Solver(grid, rules, contradictions, selectedRules,
         num_rules - num_const_rules, 100);
+    solver.solve();
 
-    exporter.go();
+    exporter.export();
 
     if (grid.isSolved) {
-      print("Solved");
+      logger.info("Solved");
     } else {
       if (solver.testContradictions()) {
-        print("Invalid puzzle");
+        logger.warning("Invalid puzzle");
       } else if (solver.hasMultipleSolutions) {
-        print("Puzzle has multiple solutions");
+        logger.warning("Puzzle has multiple solutions");
       } else {
-        print("Not solved");
+        logger.severe("Not solved");
       }
     }
   }
@@ -54,5 +58,5 @@ void main(List<String> argv) {
   double diff =
       (endTime.millisecondsSinceEpoch - startTime.millisecondsSinceEpoch) /
           1000;
-  print("Total time:\t$diff seconds");
+  logger.info("Total time:\t$diff seconds");
 }

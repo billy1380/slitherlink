@@ -107,7 +107,7 @@ class Generator {
 /* Displays the puzzle, the total count of numbers, and a count of each type */
   void _displayPuzzle() {
     Export exporter = Export(grid_);
-    exporter.go();
+    exporter.export();
   }
 
 /* Sets the counts of each number to the amount
@@ -363,6 +363,8 @@ class Generator {
 
 //       Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_,
 //           num_rules - num_const_rules, 1);
+//       solver.solve();
+
 //       if (!grid_.isSolved) {
 //         grid_.setNumber(i, j, oldNum);
 //       } else {

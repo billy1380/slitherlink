@@ -2,13 +2,13 @@ import 'enums.dart';
 import 'lattice.dart';
 
 class Export {
-  Lattice lattice_;
+  final Lattice lattice_;
 
 /* Constructor taking as input a lattice to be exported */
-  Export(this.lattice_);
+  const Export(this.lattice_);
 
 /* Outputs a lattice to stdout in a human readable format */
-  void go() {
+  void export() {
     int m = lattice_.height;
     int n = lattice_.width;
     StringBuffer buffer = StringBuffer();
