@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import '../shared/enums.dart';
 import '../shared/grid.dart';
+import '../shared/random.dart';
 import '../shared/structs.dart';
 
 class LoopGen {
@@ -9,7 +8,6 @@ class LoopGen {
   final Grid grid_;
   final int m_;
   final int n_;
-  final Random r = Random();
 
   LoopGen(this.m_, this.n_, this.grid_);
 
@@ -149,7 +147,7 @@ class LoopGen {
     if (vert == 0) {
       hor = (r.nextInt(2) * 2) - 1;
     }
-    
+
     return Coordinates(cur.i + vert, cur.j + hor);
   }
 

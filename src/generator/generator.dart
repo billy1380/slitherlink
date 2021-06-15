@@ -1,10 +1,10 @@
-import 'dart:math';
 
 import '../shared/constants.dart';
 import '../shared/enums.dart';
 import '../shared/export.dart';
 import '../shared/grid.dart';
 import '../shared/import.dart';
+import '../shared/random.dart';
 import '../shared/structs.dart';
 import '../solver/contradiction.dart';
 import '../solver/contradictions.dart';
@@ -40,8 +40,6 @@ class Generator {
   late List<Contradiction> contradictions_;
   late List<List<bool>> canEliminate_;
   late List<List<Number>> oldNumbers_;
-
-  Random r = Random();
 
 /* Generator constructor */
   Generator(this.m_, this.n_)
