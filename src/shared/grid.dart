@@ -18,11 +18,11 @@ class Grid extends Lattice {
     init_ = false;
   }
 
-  bool getValid() {
+  bool get valid {
     return valid_;
   }
 
-  void setValid(bool validity) {
+  set valid(bool validity) {
     valid_ = validity && valid_;
   }
 
@@ -51,27 +51,27 @@ class Grid extends Lattice {
   }
 
   void resetGrid() {
-    for (int i = 1; i < getHeight(); i++) {
-      for (int j = 1; j < getWidth() - 1; j++) {
+    for (int i = 1; i < height; i++) {
+      for (int j = 1; j < width - 1; j++) {
         hlines_[i][j] = Edge.EMPTY;
       }
     }
 
-    for (int i = 1; i < getHeight() - 1; i++) {
-      for (int j = 1; j < getWidth(); j++) {
+    for (int i = 1; i < height - 1; i++) {
+      for (int j = 1; j < width; j++) {
         vlines_[i][j] = Edge.EMPTY;
       }
     }
 
-    for (int i = 0; i < getHeight(); i++) {
-      for (int j = 0; j < getWidth(); j++) {
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
         setUpdateMatrix(i, j, true);
         setContraMatrix(i, j, true);
       }
     }
 
-    for (int i = 0; i < getHeight() + 1; i++) {
-      for (int j = 0; j < getWidth() + 1; j++) {
+    for (int i = 0; i < height + 1; i++) {
+      for (int j = 0; j < width + 1; j++) {
         _setContourMatrix(i, j, MapEntry<int, int>(-1, -1));
       }
     }
@@ -84,31 +84,31 @@ class Grid extends Lattice {
  * Copies grid for the purpose of making a guess.
  */
   void copy(Grid newGrid) {
-    newGrid.initArrays(getHeight(), getWidth());
+    newGrid.initArrays(height, width);
     newGrid.initUpdateMatrix();
 
-    for (int i = 0; i < getHeight() + 1; i++) {
-      for (int j = 0; j < getWidth(); j++) {
+    for (int i = 0; i < height + 1; i++) {
+      for (int j = 0; j < width; j++) {
         newGrid.changeHLine(i, j, getHLine(i, j));
       }
     }
 
-    for (int i = 0; i < getHeight(); i++) {
-      for (int j = 0; j < getWidth() + 1; j++) {
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width + 1; j++) {
         newGrid.changeVLine(i, j, getVLine(i, j));
       }
     }
 
-    for (int i = 0; i < getHeight(); i++) {
-      for (int j = 0; j < getWidth(); j++) {
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
         newGrid.setNumber(i, j, getNumber(i, j));
         newGrid.setUpdateMatrix(i, j, updateMatrix_[i][j]);
         newGrid.setContraMatrix(i, j, contraMatrix_[i][j]);
       }
     }
 
-    for (int i = 0; i < getHeight() + 1; i++) {
-      for (int j = 0; j < getWidth() + 1; j++) {
+    for (int i = 0; i < height + 1; i++) {
+      for (int j = 0; j < width + 1; j++) {
         newGrid._setContourMatrix(i, j, contourMatrix_[i][j]);
       }
     }
@@ -118,28 +118,28 @@ class Grid extends Lattice {
   }
 
   void clearAndCopy(Grid newGrid) {
-    for (int i = 0; i < getHeight() + 1; i++) {
-      for (int j = 0; j < getWidth(); j++) {
+    for (int i = 0; i < height + 1; i++) {
+      for (int j = 0; j < width; j++) {
         newGrid.changeHLine(i, j, getHLine(i, j));
       }
     }
 
-    for (int i = 0; i < getHeight(); i++) {
-      for (int j = 0; j < getWidth() + 1; j++) {
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width + 1; j++) {
         newGrid.changeVLine(i, j, getVLine(i, j));
       }
     }
 
-    for (int i = 0; i < getHeight(); i++) {
-      for (int j = 0; j < getWidth(); j++) {
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
         newGrid.setNumber(i, j, getNumber(i, j));
         newGrid.setUpdateMatrix(i, j, updateMatrix_[i][j]);
         newGrid.setContraMatrix(i, j, contraMatrix_[i][j]);
       }
     }
 
-    for (int i = 0; i < getHeight() + 1; i++) {
-      for (int j = 0; j < getWidth() + 1; j++) {
+    for (int i = 0; i < height + 1; i++) {
+      for (int j = 0; j < width + 1; j++) {
         newGrid._setContourMatrix(i, j, contourMatrix_[i][j]);
       }
     }
@@ -173,15 +173,15 @@ class Grid extends Lattice {
     }
 
     // Update which parts of grid have possible rules that could be applied
-    for (int x = max(0, i - 3); x < min(i + 1, getHeight()); x++) {
-      for (int y = max(0, j - 2); y < min(j + 1, getWidth()); y++) {
+    for (int x = max(0, i - 3); x < min(i + 1, height); x++) {
+      for (int y = max(0, j - 2); y < min(j + 1, width); y++) {
         updateMatrix_[x][y] = true;
       }
     }
 
     // Update which parts of grid have possible contradictions
-    for (int x = max(0, i - 2); x < min(i + 1, getHeight()); x++) {
-      for (int y = max(0, j - 1); y < min(j + 1, getWidth()); y++) {
+    for (int x = max(0, i - 2); x < min(i + 1, height); x++) {
+      for (int y = max(0, j - 1); y < min(j + 1, width); y++) {
         contraMatrix_[x][y] = true;
       }
     }
@@ -213,15 +213,15 @@ class Grid extends Lattice {
     }
 
     // Update which parts of grid have possible rules that could be applied
-    for (int x = max(0, i - 2); x < min(i + 1, getHeight()); x++) {
-      for (int y = max(0, j - 3); y < min(j + 1, getWidth()); y++) {
+    for (int x = max(0, i - 2); x < min(i + 1, height); x++) {
+      for (int y = max(0, j - 3); y < min(j + 1, width); y++) {
         updateMatrix_[x][y] = true;
       }
     }
 
     // Update which parts of grid have possible contradictions
-    for (int x = max(0, i - 1); x < min(i + 1, getHeight()); x++) {
-      for (int y = max(0, j - 2); y < min(j + 1, getWidth()); y++) {
+    for (int x = max(0, i - 1); x < min(i + 1, height); x++) {
+      for (int y = max(0, j - 2); y < min(j + 1, width); y++) {
         contraMatrix_[x][y] = true;
       }
     }
@@ -286,7 +286,7 @@ class Grid extends Lattice {
  * Checks if the puzzle is solved by assuring that there is only one contour
  * and that each number has been satisfied
  */
-  bool isSolved() {
+  bool get isSolved {
     if (numOpenLoops_ != 0 || numClosedLoops_ != 1) {
       return false;
     }
@@ -306,7 +306,7 @@ class Grid extends Lattice {
  * Checks if there are any closed contours with the intention of detecting
  * prematurely closed contours
  */
-  bool containsClosedContours() {
+  bool get containsClosedContours {
     return (numClosedLoops_ > 0);
   }
 

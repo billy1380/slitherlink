@@ -7,27 +7,21 @@ const String ex = 'x';
 const String blank = ' ';
 
 class Lattice {
+  bool updated = true;
+
   bool init_ = false;
-  bool updated_ = true;
+
   late int m_; /* number of rows */
   late int n_; /* number of columns */
   late List<List<Number>> numbers_;
   late List<List<Edge>> hlines_;
   late List<List<Edge>> vlines_;
 
-  bool getUpdated() {
-    return updated_;
-  }
-
-  void setUpdated(bool updated) {
-    updated_ = updated;
-  }
-
-  int getHeight() {
+  int get height {
     return m_;
   }
 
-  int getWidth() {
+  int get width {
     return n_;
   }
 

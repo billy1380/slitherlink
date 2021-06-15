@@ -258,7 +258,7 @@ class Generator {
 
     Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_,
         numberOfRules_, guessDepth_);
-    return grid_.isSolved();
+    return grid_.isSolved;
   }
 
 /* Pops Coordinates out of ineligible vector, marking
@@ -354,7 +354,7 @@ class Generator {
 
       Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_,
           num_rules - num_const_rules, 1);
-      if (!grid_.isSolved()) {
+      if (!grid_.isSolved) {
         grid_.setNumber(i, j, oldNum);
       } else {
         _minusCounts(oldNum);

@@ -39,12 +39,12 @@ class EPQ {
     return PrioEdge(Coordinates(i, j), prio, hLine);
   }
 
-  bool empty() {
-    return pq_.empty();
+  bool get isEmpty {
+    return pq_.isEmpty;
   }
 
-  int size() {
-    return pq_.size();
+  int get size {
+    return pq_.size;
   }
 
   PrioEdge top() {
@@ -65,7 +65,7 @@ class EPQ {
 
   List<PrioEdge> copyPQToVector() {
     priority_queue<PrioEdge> newPQ = priority_queue([], ComparePrioEdge);
-    List<PrioEdge> outputvec = List.generate(pq_.size(), (i) => pq_[i]);
+    List<PrioEdge> outputvec = List.generate(pq_.size, (i) => pq_[i]);
 
     return outputvec;
   }

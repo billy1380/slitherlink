@@ -9,8 +9,8 @@ class Export {
 
 /* Outputs a lattice to stdout in a human readable format */
   void go() {
-    int m = lattice_.getHeight();
-    int n = lattice_.getWidth();
+    int m = lattice_.height;
+    int n = lattice_.width;
     StringBuffer buffer = StringBuffer();
 
     for (int i = 1; i < m - 1; i++) {

@@ -35,12 +35,12 @@ void main(List<String> argv) {
 
     exporter.go();
 
-    if (grid.isSolved()) {
+    if (grid.isSolved) {
       print("Solved");
     } else {
       if (solver.testContradictions()) {
         print("Invalid puzzle");
-      } else if (solver.hasMultipleSolutions()) {
+      } else if (solver.hasMultipleSolutions) {
         print("Puzzle has multiple solutions");
       } else {
         print("Not solved");

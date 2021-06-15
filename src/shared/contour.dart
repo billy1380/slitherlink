@@ -6,11 +6,11 @@ class Contour {
   late Coordinates start_;
   late Coordinates end_;
 
-  int getLength() {
+  int get length {
     return length_;
   }
 
-  bool isClosed() {
+  bool get isClosed {
     return closed_;
   }
 

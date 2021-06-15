@@ -11,11 +11,11 @@ class Rule {
   List<EdgePosition> hLineDiff_ = [];
   List<EdgePosition> vLineDiff_ = [];
 
-  int getHeight() {
+  int get height {
     return m_;
   }
 
-  int getWidth() {
+  int get width {
     return n_;
   }
 

@@ -21,7 +21,7 @@ class Solver {
   bool multipleSolutions_;
   int ruleCounts_;
 
-  bool hasMultipleSolutions() {
+  bool get hasMultipleSolutions {
     return multipleSolutions_;
   }
 
@@ -30,7 +30,7 @@ class Solver {
       int selectLength, this.depth_)
       : multipleSolutions_ = false,
         ruleCounts_ = 0 {
-    epq_.initEPQ(grid_.getHeight(), grid_.getWidth());
+    epq_.initEPQ(grid_.height, grid_.width);
 
     List<int> selectedPlusBasic = List.generate(selectLength + num_const_rules,
         (i) => i < selectedRules_.length ? selectedRules_[i] : -1);
@@ -65,11 +65,12 @@ class Solver {
  * each valid position on the grid, checking if the contradiction
  * applies, and, if so, returning true. */
   bool testContradictions() {
-    if (grid_.containsClosedContours() && !grid_.isSolved()) {
+    if (grid_.containsClosedContours && !grid_.isSolved) {
       return true;
     }
-    for (int i = 0; i < grid_.getHeight(); i++) {
-      for (int j = 0; j < grid_.getWidth(); j++) {
+
+    for (int i = 0; i < grid_.height; i++) {
+      for (int j = 0; j < grid_.width; j++) {
         if (grid_.getContraMatrix(i, j)) {
           for (int x = 0; x < num_contradictions; x++) {
             for (Orientation orient in [
@@ -98,14 +99,14 @@ class Solver {
 /* Apply a combination of deterministic rules and
  * recursive guessing to find a solution to a puzzle */
   void _solve() {
-    grid_.setUpdated(true);
-    while (grid_.getUpdated() && !grid_.isSolved()) {
+    grid_.updated = true;
+    while (grid_.updated && !grid_.isSolved) {
       _applyRules(selectedRules_);
 
       for (int d = 0; d < depth_; d++) {
-        if (!grid_.getUpdated() &&
+        if (!grid_.updated &&
             !testContradictions() &&
-            !grid_.isSolved() &&
+            !grid_.isSolved &&
             !multipleSolutions_) {
           _solveDepth(d);
         }
@@ -115,10 +116,10 @@ class Solver {
 
 /* */
   void _updateEPQ() {
-    epq_.empty();
+    epq_.isEmpty;
 
-    int m = grid_.getHeight();
-    int n = grid_.getWidth();
+    int m = grid_.height;
+    int n = grid_.width;
     for (int i = 1; i < m; i++) {
       for (int j = 1; j < n - 1; j++) {
         if (grid_.getHLine(i, j) != Edge.EMPTY) {
@@ -158,7 +159,7 @@ class Solver {
         }
       }
     }
-    epqSize_ = epq_.size();
+    epqSize_ = epq_.size;
   }
 
   bool get _upq => true;
@@ -168,10 +169,10 @@ class Solver {
     bool usingPrioQueue = _upq;
 
     if (usingPrioQueue) {
-      int initSize = epq_.size();
+      int initSize = epq_.size;
       int guesses = 0;
 
-      while (!epq_.empty() && guesses++ < initSize && !multipleSolutions_) {
+      while (!epq_.isEmpty && guesses++ < initSize && !multipleSolutions_) {
         PrioEdge pe = epq_.top();
 
         if (pe.h) {
@@ -180,7 +181,7 @@ class Solver {
             pe.priority = pe.priority - 1;
             epq_.push(pe);
           }
-          if (grid_.getUpdated()) {
+          if (grid_.updated) {
             break;
           }
         } else {
@@ -189,22 +190,22 @@ class Solver {
             pe.priority = pe.priority - 1;
             epq_.push(pe);
           }
-          if (grid_.getUpdated()) {
+          if (grid_.updated) {
             break;
           }
         }
         epq_.pop();
       }
     } else {
-      for (int i = 0; i < grid_.getHeight() + 1; i++) {
-        for (int j = 0; j < grid_.getWidth(); j++) {
+      for (int i = 0; i < grid_.height + 1; i++) {
+        for (int j = 0; j < grid_.width; j++) {
           _applyRules(selectedRules_);
           _makeHLineGuess(i, j, depth);
         }
       }
 
-      for (int i = 0; i < grid_.getHeight(); i++) {
-        for (int j = 0; j < grid_.getWidth() + 1; j++) {
+      for (int i = 0; i < grid_.height; i++) {
+        for (int j = 0; j < grid_.width + 1; j++) {
           _applyRules(selectedRules_);
           _makeVLineGuess(i, j, depth);
         }
@@ -214,15 +215,14 @@ class Solver {
 
 /* Horizontal guess at the given location to the given depth */
   void _makeHLineGuess(int i, int j, int depth) {
-    assert(
-        0 <= i && i < grid_.getHeight() + 1 && 0 <= j && j < grid_.getWidth());
+    assert(0 <= i && i < grid_.height + 1 && 0 <= j && j < grid_.width);
     assert(depth >= 0);
 
     if (grid_.getHLine(i, j) == Edge.EMPTY) {
       /* there is only one case where the grid
          * will not be updated, which is handled
          * at the end of this iteration. */
-      grid_.setUpdated(true);
+      grid_.updated = true;
 
       Grid lineGuess = Grid();
       grid_.copy(lineGuess);
@@ -236,7 +236,7 @@ class Solver {
       /* If this guess happens to solve the puzzle we need to make sure that
          * the opposite guess leads to a contradiction, otherwise we know that
          * there might be multiple solutions */
-      if (lineGuess.isSolved()) {
+      if (lineGuess.isSolved) {
         Grid nLineGuess = Grid();
         grid_.copy(nLineGuess);
         nLineGuess.setHLine(i, j, Edge.NLINE);
@@ -247,8 +247,7 @@ class Solver {
           /* The opposite guess leads to a contradiction
                  * so the previous found solution is the only one */
           lineGuess.copy(grid_);
-        } else if (nLineGuess.isSolved() ||
-            nLineSolver.hasMultipleSolutions()) {
+        } else if (nLineGuess.isSolved || nLineSolver.hasMultipleSolutions) {
           /* The opposite guess also led to a solution
                  * so there are multiple solutions */
           multipleSolutions_ = true;
@@ -257,7 +256,7 @@ class Solver {
                  * a contradiction, which can only happen if the subPuzzle
                  * is unsolvable for our maximum depth. We can learn nothing
                  * from this result. */
-          grid_.setUpdated(false);
+          grid_.updated = false;
         }
         return;
       }
@@ -277,15 +276,15 @@ class Solver {
 
         /* if both guesses led to multiple solutions, we know this puzzle
              * must also lead to another solution */
-        if (nLineSolver.hasMultipleSolutions() ||
-            lineSolver.hasMultipleSolutions()) {
+        if (nLineSolver.hasMultipleSolutions ||
+            lineSolver.hasMultipleSolutions) {
           multipleSolutions_ = true;
           return;
         }
         /* again check if solved. In this case we already know that we can't
              * get to a solution or contradiction with the opposite guess, so
              * we know we can't conclude whether this is the single solution */
-        else if (nLineGuess.isSolved()) {
+        else if (nLineGuess.isSolved) {
           lineSolver = Solver.oldEpq(lineGuess, rules_, contradictions_,
               selectedRules_, selectLength_, max_depth, epq_);
           ruleCounts_ = ruleCounts_ + lineSolver.ruleCounts_;
@@ -293,8 +292,7 @@ class Solver {
             /* The opposite guess leads to a contradiction
                      * so the previous found solution is the only one */
             nLineGuess.copy(grid_);
-          } else if (lineGuess.isSolved() ||
-              lineSolver.hasMultipleSolutions()) {
+          } else if (lineGuess.isSolved || lineSolver.hasMultipleSolutions) {
             /* The opposite guess also led to a solution
                      * so there are multiple solutions */
             multipleSolutions_ = true;
@@ -303,7 +301,7 @@ class Solver {
                      * a contradiction, which can only happen if the subPuzzle
                      * is unsolvable for our maximum depth. We can learn nothing
                      * from this result. */
-            grid_.setUpdated(false);
+            grid_.updated = false;
           }
           return;
         }
@@ -312,13 +310,13 @@ class Solver {
           grid_.setHLine(i, j, Edge.LINE);
           return;
         } else {
-          grid_.setUpdated(false);
+          grid_.updated = false;
 
           /* check for things that happen when we make both
                  * guesses; if we find any, we know they must happen */
           _intersectGrids(lineGuess, nLineGuess);
 
-          if (grid_.getUpdated()) {
+          if (grid_.updated) {
             return;
           }
         }
@@ -328,15 +326,14 @@ class Solver {
 
 /* Vertical guess at the given location to the given depth */
   void _makeVLineGuess(int i, int j, int depth) {
-    assert(
-        0 <= i && i < grid_.getHeight() && 0 <= j && j < grid_.getWidth() + 1);
+    assert(0 <= i && i < grid_.height && 0 <= j && j < grid_.width + 1);
     assert(depth >= 0);
 
     if (grid_.getVLine(i, j) == Edge.EMPTY) {
       /* there is only one case where the grid
          * will not be updated, which is handled
          * at the end of this iteration. */
-      grid_.setUpdated(true);
+      grid_.updated = true;
 
       Grid lineGuess = Grid();
       grid_.copy(lineGuess);
@@ -350,7 +347,7 @@ class Solver {
       /* If this guess happens to solve the puzzle we need to make sure that
          * the opposite guess leads to a contradiction, otherwise we know that
          * there might be multiple solutions */
-      if (lineGuess.isSolved()) {
+      if (lineGuess.isSolved) {
         Grid nLineGuess = Grid();
         grid_.copy(nLineGuess);
         nLineGuess.setVLine(i, j, Edge.NLINE);
@@ -361,8 +358,7 @@ class Solver {
           /* The opposite guess leads to a contradiction
                  * so the previous found solution is the only one */
           lineGuess.copy(grid_);
-        } else if (nLineGuess.isSolved() ||
-            nLineSolver.hasMultipleSolutions()) {
+        } else if (nLineGuess.isSolved || nLineSolver.hasMultipleSolutions) {
           /* The opposite guess also led to a solution
                  * so there are multiple solutions */
           multipleSolutions_ = true;
@@ -371,7 +367,7 @@ class Solver {
                  * a contradiction, which can only happen if the subPuzzle
                  * is unsolvable for our maximum depth. We can learn nothing
                  * from this result. */
-          grid_.setUpdated(false);
+          grid_.updated = false;
         }
         return;
       }
@@ -391,15 +387,15 @@ class Solver {
 
         /* if both guesses led to multiple solutions, we know this puzzle
              * must also lead to another solution */
-        if (nLineSolver.hasMultipleSolutions() ||
-            lineSolver.hasMultipleSolutions()) {
+        if (nLineSolver.hasMultipleSolutions ||
+            lineSolver.hasMultipleSolutions) {
           multipleSolutions_ = true;
           return;
         }
         /* again check if solved. In this case we already know that we can't
              * get to a solution or contradiction with the opposite guess, so
              * we know we can't conclude whether this is the single solution */
-        else if (nLineGuess.isSolved()) {
+        else if (nLineGuess.isSolved) {
           lineSolver = Solver.oldEpq(lineGuess, rules_, contradictions_,
               selectedRules_, selectLength_, max_depth, epq_);
           ruleCounts_ = ruleCounts_ + lineSolver.ruleCounts_;
@@ -407,8 +403,7 @@ class Solver {
             /* The opposite guess leads to a contradiction
                      * so the previous found solution is the only one */
             nLineGuess.copy(grid_);
-          } else if (lineGuess.isSolved() ||
-              lineSolver.hasMultipleSolutions()) {
+          } else if (lineGuess.isSolved || lineSolver.hasMultipleSolutions) {
             /* The opposite guess also led to a solution
                      * so there are multiple solutions */
             multipleSolutions_ = true;
@@ -417,7 +412,7 @@ class Solver {
                      * a contradiction, which can only happen if the subPuzzle
                      * is unsolvable for our maximum depth. We can learn nothing
                      * from this result. */
-            grid_.setUpdated(false);
+            grid_.updated = false;
           }
           return;
         }
@@ -426,13 +421,13 @@ class Solver {
           grid_.setVLine(i, j, Edge.LINE);
           return;
         } else {
-          grid_.setUpdated(false);
+          grid_.updated = false;
 
           /* check for things that happen when we make both
                  * guesses; if we find any, we know they must happen */
           _intersectGrids(lineGuess, nLineGuess);
 
-          if (grid_.getUpdated()) {
+          if (grid_.updated) {
             return;
           }
         }
@@ -443,25 +438,25 @@ class Solver {
 /* Checks for the intersection between lineGuess and nLineGuess grids
  * and applies any intersection to the canonical grid. */
   void _intersectGrids(Grid lineGuess, Grid nLineGuess) {
-    assert(lineGuess.getHeight() == nLineGuess.getHeight() &&
-        lineGuess.getWidth() == nLineGuess.getWidth());
+    assert(lineGuess.height == nLineGuess.height &&
+        lineGuess.width == nLineGuess.width);
 
-    for (int i = 0; i < grid_.getHeight() + 1; i++) {
-      for (int j = 0; j < grid_.getWidth(); j++) {
+    for (int i = 0; i < grid_.height + 1; i++) {
+      for (int j = 0; j < grid_.width; j++) {
         if (lineGuess.getHLine(i, j) == nLineGuess.getHLine(i, j) &&
             lineGuess.getHLine(i, j) != grid_.getHLine(i, j)) {
           grid_.setHLine(i, j, lineGuess.getHLine(i, j));
-          grid_.setUpdated(true);
+          grid_.updated = true;
         }
       }
     }
 
-    for (int i = 0; i < grid_.getHeight(); i++) {
-      for (int j = 0; j < grid_.getWidth() + 1; j++) {
+    for (int i = 0; i < grid_.height; i++) {
+      for (int j = 0; j < grid_.width + 1; j++) {
         if (lineGuess.getVLine(i, j) == nLineGuess.getVLine(i, j) &&
             lineGuess.getVLine(i, j) != grid_.getVLine(i, j)) {
           grid_.setVLine(i, j, lineGuess.getVLine(i, j));
-          grid_.setUpdated(true);
+          grid_.updated = true;
         }
       }
     }
@@ -472,10 +467,10 @@ class Solver {
  * applying it, and continue updating them until there are no longer
  * any changes being made. */
   void _applyRules(List<int> selectedRules) {
-    while (grid_.getUpdated()) {
-      grid_.setUpdated(false);
-      for (int i = 0; i < grid_.getHeight(); i++) {
-        for (int j = 0; j < grid_.getWidth(); j++) {
+    while (grid_.updated) {
+      grid_.updated = false;
+      for (int i = 0; i < grid_.height; i++) {
+        for (int j = 0; j < grid_.width; j++) {
           if (grid_.getUpdateMatrix(i, j)) {
             for (int x = 0; x < selectLength_; x++) {
               for (Orientation orient in [
@@ -504,8 +499,8 @@ class Solver {
  * grid, overwriting all old values with any applicable values from
  * the after_ lattice for that rule. */
   void _applyRule(int i, int j, Rule rule, Orientation orient) {
-    int m = rule.getHeight();
-    int n = rule.getWidth();
+    int m = rule.height;
+    int n = rule.width;
 
     List<EdgePosition> hLineDiff = rule.getHLineDiff();
     for (int k = 0; k < hLineDiff.length; k++) {
@@ -519,9 +514,9 @@ class Solver {
         case Orientation.DOWNFLIP:
         case Orientation.DOWN:
           if (grid_.getHLine(adjusted.i + i, adjusted.j + j) == Edge.EMPTY) {
-            grid_.setValid(
-                grid_.setHLine(adjusted.i + i, adjusted.j + j, pattern.edge));
-            grid_.setUpdated(true);
+            grid_.valid =
+                grid_.setHLine(adjusted.i + i, adjusted.j + j, pattern.edge);
+            grid_.updated = true;
           }
           break;
         case Orientation.LEFTFLIP:
@@ -529,9 +524,9 @@ class Solver {
         case Orientation.RIGHTFLIP:
         case Orientation.RIGHT:
           if (grid_.getVLine(adjusted.i + i, adjusted.j + j) == Edge.EMPTY) {
-            grid_.setValid(
-                grid_.setVLine(adjusted.i + i, adjusted.j + j, pattern.edge));
-            grid_.setUpdated(true);
+            grid_.valid =
+                grid_.setVLine(adjusted.i + i, adjusted.j + j, pattern.edge);
+            grid_.updated = true;
           }
           break;
       }
@@ -549,9 +544,9 @@ class Solver {
         case Orientation.DOWNFLIP:
         case Orientation.DOWN:
           if (grid_.getVLine(adjusted.i + i, adjusted.j + j) == Edge.EMPTY) {
-            grid_.setValid(
-                grid_.setVLine(adjusted.i + i, adjusted.j + j, pattern.edge));
-            grid_.setUpdated(true);
+            grid_.valid =
+                grid_.setVLine(adjusted.i + i, adjusted.j + j, pattern.edge);
+            grid_.updated = true;
           }
           break;
         case Orientation.LEFTFLIP:
@@ -559,9 +554,9 @@ class Solver {
         case Orientation.RIGHTFLIP:
         case Orientation.RIGHT:
           if (grid_.getHLine(adjusted.i + i, adjusted.j + j) == Edge.EMPTY) {
-            grid_.setValid(
-                grid_.setHLine(adjusted.i + i, adjusted.j + j, pattern.edge));
-            grid_.setUpdated(true);
+            grid_.valid =
+                grid_.setHLine(adjusted.i + i, adjusted.j + j, pattern.edge);
+            grid_.updated = true;
           }
           break;
       }
@@ -573,10 +568,10 @@ class Solver {
  * before_ lattice and verifying they correspond to the values
  * in the grid. */
   bool _ruleApplies(int i, int j, Rule rule, Orientation orient) {
-    int m = rule.getHeight();
-    int n = rule.getWidth();
-    if (i > grid_.getHeight() - rule.getNumberHeight(orient) ||
-        j > grid_.getWidth() - rule.getNumberWidth(orient)) {
+    int m = rule.height;
+    int n = rule.width;
+    if (i > grid_.height - rule.getNumberHeight(orient) ||
+        j > grid_.width - rule.getNumberWidth(orient)) {
       return false;
     }
 
@@ -652,15 +647,15 @@ class Solver {
  * values in the grid. */
   bool _contradictionApplies(
       int i, int j, Contradiction contradiction, Orientation orient) {
-    int m = contradiction.getHeight();
-    int n = contradiction.getWidth();
+    int m = contradiction.height;
+    int n = contradiction.width;
 
-    if (i > grid_.getHeight() - contradiction.getNumberHeight(orient) ||
-        j > grid_.getWidth() - contradiction.getNumberWidth(orient)) {
+    if (i > grid_.height - contradiction.getNumberHeight(orient) ||
+        j > grid_.width - contradiction.getNumberWidth(orient)) {
       return false;
     }
 
-    List<NumberPosition> numberPattern = contradiction.getNumberPattern();
+    List<NumberPosition> numberPattern = contradiction.numberPattern;
     for (int k = 0; k < numberPattern.length; k++) {
       NumberPosition pattern = numberPattern[k];
       Coordinates adjusted =
@@ -671,7 +666,7 @@ class Solver {
       }
     }
 
-    List<EdgePosition> hLinePattern = contradiction.getHLinePattern();
+    List<EdgePosition> hLinePattern = contradiction.hLinePattern;
     for (int k = 0; k < hLinePattern.length; k++) {
       EdgePosition pattern = hLinePattern[k];
       Coordinates adjusted =
@@ -697,7 +692,7 @@ class Solver {
       }
     }
 
-    List<EdgePosition> vLinePattern = contradiction.getVLinePattern();
+    List<EdgePosition> vLinePattern = contradiction.vLinePattern;
     for (int k = 0; k < vLinePattern.length; k++) {
       EdgePosition pattern = vLinePattern[k];
       Coordinates adjusted =

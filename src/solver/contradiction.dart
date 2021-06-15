@@ -9,23 +9,23 @@ class Contradiction {
   List<EdgePosition> hLinePattern_ = [];
   List<EdgePosition> vLinePattern_ = [];
 
-  int getHeight() {
+  int get height {
     return m_;
   }
 
-  int getWidth() {
+  int get width {
     return n_;
   }
 
-  List<NumberPosition> getNumberPattern() {
+  List<NumberPosition> get numberPattern {
     return numberPattern_;
   }
 
-  List<EdgePosition> getHLinePattern() {
+  List<EdgePosition> get hLinePattern {
     return hLinePattern_;
   }
 
-  List<EdgePosition> getVLinePattern() {
+  List<EdgePosition> get vLinePattern {
     return vLinePattern_;
   }
 
