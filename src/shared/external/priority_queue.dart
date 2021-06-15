@@ -1,6 +1,7 @@
 class priority_queue<T> {
   List<T> _list;
   Comparator<T> _comparator;
+  
   priority_queue(this._list, this._comparator);
 
   void push(T a) {
@@ -8,11 +9,11 @@ class priority_queue<T> {
     _list.sort(_comparator);
   }
 
-  bool empty() {
+  bool get isEmpty {
     return _list.isEmpty;
   }
 
-  int size() {
+  int get size {
     return _list.length;
   }
 
@@ -25,6 +26,6 @@ class priority_queue<T> {
   }
 
   T top() {
-    return _list.first;
+    return _list.last;
   }
 }
