@@ -5,11 +5,11 @@ class Rule {
   late int m_;
   late int n_;
 
-  List<NumberPosition> numberPattern_ = [];
-  List<EdgePosition> hLinePattern_ = [];
-  List<EdgePosition> vLinePattern_ = [];
-  List<EdgePosition> hLineDiff_ = [];
-  List<EdgePosition> vLineDiff_ = [];
+  List<NumberPosition> numberPattern_ = <NumberPosition>[];
+  List<EdgePosition> hLinePattern_ = <EdgePosition>[];
+  List<EdgePosition> vLinePattern_ = <EdgePosition>[];
+  List<EdgePosition> hLineDiff_ = <EdgePosition>[];
+  List<EdgePosition> vLineDiff_ = <EdgePosition>[];
 
   int get height {
     return m_;

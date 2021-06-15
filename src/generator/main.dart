@@ -12,8 +12,10 @@ void main(List<String> argc) {
     Difficulty diffic = (difficstr == "e") ? Difficulty.EASY : Difficulty.HARD;
 
     startTime = DateTime.now();
-    Generator g = Generator(
-        m, n, diffic); //one square for left/right top/bottom boundries
+    Generator g = Generator(m, n);
+    //one square for left/right top/bottom boundries
+
+    g.generate(diffic);
 
     endTime = DateTime.now();
     double diff = endTime.millisecondsSinceEpoch -

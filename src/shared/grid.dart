@@ -313,15 +313,15 @@ class Grid extends Lattice {
   void initUpdateMatrix() {
     if (!init_) {
       updateMatrix_ = List<List<bool>>.generate(
-          m_, (i) => List<bool>.generate(n_, (j) => true));
+          m_, (int i) => List<bool>.generate(n_, (int j) => true));
 
       contraMatrix_ = List<List<bool>>.generate(
-          m_, (i) => List<bool>.generate(n_, (j) => false));
+          m_, (int i) => List<bool>.generate(n_, (int j) => false));
 
       contourMatrix_ = List<List<MapEntry<int, int>>>.generate(
           m_ + 1,
-          (index) => List<MapEntry<int, int>>.generate(
-              n_ + 1, (j) => MapEntry<int, int>(-1, -1)));
+          (int i) => List<MapEntry<int, int>>.generate(
+              n_ + 1, (int j) => MapEntry<int, int>(-1, -1)));
 
       numOpenLoops_ = 0;
       numClosedLoops_ = 0;

@@ -10,26 +10,16 @@ const String ex = 'x';
 const String blank = ' ';
 
 class Import {
-  late Grid lattice_;
+  final Grid lattice_;
   late int m_; /* number of rows */
   late int n_; /* number of columns */
 
-  Import();
-
-/* Constructor taking as input a lattice to be imported into */
-  Import.file(this.lattice_, String filename) {
-    _buildLattice(filename);
-  }
-
-/* Constructor for empty lattice */
-  Import.empty(this.lattice_, int m, int n) {
-    _buildEmptyLattice(m, n);
-  }
+  Import(this.lattice_);
 
 /* Reads from stdin and initializes a lattice based on given
  * dimensions and three separate grids, one each for numbers,
  * horizontal lines, and vertical lines. */
-  void _buildLattice(String filename) {
+  void buildLattice(String filename) {
     File slkfile = File(filename);
 
     if (slkfile.existsSync()) {
@@ -95,7 +85,7 @@ class Import {
   }
 
 /* Initializes an empty lattice based on given dimensions */
-  void _buildEmptyLattice(int m, int n) {
+  void buildEmptyLattice(int m, int n) {
     lattice_.initArrays(m + 2, n + 2);
     lattice_.initUpdateMatrix();
 

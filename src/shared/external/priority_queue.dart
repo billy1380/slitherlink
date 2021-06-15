@@ -1,8 +1,8 @@
-class priority_queue<T> {
-  List<T> _list;
-  Comparator<T> _comparator;
-  
-  priority_queue(this._list, this._comparator);
+class PriorityQueue<T> {
+  final List<T> _list;
+  final Comparator<T> _comparator;
+
+  const PriorityQueue(this._list, this._comparator);
 
   void push(T a) {
     _list.add(a);

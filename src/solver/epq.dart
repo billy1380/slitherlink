@@ -9,7 +9,8 @@ class EPQ {
   late int m_;
   late int n_;
 
-  priority_queue<PrioEdge> pq_ = priority_queue([], ComparePrioEdge);
+  PriorityQueue<PrioEdge> pq_ =
+      PriorityQueue<PrioEdge>(<PrioEdge>[], ComparePrioEdge);
 
   void initEPQ(int m, int n) {
     assert(m > 0 && n > 0);
@@ -64,8 +65,8 @@ class EPQ {
   }
 
   List<PrioEdge> copyPQToVector() {
-    priority_queue<PrioEdge> newPQ = priority_queue([], ComparePrioEdge);
-    List<PrioEdge> outputvec = List.generate(pq_.size, (i) => pq_[i]);
+    List<PrioEdge> outputvec =
+        List<PrioEdge>.generate(pq_.size, (int i) => pq_[i]);
 
     return outputvec;
   }
@@ -82,8 +83,10 @@ class EPQ {
     List<PrioEdge> prioEdgeVec = orig.copyPQToVector();
     for (int i = 0; i < prioEdgeVec.length; i++) {
       PrioEdge cur = prioEdgeVec[i];
-      if (cur.coords.i < pe.coords.i && cur.coords.j < pe.coords.j)
+
+      if (cur.coords.i < pe.coords.i && cur.coords.j < pe.coords.j) {
         pq_.push(prioEdgeVec[i]);
+      }
     }
   }
 }

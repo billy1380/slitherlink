@@ -10,8 +10,8 @@ import 'rule.dart';
 const int max_depth = 100;
 
 class Solver {
-  Grid grid_;
-  int depth_;
+  final Grid grid_;
+  final int depth_;
   List<Rule> rules_;
   List<int> selectedRules_;
   late int selectLength_;
@@ -32,8 +32,9 @@ class Solver {
         ruleCounts_ = 0 {
     epq_.initEPQ(grid_.height, grid_.width);
 
-    List<int> selectedPlusBasic = List.generate(selectLength + num_const_rules,
-        (i) => i < selectedRules_.length ? selectedRules_[i] : -1);
+    List<int> selectedPlusBasic = List<int>.generate(
+        selectLength + num_const_rules,
+        (int i) => i < selectedRules_.length ? selectedRules_[i] : -1);
 
     for (int i = 1; i <= num_const_rules; i++) {
       selectedPlusBasic[selectLength + num_const_rules - i] = (num_rules - i);
@@ -42,8 +43,6 @@ class Solver {
     selectLength_ = selectLength + num_const_rules;
     _applyRules(selectedPlusBasic);
     selectLength_ = selectLength;
-
-    _solve();
   }
 
 /* Constructor for when the EPQ should be passed down. */
@@ -52,8 +51,6 @@ class Solver {
       : multipleSolutions_ = false,
         ruleCounts_ = 0 {
     epq_.copyPQ(oldEPQ);
-
-    _solve();
   }
 
   void resetSolver() {
@@ -73,16 +70,7 @@ class Solver {
       for (int j = 0; j < grid_.width; j++) {
         if (grid_.getContraMatrix(i, j)) {
           for (int x = 0; x < num_contradictions; x++) {
-            for (Orientation orient in [
-              Orientation.UP,
-              Orientation.DOWN,
-              Orientation.LEFT,
-              Orientation.RIGHT,
-              Orientation.UPFLIP,
-              Orientation.DOWNFLIP,
-              Orientation.LEFTFLIP,
-              Orientation.RIGHTFLIP
-            ]) {
+            for (Orientation orient in Orientation.values) {
               if (_contradictionApplies(i, j, contradictions_[x], orient)) {
                 return true;
               }
@@ -98,7 +86,7 @@ class Solver {
 
 /* Apply a combination of deterministic rules and
  * recursive guessing to find a solution to a puzzle */
-  void _solve() {
+  void solve() {
     grid_.updated = true;
     while (grid_.updated && !grid_.isSolved) {
       _applyRules(selectedRules_);
@@ -114,53 +102,52 @@ class Solver {
     }
   }
 
-/* */
-  void _updateEPQ() {
-    epq_.isEmpty;
+  // void _updateEPQ() {
+  //   epq_.isEmpty;
 
-    int m = grid_.height;
-    int n = grid_.width;
-    for (int i = 1; i < m; i++) {
-      for (int j = 1; j < n - 1; j++) {
-        if (grid_.getHLine(i, j) != Edge.EMPTY) {
-          continue;
-        }
-        double prio = (grid_.getHLine(i, j - 1) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getHLine(i, j + 1) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getHLine(i + 1, j) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getHLine(i - 1, j) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getVLine(i - 1, j + 1) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getVLine(i - 1, j) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getVLine(i, j) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getVLine(i, j + 1) != Edge.EMPTY ? 1 : 0);
+  //   int m = grid_.height;
+  //   int n = grid_.width;
+  //   for (int i = 1; i < m; i++) {
+  //     for (int j = 1; j < n - 1; j++) {
+  //       if (grid_.getHLine(i, j) != Edge.EMPTY) {
+  //         continue;
+  //       }
+  //       double prio = (grid_.getHLine(i, j - 1) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getHLine(i, j + 1) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getHLine(i + 1, j) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getHLine(i - 1, j) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getVLine(i - 1, j + 1) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getVLine(i - 1, j) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getVLine(i, j) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getVLine(i, j + 1) != Edge.EMPTY ? 1 : 0);
 
-        if (prio > 0) {
-          epq_.emplace(prio, i, j, true);
-        }
-      }
-    }
+  //       if (prio > 0) {
+  //         epq_.emplace(prio, i, j, true);
+  //       }
+  //     }
+  //   }
 
-    for (int i = 1; i < m - 1; i++) {
-      for (int j = 1; j < n; j++) {
-        if (grid_.getVLine(i, j) != Edge.EMPTY) {
-          continue;
-        }
-        double prio = (grid_.getVLine(i - 1, j) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getVLine(i + 1, j) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getVLine(i, j - 1) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getVLine(i, j + 1) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getHLine(i, j - 1) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getHLine(i + 1, j - 1) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getHLine(i, j) != Edge.EMPTY ? 1 : 0) +
-            (grid_.getHLine(i + 1, j) != Edge.EMPTY ? 1 : 0);
+  //   for (int i = 1; i < m - 1; i++) {
+  //     for (int j = 1; j < n; j++) {
+  //       if (grid_.getVLine(i, j) != Edge.EMPTY) {
+  //         continue;
+  //       }
+  //       double prio = (grid_.getVLine(i - 1, j) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getVLine(i + 1, j) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getVLine(i, j - 1) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getVLine(i, j + 1) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getHLine(i, j - 1) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getHLine(i + 1, j - 1) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getHLine(i, j) != Edge.EMPTY ? 1 : 0) +
+  //           (grid_.getHLine(i + 1, j) != Edge.EMPTY ? 1 : 0);
 
-        if (prio > 0) {
-          epq_.emplace(prio, i, j, false);
-        }
-      }
-    }
-    epqSize_ = epq_.size;
-  }
+  //       if (prio > 0) {
+  //         epq_.emplace(prio, i, j, false);
+  //       }
+  //     }
+  //   }
+  //   epqSize_ = epq_.size;
+  // }
 
   bool get _upq => true;
 
@@ -473,16 +460,7 @@ class Solver {
         for (int j = 0; j < grid_.width; j++) {
           if (grid_.getUpdateMatrix(i, j)) {
             for (int x = 0; x < selectLength_; x++) {
-              for (Orientation orient in [
-                Orientation.UP,
-                Orientation.DOWN,
-                Orientation.LEFT,
-                Orientation.RIGHT,
-                Orientation.UPFLIP,
-                Orientation.DOWNFLIP,
-                Orientation.LEFTFLIP,
-                Orientation.RIGHTFLIP
-              ]) {
+              for (Orientation orient in Orientation.values) {
                 if (_ruleApplies(i, j, rules_[selectedRules[x]], orient)) {
                   _applyRule(i, j, rules_[selectedRules[x]], orient);
                 }

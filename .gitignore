@@ -1,11 +1,12 @@
-# compiled files
-slitherlink
-slsolver
-slgenerator
-*.o
+# Files and directories created by pub
+.dart_tool/
+.packages
 
-# ignore vim .swp files
-*.swp
+# Conventional directory for build outputs
+build/
+
+# Directory created by dartdoc
+doc/api/
 
 # comeeeee onnnnn
 .DS_STORE

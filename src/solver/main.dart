@@ -12,12 +12,12 @@ void main(List<String> argv) {
   DateTime startTime, endTime;
   startTime = DateTime.now();
 
-  List<Rule> rules = List.generate(num_rules, initRules);
+  List<Rule> rules = List<Rule>.generate(num_rules, initRules);
 
   List<Contradiction> contradictions =
-      List.generate(num_contradictions, initContradictions);
+      List<Contradiction>.generate(num_contradictions, initContradictions);
 
-  List<int> selectedRules = List.filled(num_rules - num_const_rules, -1);
+  List<int> selectedRules = List<int>.filled(num_rules - num_const_rules, -1);
   for (int i = 0; i < num_rules - num_const_rules; i++) {
     selectedRules[i] = i;
   }
@@ -27,7 +27,9 @@ void main(List<String> argv) {
     print("Puzzle: $filename");
 
     Grid grid = Grid();
-    Import importer = Import.file(grid, filename);
+    Import importer = Import(grid);
+    importer.buildLattice(filename);
+
     Export exporter = Export(grid);
 
     Solver solver = Solver(grid, rules, contradictions, selectedRules,

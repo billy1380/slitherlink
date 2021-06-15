@@ -33,22 +33,22 @@ class Generator {
   Grid grid_ = Grid();
   Grid smallestCountGrid_ = Grid();
 
-  List<Coordinates> eligibleCoordinates_ = [];
-  List<Coordinates> ineligibleCoordinates_ = [];
+  List<Coordinates> eligibleCoordinates_ = <Coordinates>[];
+  List<Coordinates> ineligibleCoordinates_ = <Coordinates>[];
 
   late List<Rule> rules_;
   late List<Contradiction> contradictions_;
   late List<List<bool>> canEliminate_;
   late List<List<Number>> oldNumbers_;
 
-  late Random r;
+  Random r = Random();
 
 /* Generator constructor */
-  Generator(this.m_, this.n_, Difficulty difficulty)
+  Generator(this.m_, this.n_)
       : numberCount_ = m_ * n_,
-        buffer_ = 0 {
-    r = Random();
+        buffer_ = 0;
 
+  void generate(Difficulty difficulty) {
     _setDifficulty(difficulty);
     _createPuzzle();
     _displayFinalPuzzle();
@@ -70,10 +70,12 @@ class Generator {
   void _setRules(Difficulty difficulty) {
     if (difficulty == Difficulty.EASY) {
       numberOfRules_ = easy_rules.length;
-      selectedRules_ = List.generate(numberOfRules_, (i) => easy_rules[i]);
+      selectedRules_ =
+          List<int>.generate(numberOfRules_, (int i) => easy_rules[i]);
     } else {
       numberOfRules_ = hard_rules.length;
-      selectedRules_ = List.generate(numberOfRules_, (i) => hard_rules[i]);
+      selectedRules_ =
+          List<int>.generate(numberOfRules_, (int i) => hard_rules[i]);
     }
   }
 
@@ -82,8 +84,10 @@ class Generator {
   void _createPuzzle() {
     smallestCount_ = numberCount_;
     bufferReachCount_ = 0;
-    Import importer = Import.empty(grid_, m_, n_);
+    Import importer = Import(grid_);
+    importer.buildEmptyLattice(m_, n_);
     LoopGen loopgen = LoopGen(m_, n_, grid_);
+    loopgen.generate();
 
     _initArrays();
     _setCounts();
@@ -149,9 +153,12 @@ class Generator {
 
 /* allocate memory for creating loop */
   void _initArrays() {
-    canEliminate_ = List.generate(m_, (i) => List.filled(n_, true));
-    oldNumbers_ = List.generate(
-        m_, (i) => List.generate(n_, (j) => grid_.getNumber(i + 1, j + 1)));
+    canEliminate_ =
+        List<List<bool>>.generate(m_, (int i) => List<bool>.filled(n_, true));
+    oldNumbers_ = List<List<Number>>.generate(
+        m_,
+        (int i) => List<Number>.generate(
+            n_, (int j) => grid_.getNumber(i + 1, j + 1)));
   }
 
 /* Reduces numbers from the puzzle until a satisfactory number has been reached */
@@ -250,14 +257,16 @@ class Generator {
   }
 
   bool _checkIfSolved() {
-    List<Rule> rules_ = List.generate(num_rules, initRules);
+    List<Rule> rules_ = List<Rule>.generate(num_rules, initRules);
 
     List<Contradiction> contradictions_ =
-        List.generate(num_contradictions, initContradictions);
+        List<Contradiction>.generate(num_contradictions, initContradictions);
     grid_.resetGrid();
 
     Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_,
         numberOfRules_, guessDepth_);
+    solver.solve();
+
     return grid_.isSolved;
   }
 
@@ -295,12 +304,12 @@ class Generator {
     ineligibleCoordinates_.add(removed);
   }
 
-/* Elimates a number at a set of coordinates */
-  void _eliminateNumber(int i, int j) {
-    grid_.setNumber(i, j, Number.NONE);
-    grid_.resetGrid();
-    canEliminate_[i - 1][j - 1] = false;
-  }
+// /* Elimates a number at a set of coordinates */
+//   void _eliminateNumber(int i, int j) {
+//     grid_.setNumber(i, j, Number.NONE);
+//     grid_.resetGrid();
+//     canEliminate_[i - 1][j - 1] = false;
+//   }
 
 /* Determines if a Number at Coordinates is eligible for elimination */
   bool _eligible(int i, int j) {
@@ -322,65 +331,65 @@ class Generator {
     canEliminate_[i - 1][j - 1] = false;
   }
 
-/* Another method for removing numbers */
-  void _deleteNumbers() {
-    _setCounts();
-    int count = 0;
-    int i = r.nextInt(m_) + 1;
-    int j = r.nextInt(n_) + 1;
-    Number oldNum = grid_.getNumber(i, j);
-    while (count < ((m_) * (n_) * 2 / 3 + 10)) {
-      count++;
-      int count2 = 0;
-      while (true) {
-        i = r.nextInt(m_) + 1;
-        j = r.nextInt(n_) + 1;
-        oldNum = grid_.getNumber(i, j);
-        if (_isBalancedNum(i, j, oldNum)) {
-          break;
-        }
-        count2++;
-        if (count2 > n_ + m_) {
-          if (_eligible(i, j) || oldNum == Number.NONE) {
-            count += (m_ + n_) ~/ 2;
-            break;
-          }
-        }
-      }
-      _eliminateNumber(i, j);
-      //exporter.print();
+// /* Another method for removing numbers */
+//   void _deleteNumbers() {
+//     _setCounts();
+//     int count = 0;
+//     int i = r.nextInt(m_) + 1;
+//     int j = r.nextInt(n_) + 1;
+//     Number oldNum = grid_.getNumber(i, j);
+//     while (count < ((m_) * (n_) * 2 / 3 + 10)) {
+//       count++;
+//       int count2 = 0;
+//       while (true) {
+//         i = r.nextInt(m_) + 1;
+//         j = r.nextInt(n_) + 1;
+//         oldNum = grid_.getNumber(i, j);
+//         if (_isBalancedNum(i, j, oldNum)) {
+//           break;
+//         }
+//         count2++;
+//         if (count2 > n_ + m_) {
+//           if (_eligible(i, j) || oldNum == Number.NONE) {
+//             count += (m_ + n_) ~/ 2;
+//             break;
+//           }
+//         }
+//       }
+//       _eliminateNumber(i, j);
+//       //exporter.print();
 
-      // TODO: maybe modify selected rules
+//       // TODO_: maybe modify selected rules
 
-      Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_,
-          num_rules - num_const_rules, 1);
-      if (!grid_.isSolved) {
-        grid_.setNumber(i, j, oldNum);
-      } else {
-        _minusCounts(oldNum);
-      }
-      grid_.resetGrid();
-    }
-  }
+//       Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_,
+//           num_rules - num_const_rules, 1);
+//       if (!grid_.isSolved) {
+//         grid_.setNumber(i, j, oldNum);
+//       } else {
+//         _minusCounts(oldNum);
+//       }
+//       grid_.resetGrid();
+//     }
+//   }
 
-  bool _isBalancedNum(int i, int j, Number num) {
-    if (_eligible(i, j)) {
-      if (num == Number.ZERO) {
-        return true;
-      }
-      if (num == Number.THREE) {
-        return (threeCount_ * 2.1 + 1 > 3 * oneCount_ &&
-            threeCount_ * 5.2 + 1 > 3 * twoCount_);
-      }
-      if (num == Number.ONE) {
-        return (oneCount_ * 3.2 + 1 > 2 * threeCount_ &&
-            oneCount_ * 5.2 + 1 > 2 * twoCount_);
-      }
-      if (num == Number.TWO) {
-        return (twoCount_ * 2.1 + 1 > 5 * oneCount_ &&
-            twoCount_ * 3.1 + 1 > 5 * threeCount_);
-      }
-    }
-    return false;
-  }
+  // bool _isBalancedNum(int i, int j, Number num) {
+  //   if (_eligible(i, j)) {
+  //     if (num == Number.ZERO) {
+  //       return true;
+  //     }
+  //     if (num == Number.THREE) {
+  //       return (threeCount_ * 2.1 + 1 > 3 * oneCount_ &&
+  //           threeCount_ * 5.2 + 1 > 3 * twoCount_);
+  //     }
+  //     if (num == Number.ONE) {
+  //       return (oneCount_ * 3.2 + 1 > 2 * threeCount_ &&
+  //           oneCount_ * 5.2 + 1 > 2 * twoCount_);
+  //     }
+  //     if (num == Number.TWO) {
+  //       return (twoCount_ * 2.1 + 1 > 5 * oneCount_ &&
+  //           twoCount_ * 3.1 + 1 > 5 * threeCount_);
+  //     }
+  //   }
+  //   return false;
+  // }
 }

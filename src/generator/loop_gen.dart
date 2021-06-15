@@ -6,17 +6,14 @@ import '../shared/structs.dart';
 
 class LoopGen {
   late List<List<LoopCell>> loop_;
-  late Grid grid_;
-  late int m_;
-  late int n_;
-  late Random r;
+  final Grid grid_;
+  final int m_;
+  final int n_;
+  final Random r = Random();
 
-  LoopGen(int m, int n, Grid grid) {
-    m_ = m;
-    n_ = n;
-    grid_ = grid;
-    r = Random();
+  LoopGen(this.m_, this.n_, this.grid_);
 
+  void generate() {
     _initArray();
     _genLoop();
     _fillGrid();
@@ -90,7 +87,7 @@ class LoopGen {
   void _genLoop() {
     Coordinates cur = Coordinates(m_ ~/ 2, n_ ~/ 2);
     Coordinates next;
-    List<Coordinates> avail = [
+    List<Coordinates> avail = <Coordinates>[
       cur,
     ];
 

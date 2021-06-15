@@ -5,9 +5,9 @@ class Contradiction {
   int m_;
   int n_;
 
-  List<NumberPosition> numberPattern_ = [];
-  List<EdgePosition> hLinePattern_ = [];
-  List<EdgePosition> vLinePattern_ = [];
+  List<NumberPosition> numberPattern_ = <NumberPosition>[];
+  List<EdgePosition> hLinePattern_ = <EdgePosition>[];
+  List<EdgePosition> vLinePattern_ = <EdgePosition>[];
 
   int get height {
     return m_;
