@@ -36,12 +36,12 @@ class Lattice {
     m_ = m;
     n_ = n;
 
-    numbers_ =
-        List<List<Number>>.filled(m_, List<Number>.filled(n_, Number.NONE));
-    hlines_ =
-        List<List<Edge>>.filled(m_ + 1, List<Edge>.filled(n_, Edge.EMPTY));
-    vlines_ =
-        List<List<Edge>>.filled(m_, List<Edge>.filled(n_ + 1, Edge.EMPTY));
+    numbers_ = List<List<Number>>.generate(
+        m_, (int i) => List<Number>.filled(n_, Number.NONE));
+    hlines_ = List<List<Edge>>.generate(
+        m_ + 1, (int i) => List<Edge>.filled(n_, Edge.EMPTY));
+    vlines_ = List<List<Edge>>.generate(
+        m_, (int i) => List<Edge>.filled(n_ + 1, Edge.EMPTY));
 
     init_ = true;
 

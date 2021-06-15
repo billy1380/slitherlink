@@ -1,9 +1,12 @@
 import 'package:logging/logging.dart';
 
 import '../shared/enums.dart';
+import '../shared/logging.dart';
 import 'generator.dart';
 
 void main(List<String> argc) {
+  setupLogging();
+
   Logger logger = Logger("Generator.main");
   DateTime startTime, endTime;
 
@@ -21,8 +24,9 @@ void main(List<String> argc) {
     g.generate(diffic);
 
     endTime = DateTime.now();
-    double diff = endTime.millisecondsSinceEpoch -
-        startTime.millisecondsSinceEpoch / 1000;
+    double diff =
+        (endTime.millisecondsSinceEpoch - startTime.millisecondsSinceEpoch) /
+            1000;
     logger.info("Time to create:\t$diff seconds");
   } else {
     logger.severe(

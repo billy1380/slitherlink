@@ -3,6 +3,7 @@ enum Edge {
   LINE,
   NLINE,
 }
+
 enum Number {
   NONE,
   ZERO,
@@ -10,6 +11,7 @@ enum Number {
   TWO,
   THREE,
 }
+
 enum Orientation {
   UP,
   DOWN,
@@ -20,6 +22,7 @@ enum Orientation {
   LEFTFLIP,
   RIGHTFLIP
 }
+
 enum LoopCell {
   UNKNOWN,
   EXP,

@@ -79,8 +79,8 @@ class LoopGen {
 
 /* allocate memory for creating loop */
   void _initArray() {
-    loop_ = List<List<LoopCell>>.filled(
-        m_, List<LoopCell>.filled(n_, LoopCell.UNKNOWN));
+    loop_ = List<List<LoopCell>>.generate(
+        m_, (int i) => List<LoopCell>.filled(n_, LoopCell.UNKNOWN));
   }
 
 /* Fill grid entirely with numbers that make a loop */
@@ -138,7 +138,6 @@ class LoopGen {
 
     loop_[newpos.i][newpos.j] =
         (_validCell(newpos, cur)) ? LoopCell.EXP : LoopCell.OUT;
-
     return newpos;
   }
 
@@ -146,9 +145,11 @@ class LoopGen {
   Coordinates _pickDirection(Coordinates cur) {
     int vert = r.nextInt(3) - 1;
     int hor = 0;
+
     if (vert == 0) {
-      hor = (r.nextInt(2)) * 2 - 1;
+      hor = (r.nextInt(2) * 2) - 1;
     }
+    
     return Coordinates(cur.i + vert, cur.j + hor);
   }
 
@@ -195,11 +196,8 @@ class LoopGen {
     Coordinates guess;
 
     if (avail.isNotEmpty) {
-      guess = avail.last;
       int guessindex = r.nextInt(avail.length);
-      guess = avail[guessindex];
-
-      avail.removeAt(guessindex);
+      guess = avail.removeAt(guessindex);
       return guess;
     } else {
       return Coordinates(-1, -1);

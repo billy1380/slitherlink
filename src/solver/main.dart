@@ -4,6 +4,7 @@ import '../shared/constants.dart';
 import '../shared/export.dart';
 import '../shared/grid.dart';
 import '../shared/import.dart';
+import '../shared/logging.dart';
 import 'contradiction.dart';
 import 'contradictions.dart';
 import 'rule.dart';
@@ -11,6 +12,8 @@ import 'rules.dart';
 import 'solver.dart';
 
 void main(List<String> argv) {
+  setupLogging();
+
   Logger logger = Logger("Solver.main");
   DateTime startTime, endTime;
   startTime = DateTime.now();

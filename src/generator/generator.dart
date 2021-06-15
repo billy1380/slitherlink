@@ -84,8 +84,10 @@ class Generator {
   void _createPuzzle() {
     smallestCount_ = numberCount_;
     bufferReachCount_ = 0;
+
     Import importer = Import(grid_);
     importer.buildEmptyLattice(m_, n_);
+
     LoopGen loopgen = LoopGen(m_, n_, grid_);
     loopgen.generate();
 
@@ -164,13 +166,13 @@ class Generator {
 /* Reduces numbers from the puzzle until a satisfactory number has been reached */
   void _reduceNumbers() {
     // Remove numbers until this count has been reached
-    while (numberCount_ > ((m_ * n_) * factor_ + 3)) {
+    while (numberCount_ > ((m_ * n_ * factor_) + 3)) {
       /* Reset the smallest count and buffer incase the required amount
         of numbers cannot be removed. */
       if (smallestCount_ > numberCount_) {
         smallestCount_ = numberCount_;
         grid_.clearAndCopy(smallestCountGrid_);
-        buffer_ = (numberCount_ + (m_ * n_)) ~/ 2 - 2;
+        buffer_ = ((numberCount_ + (m_ * n_)) ~/ 2) - 2;
       }
 
       if (numberCount_ == buffer_) {
@@ -199,8 +201,7 @@ class Generator {
 
     while (eligibleCoordinates_.isNotEmpty && !coordsFound) {
       int random = r.nextInt(eligibleCoordinates_.length);
-      Coordinates attempt = eligibleCoordinates_[random];
-      eligibleCoordinates_.removeAt(random);
+      Coordinates attempt = eligibleCoordinates_.removeAt(random);
 
       // Checks if the number in question is needed to retain a balance
       if (_isBalanced(attempt.i, attempt.j)) {
