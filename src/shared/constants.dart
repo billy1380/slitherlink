@@ -1,8 +1,8 @@
-const String point = '.';
-const String hline = '-';
-const String vline = '|';
-const String ex = 'x';
-const String blank = ' ';
+const String point = ".";
+const String hline = "-";
+const String vline = "|";
+const String ex = "x";
+const String blank = " ";
 
 const int num_rules = 33;
 const int num_const_rules = 3;

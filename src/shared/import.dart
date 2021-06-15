@@ -148,10 +148,10 @@ class Import {
     for (int j = 0; j < row.length; j++) {
       String c = row[j];
       switch (c) {
-        case '-':
+        case "-":
           lattice_.setHLine(i, j + 1, Edge.LINE);
           break;
-        case 'x':
+        case "x":
           lattice_.setHLine(i, j + 1, Edge.NLINE);
           break;
         default:
@@ -169,10 +169,10 @@ class Import {
     for (int j = 0; j < row.length; j++) {
       String c = row[j];
       switch (c) {
-        case '-':
+        case "-":
           lattice_.setVLine(i, j + 1, Edge.LINE);
           break;
-        case 'x':
+        case "x":
           lattice_.setVLine(i, j + 1, Edge.NLINE);
           break;
         default:

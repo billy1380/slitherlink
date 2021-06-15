@@ -17,9 +17,9 @@ class Export {
       /* print points/lines/Xs/nothing above the row of numbers */
       for (int j = 1; j < n - 1; j++) {
         buffer.write(point);
-        buffer.write(' ');
+        buffer.write(" ");
         buffer.write(_formatHLine(i, j));
-        buffer.write(' ');
+        buffer.write(" ");
       }
       buffer.writeln(point);
 
@@ -27,10 +27,10 @@ class Export {
       for (int j = 1; j < n - 1; j++) {
         /* print line/x/nothing to the left of number */
         buffer.write(_formatVLine(i, j));
-        buffer.write(' ');
+        buffer.write(" ");
         /* print number */
         buffer.write(_formatNumber(i, j));
-        buffer.write(' ');
+        buffer.write(" ");
       }
       /* print line/x/nothing to the right of last number */
       buffer.writeln(_formatVLine(i, n - 1));
@@ -39,9 +39,9 @@ class Export {
     /* print lines/Xs/nothing below the last row of numbers */
     for (int j = 1; j < n - 1; j++) {
       buffer.write(point);
-      buffer.write(' ');
+      buffer.write(" ");
       buffer.write(_formatHLine(m - 1, j));
-      buffer.write(' ');
+      buffer.write(" ");
     }
     buffer.writeln(point);
     print(buffer.toString());
@@ -52,13 +52,13 @@ class Export {
   String _formatNumber(int i, int j) {
     switch (lattice_.getNumber(i, j)) {
       case Number.ZERO:
-        return '0';
+        return "0";
       case Number.ONE:
-        return '1';
+        return "1";
       case Number.TWO:
-        return '2';
+        return "2";
       case Number.THREE:
-        return '3';
+        return "3";
       default:
         return blank;
     }

@@ -1,10 +1,10 @@
 import 'enums.dart';
 
-const String point = '.';
-const String hline = '-';
-const String vline = '|';
-const String ex = 'x';
-const String blank = ' ';
+const String point = ".";
+const String hline = "-";
+const String vline = "|";
+const String ex = "x";
+const String blank = " ";
 
 class Lattice {
   bool updated = true;
