@@ -24,18 +24,7 @@ const List<int> easy_rules = <int>[
 ];
 
 const List<int> hard_rules = <int>[
-  4,
-  1,
-  3,
-  2,
-  20,
-  23,
-  0,
-  10,
-  9,
-  19,
-  11,
-  26,
+  ...easy_rules,
   8,
   16,
   7,
