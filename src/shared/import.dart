@@ -3,11 +3,11 @@ import 'dart:io';
 import 'enums.dart';
 import 'grid.dart';
 
-const String point = '.';
-const String hline = '-';
-const String vline = '|';
-const String ex = 'x';
-const String blank = ' ';
+const String point = ".";
+const String hline = "-";
+const String vline = "|";
+const String ex = "x";
+const String blank = " ";
 
 class Import {
   final Grid lattice_;
@@ -121,16 +121,16 @@ class Import {
     for (int j = 0; j < row.length; j++) {
       String c = row[j];
       switch (c) {
-        case '0':
+        case "0":
           lattice_.setNumber(i, j + 1, Number.ZERO);
           break;
-        case '1':
+        case "1":
           lattice_.setNumber(i, j + 1, Number.ONE);
           break;
-        case '2':
+        case "2":
           lattice_.setNumber(i, j + 1, Number.TWO);
           break;
-        case '3':
+        case "3":
           lattice_.setNumber(i, j + 1, Number.THREE);
           break;
         default:
