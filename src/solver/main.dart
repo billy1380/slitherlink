@@ -11,7 +11,7 @@ import 'rule.dart';
 import 'rules.dart';
 import 'solver.dart';
 
-void main(List<String> argv) {
+void main(List<String> argc) {
   setupLogging();
 
   Logger logger = Logger("Solver.main");
@@ -28,8 +28,8 @@ void main(List<String> argv) {
     selectedRules[i] = i;
   }
 
-  for (int i = 1; i < argv.length; i++) {
-    String filename = argv[i];
+  for (int i = 0; i < argc.length; i++) {
+    String filename = argc[i];
     logger.info("Puzzle: $filename");
 
     Grid grid = Grid();

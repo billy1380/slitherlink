@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:logging/logging.dart';
+
 import 'enums.dart';
 import 'grid.dart';
 
@@ -10,6 +12,8 @@ const String ex = "x";
 const String blank = " ";
 
 class Import {
+  static final Logger logger = Logger("Import");
+
   final Grid lattice_;
   late int m_; /* number of rows */
   late int n_; /* number of columns */
@@ -24,33 +28,30 @@ class Import {
 
     if (slkfile.existsSync()) {
       List<String> contents = slkfile.readAsLinesSync();
-      int lineIndex = 0;
 
-      /* source info */
-      lineIndex++;
+      contents = _removeCommentsAndEmptyLines(contents);
+
+      int lineIndex = 0;
 
       /* get dimensions */
       int m, n;
-      lineIndex++;
-      m = int.parse(contents[lineIndex]);
+      String dimsLine = contents[lineIndex];
+      List<String> splitDims = dimsLine.split(" ");
 
-      lineIndex++;
-      n = int.parse(contents[lineIndex]);
+      assert(splitDims.length == 2,
+          "There should only be 2 dimentions delimited by a space");
+
+      m = int.parse(splitDims.first);
+      n = int.parse(splitDims.last);
 
       lattice_.initArrays(m + 2, n + 2);
-
-      /* blank lines */
-      lineIndex++;
-      lineIndex++;
+      lattice_.initUpdateMatrix();
 
       /* numbers */
       for (int i = 0; i < m; i++) {
         lineIndex++;
         _importNumberRow(i + 1, contents[lineIndex]);
       }
-
-      /* blank line */
-      lineIndex++;
 
       /* horizontal lines */
       for (int i = 0; i < m + 1; i++) {
@@ -61,9 +62,6 @@ class Import {
         lattice_.setHLine(0, j, Edge.NLINE);
         lattice_.setHLine(m + 2, j, Edge.NLINE);
       }
-
-      /* blank line */
-      lineIndex++;
 
       /* vertical lines */
       for (int j = 0; j < n + 3; j++) {
@@ -80,8 +78,28 @@ class Import {
         _importVLineRow(i + 1, contents[lineIndex]);
       }
     } else {
-      print("Unable to open file\n");
+      logger.severe("Unable to open file");
     }
+  }
+
+  List<String> _removeCommentsAndEmptyLines(List<String> lines) {
+    List<String> cleanedLines = <String>[];
+
+    for (String line in lines) {
+      if (line.isEmpty) {
+        // remove empty line
+      } else {
+        List<String> commentSplit = line.split("#");
+
+        if (commentSplit.first.trim().isEmpty) {
+          // remove empty line
+        } else {
+          cleanedLines.add(commentSplit.first.trim());
+        }
+      }
+    }
+
+    return cleanedLines;
   }
 
 /* Initializes an empty lattice based on given dimensions */

@@ -9,7 +9,28 @@
       "request": "launch",
       "type": "dart",
       "program": "src/generator/main.dart",
-      "args": ["5", "5", "e"]
+      "args": ["2", "2", "e"]
+    },
+    {
+      "name": "Solver",
+      "request": "launch",
+      "type": "dart",
+      "program": "src/solver/main.dart",
+      "args": [
+        "puzzles/01.slk",
+        "puzzles/02.slk",
+        "puzzles/03.slk",
+        "puzzles/04.slk",
+        "puzzles/05.slk",
+        "puzzles/06.slk",
+        "puzzles/07.slk",
+        "puzzles/09.slk",
+        "puzzles/11.slk",
+        "puzzles/13.slk",
+        "puzzles/14.slk",
+        "puzzles/15.slk",
+        "puzzles/16.slk"
+      ]
     }
   ]
 }
