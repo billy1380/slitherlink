@@ -2,46 +2,46 @@ import '../shared/enums.dart';
 import '../shared/structs.dart';
 
 class Contradiction {
-  int m_;
-  int n_;
+  final int _m;
+  final int _n;
 
-  List<NumberPosition> numberPattern_ = <NumberPosition>[];
-  List<EdgePosition> hLinePattern_ = <EdgePosition>[];
-  List<EdgePosition> vLinePattern_ = <EdgePosition>[];
+  final List<NumberPosition> _numberPattern = <NumberPosition>[];
+  final List<EdgePosition> _hLinePattern = <EdgePosition>[];
+  final List<EdgePosition> _vLinePattern = <EdgePosition>[];
 
   int get height {
-    return m_;
+    return _m;
   }
 
   int get width {
-    return n_;
+    return _n;
   }
 
   List<NumberPosition> get numberPattern {
-    return numberPattern_;
+    return _numberPattern;
   }
 
   List<EdgePosition> get hLinePattern {
-    return hLinePattern_;
+    return _hLinePattern;
   }
 
   List<EdgePosition> get vLinePattern {
-    return vLinePattern_;
+    return _vLinePattern;
   }
 
   void addNumberPattern(int i, int j, Number num) {
-    numberPattern_.add(NumberPosition(Coordinates(i, j), num));
+    _numberPattern.add(NumberPosition(Coordinates(i, j), num));
   }
 
   void addHLinePattern(int i, int j, Edge edge) {
-    hLinePattern_.add(EdgePosition(Coordinates(i, j), edge));
+    _hLinePattern.add(EdgePosition(Coordinates(i, j), edge));
   }
 
   void addVLinePattern(int i, int j, Edge edge) {
-    vLinePattern_.add(EdgePosition(Coordinates(i, j), edge));
+    _vLinePattern.add(EdgePosition(Coordinates(i, j), edge));
   }
 
-  Contradiction(this.m_, this.n_);
+  Contradiction(this._m, this._n);
 
 /* Gives the height of the number grid based on a given
  * orientation. In its upright position, its height is m_.
@@ -53,12 +53,12 @@ class Contradiction {
       case Orientation.DOWN:
       case Orientation.UPFLIP:
       case Orientation.DOWNFLIP:
-        return m_;
+        return _m;
       case Orientation.LEFT:
       case Orientation.RIGHT:
       case Orientation.LEFTFLIP:
       case Orientation.RIGHTFLIP:
-        return n_;
+        return _n;
     }
   }
 
@@ -70,12 +70,12 @@ class Contradiction {
       case Orientation.DOWN:
       case Orientation.UPFLIP:
       case Orientation.DOWNFLIP:
-        return n_;
+        return _n;
       case Orientation.LEFT:
       case Orientation.RIGHT:
       case Orientation.LEFTFLIP:
       case Orientation.RIGHTFLIP:
-        return m_;
+        return _m;
     }
   }
 }

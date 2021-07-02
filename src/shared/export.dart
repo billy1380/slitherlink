@@ -2,15 +2,15 @@ import 'enums.dart';
 import 'lattice.dart';
 
 class Export {
-  final Lattice lattice_;
+  final Lattice _lattice;
 
 /* Constructor taking as input a lattice to be exported */
-  const Export(this.lattice_);
+  const Export(this._lattice);
 
 /* Outputs a lattice to stdout in a human readable format */
   void export() {
-    int m = lattice_.height;
-    int n = lattice_.width;
+    int m = _lattice.height;
+    int n = _lattice.width;
     StringBuffer buffer = StringBuffer();
 
     for (int i = 1; i < m - 1; i++) {
@@ -50,7 +50,7 @@ class Export {
 /* Helper function for formatting a value from the Number
  * enumeration into a human readable 0-3 or blank space. */
   String _formatNumber(int i, int j) {
-    switch (lattice_.getNumber(i, j)) {
+    switch (_lattice.getNumber(i, j)) {
       case Number.ZERO:
         return "0";
       case Number.ONE:
@@ -67,7 +67,7 @@ class Export {
 /* Helper function for formatting a value from the Number
  * enumeration into a human readable '-', 'x' or blank space. */
   String _formatHLine(int i, int j) {
-    switch (lattice_.getHLine(i, j)) {
+    switch (_lattice.getHLine(i, j)) {
       case Edge.LINE:
         return hline;
       case Edge.NLINE:
@@ -80,7 +80,7 @@ class Export {
 /* Helper function for formatting a value from the Number
  * enumeration into a human readable '|', 'x' or blank space. */
   String _formatVLine(int i, int j) {
-    switch (lattice_.getVLine(i, j)) {
+    switch (_lattice.getVLine(i, j)) {
       case Edge.LINE:
         return vline;
       case Edge.NLINE:

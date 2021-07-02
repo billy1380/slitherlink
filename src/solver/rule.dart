@@ -2,64 +2,64 @@ import '../shared/enums.dart';
 import '../shared/structs.dart';
 
 class Rule {
-  late int m_;
-  late int n_;
+  final int _m;
+  final int _n;
 
-  List<NumberPosition> numberPattern_ = <NumberPosition>[];
-  List<EdgePosition> hLinePattern_ = <EdgePosition>[];
-  List<EdgePosition> vLinePattern_ = <EdgePosition>[];
-  List<EdgePosition> hLineDiff_ = <EdgePosition>[];
-  List<EdgePosition> vLineDiff_ = <EdgePosition>[];
+  final List<NumberPosition> _numberPattern = <NumberPosition>[];
+  final List<EdgePosition> _hLinePattern = <EdgePosition>[];
+  final List<EdgePosition> _vLinePattern = <EdgePosition>[];
+  final List<EdgePosition> _hLineDiff = <EdgePosition>[];
+  final List<EdgePosition> _vLineDiff = <EdgePosition>[];
 
   int get height {
-    return m_;
+    return _m;
   }
 
   int get width {
-    return n_;
+    return _n;
   }
 
-  List<NumberPosition> getNumberPattern() {
-    return numberPattern_;
+  List<NumberPosition> get numberPattern {
+    return _numberPattern;
   }
 
-  List<EdgePosition> getHLinePattern() {
-    return hLinePattern_;
+  List<EdgePosition> get hLinePattern {
+    return _hLinePattern;
   }
 
-  List<EdgePosition> getVLinePattern() {
-    return vLinePattern_;
+  List<EdgePosition> get vLinePattern {
+    return _vLinePattern;
   }
 
-  List<EdgePosition> getHLineDiff() {
-    return hLineDiff_;
+  List<EdgePosition> get hLineDiff {
+    return _hLineDiff;
   }
 
-  List<EdgePosition> getVLineDiff() {
-    return vLineDiff_;
+  List<EdgePosition> get vLineDiff {
+    return _vLineDiff;
   }
 
   void addNumberPattern(int i, int j, Number num) {
-    numberPattern_.add(NumberPosition(Coordinates(i, j), num));
+    _numberPattern.add(NumberPosition(Coordinates(i, j), num));
   }
 
   void addHLinePattern(int i, int j, Edge edge) {
-    hLinePattern_.add(EdgePosition(Coordinates(i, j), edge));
+    _hLinePattern.add(EdgePosition(Coordinates(i, j), edge));
   }
 
   void addVLinePattern(int i, int j, Edge edge) {
-    vLinePattern_.add(EdgePosition(Coordinates(i, j), edge));
+    _vLinePattern.add(EdgePosition(Coordinates(i, j), edge));
   }
 
   void addHLineDiff(int i, int j, Edge edge) {
-    hLineDiff_.add(EdgePosition(Coordinates(i, j), edge));
+    _hLineDiff.add(EdgePosition(Coordinates(i, j), edge));
   }
 
   void addVLineDiff(int i, int j, Edge edge) {
-    vLineDiff_.add(EdgePosition(Coordinates(i, j), edge));
+    _vLineDiff.add(EdgePosition(Coordinates(i, j), edge));
   }
 
-  Rule(this.m_, this.n_);
+  Rule(this._m, this._n);
 
 /* Gives the height of the number grid based on a given
  * orientation. In its upright position, its height is m_. */
@@ -69,12 +69,12 @@ class Rule {
       case Orientation.DOWN:
       case Orientation.UPFLIP:
       case Orientation.DOWNFLIP:
-        return m_;
+        return _m;
       case Orientation.LEFT:
       case Orientation.RIGHT:
       case Orientation.LEFTFLIP:
       case Orientation.RIGHTFLIP:
-        return n_;
+        return _n;
     }
   }
 
@@ -86,12 +86,12 @@ class Rule {
       case Orientation.DOWN:
       case Orientation.UPFLIP:
       case Orientation.DOWNFLIP:
-        return n_;
+        return _n;
       case Orientation.LEFT:
       case Orientation.RIGHT:
       case Orientation.LEFTFLIP:
       case Orientation.RIGHTFLIP:
-        return m_;
+        return _m;
     }
   }
 }

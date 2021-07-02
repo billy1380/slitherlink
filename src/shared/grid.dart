@@ -4,12 +4,12 @@ import 'enums.dart';
 import 'lattice.dart';
 
 class Grid extends Lattice {
-  late List<List<bool>> updateMatrix_;
-  late List<List<bool>> contraMatrix_;
-  late List<List<MapEntry<int, int>>> contourMatrix_;
-  bool valid_ = true;
-  late int numOpenLoops_;
-  late int numClosedLoops_;
+  late List<List<bool>> _updateMatrix;
+  late List<List<bool>> _contraMatrix;
+  late List<List<MapEntry<int, int>>> _contourMatrix;
+  bool _valid = true;
+  late int _numOpenLoops;
+  late int _numClosedLoops;
 
   @override
   void initArrays(int m, int n) {
@@ -19,47 +19,47 @@ class Grid extends Lattice {
   }
 
   bool get valid {
-    return valid_;
+    return _valid;
   }
 
   set valid(bool validity) {
-    valid_ = validity && valid_;
+    _valid = validity && _valid;
   }
 
   bool getUpdateMatrix(int i, int j) {
-    return updateMatrix_[i][j];
+    return _updateMatrix[i][j];
   }
 
   bool getContraMatrix(int i, int j) {
-    return contraMatrix_[i][j];
+    return _contraMatrix[i][j];
   }
 
   void setUpdateMatrix(int i, int j, bool b) {
-    updateMatrix_[i][j] = b;
+    _updateMatrix[i][j] = b;
   }
 
   void setContraMatrix(int i, int j, bool b) {
-    contraMatrix_[i][j] = b;
+    _contraMatrix[i][j] = b;
   }
 
   MapEntry<int, int> _getContourMatrix(int i, int j) {
-    return contourMatrix_[i][j];
+    return _contourMatrix[i][j];
   }
 
   void _setContourMatrix(int i, int j, MapEntry<int, int> p) {
-    contourMatrix_[i][j] = p;
+    _contourMatrix[i][j] = p;
   }
 
   void resetGrid() {
     for (int i = 1; i < height; i++) {
       for (int j = 1; j < width - 1; j++) {
-        hlines_[i][j] = Edge.EMPTY;
+        hlines[i][j] = Edge.EMPTY;
       }
     }
 
     for (int i = 1; i < height - 1; i++) {
       for (int j = 1; j < width; j++) {
-        vlines_[i][j] = Edge.EMPTY;
+        vlines[i][j] = Edge.EMPTY;
       }
     }
 
@@ -76,8 +76,8 @@ class Grid extends Lattice {
       }
     }
 
-    numClosedLoops_ = 0;
-    numOpenLoops_ = 0;
+    _numClosedLoops = 0;
+    _numOpenLoops = 0;
   }
 
 /*
@@ -102,19 +102,19 @@ class Grid extends Lattice {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         newGrid.setNumber(i, j, getNumber(i, j));
-        newGrid.setUpdateMatrix(i, j, updateMatrix_[i][j]);
-        newGrid.setContraMatrix(i, j, contraMatrix_[i][j]);
+        newGrid.setUpdateMatrix(i, j, _updateMatrix[i][j]);
+        newGrid.setContraMatrix(i, j, _contraMatrix[i][j]);
       }
     }
 
     for (int i = 0; i < height + 1; i++) {
       for (int j = 0; j < width + 1; j++) {
-        newGrid._setContourMatrix(i, j, contourMatrix_[i][j]);
+        newGrid._setContourMatrix(i, j, _contourMatrix[i][j]);
       }
     }
 
-    newGrid.numOpenLoops_ = numOpenLoops_;
-    newGrid.numClosedLoops_ = numClosedLoops_;
+    newGrid._numOpenLoops = _numOpenLoops;
+    newGrid._numClosedLoops = _numClosedLoops;
   }
 
   void clearAndCopy(Grid newGrid) {
@@ -133,14 +133,14 @@ class Grid extends Lattice {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         newGrid.setNumber(i, j, getNumber(i, j));
-        newGrid.setUpdateMatrix(i, j, updateMatrix_[i][j]);
-        newGrid.setContraMatrix(i, j, contraMatrix_[i][j]);
+        newGrid.setUpdateMatrix(i, j, _updateMatrix[i][j]);
+        newGrid.setContraMatrix(i, j, _contraMatrix[i][j]);
       }
     }
 
     for (int i = 0; i < height + 1; i++) {
       for (int j = 0; j < width + 1; j++) {
-        newGrid._setContourMatrix(i, j, contourMatrix_[i][j]);
+        newGrid._setContourMatrix(i, j, _contourMatrix[i][j]);
       }
     }
   }
@@ -152,7 +152,7 @@ class Grid extends Lattice {
  */
   @override
   bool setHLine(int i, int j, Edge edge) {
-    assert(0 <= i && i < m_ + 1 && 0 <= j && j < n_);
+    assert(0 <= i && i < m + 1 && 0 <= j && j < n);
 
     if (edge == Edge.EMPTY) {
       return true;
@@ -160,7 +160,7 @@ class Grid extends Lattice {
 
     Edge prevEdge = getHLine(i, j);
     if (prevEdge == Edge.EMPTY) {
-      hlines_[i][j] = edge;
+      hlines[i][j] = edge;
     } else if (prevEdge != edge) {
       return false;
     } else if (prevEdge == edge) {
@@ -175,14 +175,14 @@ class Grid extends Lattice {
     // Update which parts of grid have possible rules that could be applied
     for (int x = max(0, i - 3); x < min(i + 1, height); x++) {
       for (int y = max(0, j - 2); y < min(j + 1, width); y++) {
-        updateMatrix_[x][y] = true;
+        _updateMatrix[x][y] = true;
       }
     }
 
     // Update which parts of grid have possible contradictions
     for (int x = max(0, i - 2); x < min(i + 1, height); x++) {
       for (int y = max(0, j - 1); y < min(j + 1, width); y++) {
-        contraMatrix_[x][y] = true;
+        _contraMatrix[x][y] = true;
       }
     }
 
@@ -196,11 +196,11 @@ class Grid extends Lattice {
  */
   @override
   bool setVLine(int i, int j, Edge edge) {
-    assert(0 <= i && i < m_ && 0 <= j && j < n_ + 1);
+    assert(0 <= i && i < m && 0 <= j && j < n + 1);
 
     Edge prevEdge = getVLine(i, j);
     if (prevEdge == Edge.EMPTY) {
-      vlines_[i][j] = edge;
+      vlines[i][j] = edge;
     } else if (prevEdge != edge) {
       return false;
     } else if (prevEdge == edge) {
@@ -215,14 +215,14 @@ class Grid extends Lattice {
     // Update which parts of grid have possible rules that could be applied
     for (int x = max(0, i - 2); x < min(i + 1, height); x++) {
       for (int y = max(0, j - 3); y < min(j + 1, width); y++) {
-        updateMatrix_[x][y] = true;
+        _updateMatrix[x][y] = true;
       }
     }
 
     // Update which parts of grid have possible contradictions
     for (int x = max(0, i - 1); x < min(i + 1, height); x++) {
       for (int y = max(0, j - 2); y < min(j + 1, width); y++) {
-        contraMatrix_[x][y] = true;
+        _contraMatrix[x][y] = true;
       }
     }
 
@@ -234,9 +234,9 @@ class Grid extends Lattice {
  * Intended for the purpose of puzzle creation.
  */
   bool changeHLine(int i, int j, Edge edge) {
-    assert(0 <= i && i < m_ + 1 && 0 <= j && j < n_);
+    assert(0 <= i && i < m + 1 && 0 <= j && j < n);
 
-    hlines_[i][j] = edge;
+    hlines[i][j] = edge;
 
     return true;
   }
@@ -246,9 +246,9 @@ class Grid extends Lattice {
  * Intended for the purpose of puzzle creation.
  */
   bool changeVLine(int i, int j, Edge edge) {
-    assert(0 <= i && i < m_ && 0 <= j && j < n_ + 1);
+    assert(0 <= i && i < m && 0 <= j && j < n + 1);
 
-    vlines_[i][j] = edge;
+    vlines[i][j] = edge;
 
     return true;
   }
@@ -258,15 +258,15 @@ class Grid extends Lattice {
  * surrounding it.
  */
   bool numberSatisfied(int i, int j) {
-    assert(0 <= i && i < m_ && 0 <= j && j < n_);
+    assert(0 <= i && i < m && 0 <= j && j < n);
 
-    Number number = numbers_[i][j];
+    Number number = numbers[i][j];
 
     /* determine number of lines around number */
-    int numLines = (hlines_[i][j] == Edge.LINE ? 1 : 0) +
-        (hlines_[i + 1][j] == Edge.LINE ? 1 : 0) +
-        (vlines_[i][j] == Edge.LINE ? 1 : 0) +
-        (vlines_[i][j + 1] == Edge.LINE ? 1 : 0);
+    int numLines = (hlines[i][j] == Edge.LINE ? 1 : 0) +
+        (hlines[i + 1][j] == Edge.LINE ? 1 : 0) +
+        (vlines[i][j] == Edge.LINE ? 1 : 0) +
+        (vlines[i][j + 1] == Edge.LINE ? 1 : 0);
 
     switch (number) {
       case Number.NONE:
@@ -287,12 +287,12 @@ class Grid extends Lattice {
  * and that each number has been satisfied
  */
   bool get isSolved {
-    if (numOpenLoops_ != 0 || numClosedLoops_ != 1) {
+    if (_numOpenLoops != 0 || _numClosedLoops != 1) {
       return false;
     }
 
-    for (int i = 0; i < m_; i++) {
-      for (int j = 0; j < n_; j++) {
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
         if (!numberSatisfied(i, j)) {
           return false;
         }
@@ -307,24 +307,24 @@ class Grid extends Lattice {
  * prematurely closed contours
  */
   bool get containsClosedContours {
-    return (numClosedLoops_ > 0);
+    return (_numClosedLoops > 0);
   }
 
   void initUpdateMatrix() {
     if (!init_) {
-      updateMatrix_ = List<List<bool>>.generate(
-          m_, (int i) => List<bool>.generate(n_, (int j) => true));
+      _updateMatrix = List<List<bool>>.generate(
+          m, (int i) => List<bool>.generate(n, (int j) => true));
 
-      contraMatrix_ = List<List<bool>>.generate(
-          m_, (int i) => List<bool>.generate(n_, (int j) => false));
+      _contraMatrix = List<List<bool>>.generate(
+          m, (int i) => List<bool>.generate(n, (int j) => false));
 
-      contourMatrix_ = List<List<MapEntry<int, int>>>.generate(
-          m_ + 1,
+      _contourMatrix = List<List<MapEntry<int, int>>>.generate(
+          m + 1,
           (int i) => List<MapEntry<int, int>>.generate(
-              n_ + 1, (int j) => MapEntry<int, int>(-1, -1)));
+              n + 1, (int j) => MapEntry<int, int>(-1, -1)));
 
-      numOpenLoops_ = 0;
-      numClosedLoops_ = 0;
+      _numOpenLoops = 0;
+      _numClosedLoops = 0;
     }
 
     init_ = true;
@@ -356,8 +356,8 @@ class Grid extends Lattice {
         _getContourMatrix(i2, j2).value == j) {
       _setContourMatrix(i, j, MapEntry<int, int>(-1, -1));
       _setContourMatrix(i2, j2, MapEntry<int, int>(-1, -1));
-      numClosedLoops_++;
-      numOpenLoops_--;
+      _numClosedLoops++;
+      _numOpenLoops--;
     }
     /* Both ends of the new line are already endpoints to two different
      * conoturs. Get rid of the open endpoints, update the new ends of the
@@ -370,7 +370,7 @@ class Grid extends Lattice {
           _getContourMatrix(i2, j2).value, _getContourMatrix(i, j));
       _setContourMatrix(i, j, MapEntry<int, int>(-1, -1));
       _setContourMatrix(i2, j2, MapEntry<int, int>(-1, -1));
-      numOpenLoops_--;
+      _numOpenLoops--;
     }
     /* First end of the new line is already an endpoint to a contour. Extend
      * the contour and update new endpoints. */
@@ -393,7 +393,7 @@ class Grid extends Lattice {
     else {
       _setContourMatrix(i, j, MapEntry<int, int>(i2, j2));
       _setContourMatrix(i2, j2, MapEntry<int, int>(i, j));
-      numOpenLoops_++;
+      _numOpenLoops++;
     }
   }
 }

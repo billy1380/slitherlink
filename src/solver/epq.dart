@@ -6,8 +6,8 @@ int ComparePrioEdge(PrioEdge e1, PrioEdge e2) {
 }
 
 class EPQ {
-  late int m_;
-  late int n_;
+  late int _m;
+  late int _n;
 
   PriorityQueue<PrioEdge> pq_ =
       PriorityQueue<PrioEdge>(<PrioEdge>[], ComparePrioEdge);
@@ -15,8 +15,8 @@ class EPQ {
   void initEPQ(int m, int n) {
     assert(m > 0 && n > 0);
 
-    m_ = m;
-    n_ = n;
+    _m = m;
+    _n = n;
 
     for (int i = 1; i < m - 1; i++) {
       for (int j = 1; j < n - 1; j++) {
@@ -33,9 +33,9 @@ class EPQ {
 
   PrioEdge createPrioEdge(double prio, int i, int j, bool hLine) {
     assert(i >= 0 &&
-        (i - (hLine ? 1 : 0)) < m_ &&
+        (i - (hLine ? 1 : 0)) < _m &&
         j >= 0 &&
-        (j - (hLine ? 0 : 1)) < n_);
+        (j - (hLine ? 0 : 1)) < _n);
 
     return PrioEdge(Coordinates(i, j), prio, hLine);
   }

@@ -14,11 +14,9 @@ const String blank = " ";
 class Import {
   static final Logger logger = Logger("Import");
 
-  final Grid lattice_;
-  late int m_; /* number of rows */
-  late int n_; /* number of columns */
+  final Grid _lattice;
 
-  Import(this.lattice_);
+  Import(this._lattice);
 
 /* Reads from stdin and initializes a lattice based on given
  * dimensions and three separate grids, one each for numbers,
@@ -44,8 +42,8 @@ class Import {
       m = int.parse(splitDims.first);
       n = int.parse(splitDims.last);
 
-      lattice_.initArrays(m + 2, n + 2);
-      lattice_.initUpdateMatrix();
+      _lattice.initArrays(m + 2, n + 2);
+      _lattice.initUpdateMatrix();
 
       /* numbers */
       for (int i = 0; i < m; i++) {
@@ -59,18 +57,18 @@ class Import {
         _importHLineRow(i + 1, contents[lineIndex]);
       }
       for (int j = 0; j < n + 2; j++) {
-        lattice_.setHLine(0, j, Edge.NLINE);
-        lattice_.setHLine(m + 2, j, Edge.NLINE);
+        _lattice.setHLine(0, j, Edge.NLINE);
+        _lattice.setHLine(m + 2, j, Edge.NLINE);
       }
 
       /* vertical lines */
       for (int j = 0; j < n + 3; j++) {
-        lattice_.setVLine(0, j, Edge.NLINE);
-        lattice_.setVLine(m + 1, j, Edge.NLINE);
+        _lattice.setVLine(0, j, Edge.NLINE);
+        _lattice.setVLine(m + 1, j, Edge.NLINE);
       }
       for (int i = 0; i < m + 2; i++) {
-        lattice_.setVLine(i, 0, Edge.NLINE);
-        lattice_.setVLine(i, n + 2, Edge.NLINE);
+        _lattice.setVLine(i, 0, Edge.NLINE);
+        _lattice.setVLine(i, n + 2, Edge.NLINE);
       }
 
       for (int i = 0; i < m; i++) {
@@ -104,31 +102,31 @@ class Import {
 
 /* Initializes an empty lattice based on given dimensions */
   void buildEmptyLattice(int m, int n) {
-    lattice_.initArrays(m + 2, n + 2);
-    lattice_.initUpdateMatrix();
+    _lattice.initArrays(m + 2, n + 2);
+    _lattice.initUpdateMatrix();
 
     for (int i = 0; i < m + 1; i++) {
-      lattice_.setHLine(i + 1, 0, Edge.NLINE);
+      _lattice.setHLine(i + 1, 0, Edge.NLINE);
     }
 
     for (int i = 0; i < m + 2; i++) {
-      lattice_.setVLine(i, 0, Edge.NLINE);
-      lattice_.setVLine(i, n + 2, Edge.NLINE);
+      _lattice.setVLine(i, 0, Edge.NLINE);
+      _lattice.setVLine(i, n + 2, Edge.NLINE);
     }
 
     for (int j = 0; j < n + 3; j++) {
-      lattice_.setVLine(0, j, Edge.NLINE);
-      lattice_.setVLine(m + 1, j, Edge.NLINE);
+      _lattice.setVLine(0, j, Edge.NLINE);
+      _lattice.setVLine(m + 1, j, Edge.NLINE);
     }
 
     for (int j = 0; j < n + 2; j++) {
-      lattice_.setHLine(0, j, Edge.NLINE);
-      lattice_.setHLine(m + 2, j, Edge.NLINE);
+      _lattice.setHLine(0, j, Edge.NLINE);
+      _lattice.setHLine(m + 2, j, Edge.NLINE);
     }
 
     for (int j = 0; j < m + 3; j++) {
-      lattice_.setHLine(j, 0, Edge.NLINE);
-      lattice_.setHLine(j, n + 1, Edge.NLINE);
+      _lattice.setHLine(j, 0, Edge.NLINE);
+      _lattice.setHLine(j, n + 1, Edge.NLINE);
     }
   }
 
@@ -140,19 +138,19 @@ class Import {
       String c = row[j];
       switch (c) {
         case "0":
-          lattice_.setNumber(i, j + 1, Number.ZERO);
+          _lattice.setNumber(i, j + 1, Number.ZERO);
           break;
         case "1":
-          lattice_.setNumber(i, j + 1, Number.ONE);
+          _lattice.setNumber(i, j + 1, Number.ONE);
           break;
         case "2":
-          lattice_.setNumber(i, j + 1, Number.TWO);
+          _lattice.setNumber(i, j + 1, Number.TWO);
           break;
         case "3":
-          lattice_.setNumber(i, j + 1, Number.THREE);
+          _lattice.setNumber(i, j + 1, Number.THREE);
           break;
         default:
-          lattice_.setNumber(i, j + 1, Number.NONE);
+          _lattice.setNumber(i, j + 1, Number.NONE);
           break;
       }
     }
@@ -162,22 +160,22 @@ class Import {
  * interpreting '-' and 'x' as their corresponding values in
  * the Number enumeration. */
   void _importHLineRow(int i, String row) {
-    lattice_.setHLine(i, 0, Edge.NLINE);
+    _lattice.setHLine(i, 0, Edge.NLINE);
     for (int j = 0; j < row.length; j++) {
       String c = row[j];
       switch (c) {
         case "-":
-          lattice_.setHLine(i, j + 1, Edge.LINE);
+          _lattice.setHLine(i, j + 1, Edge.LINE);
           break;
         case "x":
-          lattice_.setHLine(i, j + 1, Edge.NLINE);
+          _lattice.setHLine(i, j + 1, Edge.NLINE);
           break;
         default:
-          lattice_.setHLine(i, j + 1, Edge.EMPTY);
+          _lattice.setHLine(i, j + 1, Edge.EMPTY);
           break;
       }
     }
-    lattice_.setHLine(i, row.length + 1, Edge.NLINE);
+    _lattice.setHLine(i, row.length + 1, Edge.NLINE);
   }
 
 /* Helper function for reading a line from stdin and
@@ -188,13 +186,13 @@ class Import {
       String c = row[j];
       switch (c) {
         case "-":
-          lattice_.setVLine(i, j + 1, Edge.LINE);
+          _lattice.setVLine(i, j + 1, Edge.LINE);
           break;
         case "x":
-          lattice_.setVLine(i, j + 1, Edge.NLINE);
+          _lattice.setVLine(i, j + 1, Edge.NLINE);
           break;
         default:
-          lattice_.setVLine(i, j + 1, Edge.EMPTY);
+          _lattice.setVLine(i, j + 1, Edge.EMPTY);
           break;
       }
     }

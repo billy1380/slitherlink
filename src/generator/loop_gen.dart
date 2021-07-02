@@ -4,12 +4,12 @@ import '../shared/random.dart';
 import '../shared/structs.dart';
 
 class LoopGen {
-  late List<List<LoopCell>> loop_;
-  final Grid grid_;
-  final int m_;
-  final int n_;
+  late List<List<LoopCell>> _loop;
+  final Grid _grid;
+  final int _m;
+  final int _n;
 
-  LoopGen(this.m_, this.n_, this.grid_);
+  LoopGen(this._m, this._n, this._grid);
 
   void generate() {
     _initArray();
@@ -20,22 +20,22 @@ class LoopGen {
 /* fill the grid with numbers after generating the loop */
   void _fillGrid() {
     int lines;
-    for (int i = 1; i < m_ + 1; i++) {
-      for (int j = 1; j < n_ + 1; j++) {
+    for (int i = 1; i < _m + 1; i++) {
+      for (int j = 1; j < _n + 1; j++) {
         lines = _countLines(i - 1, j - 1);
 
         switch (lines) {
           case 0:
-            grid_.setNumber(i, j, Number.ZERO);
+            _grid.setNumber(i, j, Number.ZERO);
             break;
           case 1:
-            grid_.setNumber(i, j, Number.ONE);
+            _grid.setNumber(i, j, Number.ONE);
             break;
           case 2:
-            grid_.setNumber(i, j, Number.TWO);
+            _grid.setNumber(i, j, Number.TWO);
             break;
           case 3:
-            grid_.setNumber(i, j, Number.THREE);
+            _grid.setNumber(i, j, Number.THREE);
             break;
         }
       }
@@ -72,18 +72,18 @@ class LoopGen {
 
 /* check whether a particular cell is inside the loop */
   bool _inLoop(int i, int j) {
-    return loop_[i][j] == LoopCell.EXP || loop_[i][j] == LoopCell.NOEXP;
+    return _loop[i][j] == LoopCell.EXP || _loop[i][j] == LoopCell.NOEXP;
   }
 
 /* allocate memory for creating loop */
   void _initArray() {
-    loop_ = List<List<LoopCell>>.generate(
-        m_, (int i) => List<LoopCell>.filled(n_, LoopCell.UNKNOWN));
+    _loop = List<List<LoopCell>>.generate(
+        _m, (int i) => List<LoopCell>.filled(_n, LoopCell.UNKNOWN));
   }
 
 /* Fill grid entirely with numbers that make a loop */
   void _genLoop() {
-    Coordinates cur = Coordinates(m_ ~/ 2, n_ ~/ 2);
+    Coordinates cur = Coordinates(_m ~/ 2, _n ~/ 2);
     Coordinates next;
     List<Coordinates> avail = <Coordinates>[
       cur,
@@ -98,10 +98,10 @@ class LoopGen {
 
       next = _addCell(cur);
 
-      if (loop_[cur.i][cur.j] == LoopCell.EXP) {
+      if (_loop[cur.i][cur.j] == LoopCell.EXP) {
         _addAvailable(cur, avail);
       }
-      if (loop_[next.i][next.j] == LoopCell.EXP) {
+      if (_loop[next.i][next.j] == LoopCell.EXP) {
         _addAvailable(next, avail);
       }
     }
@@ -109,7 +109,7 @@ class LoopGen {
 
 /* add a cell branching of from an existing cell */
   Coordinates _addCell(Coordinates cur) {
-    assert(cur.i >= 0 && cur.i < m_ && cur.j >= 0 && cur.j < n_);
+    assert(cur.i >= 0 && cur.i < _m && cur.j >= 0 && cur.j < _n);
 
     /* check whether it's possible to expand in any direction */
     if (!_isExpandable(cur)) {
@@ -120,7 +120,7 @@ class LoopGen {
     Coordinates newpos = _pickDirection(cur);
 
     /* and verify it's a valid choice */
-    if (!_inBounds(newpos) || loop_[newpos.i][newpos.j] != LoopCell.UNKNOWN) {
+    if (!_inBounds(newpos) || _loop[newpos.i][newpos.j] != LoopCell.UNKNOWN) {
       return cur;
     }
 
@@ -130,11 +130,11 @@ class LoopGen {
         !adjacencyList.d &&
         !adjacencyList.l &&
         !adjacencyList.r) {
-      loop_[newpos.i][newpos.j] = LoopCell.OUT;
+      _loop[newpos.i][newpos.j] = LoopCell.OUT;
       return newpos;
     }
 
-    loop_[newpos.i][newpos.j] =
+    _loop[newpos.i][newpos.j] =
         (_validCell(newpos, cur)) ? LoopCell.EXP : LoopCell.OUT;
     return newpos;
   }
@@ -153,7 +153,7 @@ class LoopGen {
 
 /* check whether it's possible to expand in at least one direction */
   bool _isExpandable(Coordinates cur) {
-    assert(cur.i >= 0 && cur.i < m_ && cur.j >= 0 && cur.j < n_);
+    assert(cur.i >= 0 && cur.i < _m && cur.j >= 0 && cur.j < _n);
 
     AdjacencyList adjacencyList = _getAdjacent(cur);
 
@@ -161,7 +161,7 @@ class LoopGen {
         !adjacencyList.d &&
         !adjacencyList.l &&
         !adjacencyList.r) {
-      loop_[cur.i][cur.j] = LoopCell.NOEXP;
+      _loop[cur.i][cur.j] = LoopCell.NOEXP;
       return false;
     }
 
@@ -211,9 +211,9 @@ class LoopGen {
       return false;
     }
 
-    valid = valid && loop_[coords.i][coords.j] != LoopCell.NOEXP;
-    valid = valid && loop_[coords.i][coords.j] != LoopCell.OUT;
-    valid = valid && loop_[coords.i][coords.j] != LoopCell.EXP;
+    valid = valid && _loop[coords.i][coords.j] != LoopCell.NOEXP;
+    valid = valid && _loop[coords.i][coords.j] != LoopCell.OUT;
+    valid = valid && _loop[coords.i][coords.j] != LoopCell.EXP;
 
     Coordinates shift = Coordinates(coords.i - cur.i, coords.j - cur.j);
 
@@ -227,8 +227,8 @@ class LoopGen {
 
       if (coords.i == 0) {
         valid = valid && _cellOpen(1, coords.j + shift.j);
-      } else if (coords.i == m_ - 1) {
-        valid = valid && _cellOpen(m_ - 2, coords.j + shift.j);
+      } else if (coords.i == _m - 1) {
+        valid = valid && _cellOpen(_m - 2, coords.j + shift.j);
       }
       valid = valid && _cellOpen(coords.i + 1, coords.j + shift.j);
       valid = valid && _cellOpen(coords.i - 1, coords.j + shift.j);
@@ -239,15 +239,15 @@ class LoopGen {
 
       if (coords.j == 0) {
         valid = valid && _cellOpen(coords.i + shift.i, 1);
-      } else if (coords.j == n_ - 1) {
-        valid = valid && _cellOpen(coords.i + shift.i, n_ - 2);
+      } else if (coords.j == _n - 1) {
+        valid = valid && _cellOpen(coords.i + shift.i, _n - 2);
       }
       valid = valid && _cellOpen(coords.i + shift.i, coords.j + 1);
       valid = valid && _cellOpen(coords.i + shift.i, coords.j - 1);
     }
 
-    if (!valid && loop_[coords.i][coords.j] == LoopCell.UNKNOWN) {
-      loop_[coords.i][coords.j] = LoopCell.OUT;
+    if (!valid && _loop[coords.i][coords.j] == LoopCell.UNKNOWN) {
+      _loop[coords.i][coords.j] = LoopCell.OUT;
     }
 
     return valid;
@@ -257,12 +257,12 @@ class LoopGen {
   bool _cellOpen(int i, int j) {
     Coordinates coords = Coordinates(i, j);
     return !_inBounds(coords) ||
-        loop_[coords.i][coords.j] == LoopCell.UNKNOWN ||
-        loop_[coords.i][coords.j] == LoopCell.OUT;
+        _loop[coords.i][coords.j] == LoopCell.UNKNOWN ||
+        _loop[coords.i][coords.j] == LoopCell.OUT;
   }
 
 /* check whether a particular set of coordinates are within the bounds of the grid */
   bool _inBounds(Coordinates coords) {
-    return coords.i >= 0 && coords.j >= 0 && coords.i < m_ && coords.j < n_;
+    return coords.i >= 0 && coords.j >= 0 && coords.i < _m && coords.j < _n;
   }
 }

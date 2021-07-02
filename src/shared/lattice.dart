@@ -11,18 +11,19 @@ class Lattice {
 
   bool init_ = false;
 
-  late int m_; /* number of rows */
-  late int n_; /* number of columns */
-  late List<List<Number>> numbers_;
-  late List<List<Edge>> hlines_;
-  late List<List<Edge>> vlines_;
+  late int m; /* number of rows */
+  late int n; /* number of coluthis.ns */
+
+  late List<List<Number>> numbers;
+  late List<List<Edge>> hlines;
+  late List<List<Edge>> vlines;
 
   int get height {
-    return m_;
+    return m;
   }
 
   int get width {
-    return n_;
+    return n;
   }
 
 /* Initializes the three two dimensional arrays used to
@@ -33,15 +34,15 @@ class Lattice {
   void initArrays(int m, int n) {
     assert(m > 0 && n > 0);
 
-    m_ = m;
-    n_ = n;
+    this.m = m;
+    this.n = n;
 
-    numbers_ = List<List<Number>>.generate(
-        m_, (int i) => List<Number>.filled(n_, Number.NONE));
-    hlines_ = List<List<Edge>>.generate(
-        m_ + 1, (int i) => List<Edge>.filled(n_, Edge.EMPTY));
-    vlines_ = List<List<Edge>>.generate(
-        m_, (int i) => List<Edge>.filled(n_ + 1, Edge.EMPTY));
+    numbers = List<List<Number>>.generate(
+        this.m, (int i) => List<Number>.filled(this.n, Number.NONE));
+    hlines = List<List<Edge>>.generate(
+        this.m + 1, (int i) => List<Edge>.filled(this.n, Edge.EMPTY));
+    vlines = List<List<Edge>>.generate(
+        this.m, (int i) => List<Edge>.filled(this.n + 1, Edge.EMPTY));
 
     init_ = true;
 
@@ -52,57 +53,57 @@ class Lattice {
  * where i is on the range [0, m_+1] and j is on the
  * range [0, n_]. */
   Number getNumber(int i, int j) {
-    assert(0 <= i && i < m_ && 0 <= j && j < n_);
+    assert(0 <= i && i < m && 0 <= j && j < n);
 
-    return numbers_[i][j];
+    return numbers[i][j];
   }
 
 /* Get value of horizontal edge located at coordinates
  * (i, j), where i is on the range [0, m_+1] and j is
  * on the range [0, n_]. */
   Edge getHLine(int i, int j) {
-    assert(0 <= i && i < m_ + 1 && 0 <= j && j < n_);
+    assert(0 <= i && i < m + 1 && 0 <= j && j < n);
 
-    return hlines_[i][j];
+    return hlines[i][j];
   }
 
 /* Get value of vertical edge located at coordinates
  * (i, j), where i is on the range [0, m_+1] and j is
  * on the range [0, n_]. */
   Edge getVLine(int i, int j) {
-    assert(0 <= i && i < m_ && 0 <= j && j < n_ + 1);
+    assert(0 <= i && i < m && 0 <= j && j < n + 1);
 
-    return vlines_[i][j];
+    return vlines[i][j];
   }
 
 /* Get value of horizontal edge located at coordinates
  * (i, j), with no restriction on where they can be obtained. */
   Edge checkEdgeH(int i, int j) {
-    return hlines_[i][j];
+    return hlines[i][j];
   }
 
 /* Get value of vertical edge located at coordinates
  * (i, j), with no restriction on where they can be obtained. */
   Edge checkEdgeV(int i, int j) {
-    return vlines_[i][j];
+    return vlines[i][j];
   }
 
 /* Set value of number located at coordinates (i, j),
  * where i is on the range [0, m_+1] and j is on the
  * range [0, n_]. */
   void setNumber(int i, int j, Number num) {
-    assert(0 <= i && i < m_ && 0 <= j && j < n_);
+    assert(0 <= i && i < m && 0 <= j && j < n);
 
-    numbers_[i][j] = num;
+    numbers[i][j] = num;
   }
 
 /* Set value of horizontal edge located at coordinates
  * (i, j), where i is on the range [0, m_+1] and j is
  * on the range [0, n_]. */
   bool setHLine(int i, int j, Edge edge) {
-    assert(0 <= i && i < m_ + 1 && 0 <= j && j < n_);
+    assert(0 <= i && i < m + 1 && 0 <= j && j < n);
 
-    hlines_[i][j] = edge;
+    hlines[i][j] = edge;
     return true;
   }
 
@@ -110,9 +111,9 @@ class Lattice {
  * (i, j), where i is on the range [0, m_+1] and j is
  * on the range [0, n_]. */
   bool setVLine(int i, int j, Edge edge) {
-    assert(0 <= i && i < m_ && 0 <= j && j < n_ + 1);
+    assert(0 <= i && i < m && 0 <= j && j < n + 1);
 
-    vlines_[i][j] = edge;
+    vlines[i][j] = edge;
     return true;
   }
 
@@ -121,17 +122,17 @@ class Lattice {
  * clean grid. */
   void _cleanArrays() {
     if (init_) {
-      for (int i = 0; i < m_; i++) {
-        for (int j = 0; j < n_; j++) {
-          numbers_[i][j] = Number.NONE;
-          hlines_[i][j] = Edge.EMPTY;
-          vlines_[i][j] = Edge.EMPTY;
+      for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+          numbers[i][j] = Number.NONE;
+          hlines[i][j] = Edge.EMPTY;
+          vlines[i][j] = Edge.EMPTY;
         }
-        vlines_[i][n_] = Edge.EMPTY;
+        vlines[i][n] = Edge.EMPTY;
       }
 
-      for (int j = 0; j < n_; j++) {
-        hlines_[m_][j] = Edge.EMPTY;
+      for (int j = 0; j < n; j++) {
+        hlines[m][j] = Edge.EMPTY;
       }
     }
   }

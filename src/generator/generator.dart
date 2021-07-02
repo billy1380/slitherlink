@@ -1,4 +1,3 @@
-
 import '../shared/constants.dart';
 import '../shared/enums.dart';
 import '../shared/export.dart';
@@ -14,37 +13,37 @@ import '../solver/solver.dart';
 import 'loop_gen.dart';
 
 class Generator {
-  int m_;
-  int n_;
+  final int _m;
+  final int _n;
 
-  late int guessDepth_;
-  late double factor_;
-  late int numberCount_;
-  late int smallestCount_;
+  late int _guessDepth;
+  late double _factor;
+  late int _numberCount;
+  late int _smallestCount;
 
-  int buffer_;
-  late int bufferReachCount_;
-  late int zeroCount_;
-  late int oneCount_;
-  late int twoCount_;
-  late int threeCount_;
-  late List<int> selectedRules_;
-  late int numberOfRules_;
-  Grid grid_ = Grid();
-  Grid smallestCountGrid_ = Grid();
+  int _buffer;
+  late int _bufferReachCount;
+  late int _zeroCount;
+  late int _oneCount;
+  late int _twoCount;
+  late int _threeCount;
+  late List<int> _selectedRules;
+  late int _numberOfRules;
+  final Grid _grid = Grid();
+  final Grid _smallestCountGrid = Grid();
 
-  List<Coordinates> eligibleCoordinates_ = <Coordinates>[];
-  List<Coordinates> ineligibleCoordinates_ = <Coordinates>[];
+  final List<Coordinates> _eligibleCoordinates = <Coordinates>[];
+  final List<Coordinates> _ineligibleCoordinates = <Coordinates>[];
 
-  late List<Rule> rules_;
-  late List<Contradiction> contradictions_;
-  late List<List<bool>> canEliminate_;
-  late List<List<Number>> oldNumbers_;
+  late List<Rule> _rules;
+  late List<Contradiction> _contradictions;
+  late List<List<bool>> _canEliminate;
+  late List<List<Number>> _oldNumbers;
 
 /* Generator constructor */
-  Generator(this.m_, this.n_)
-      : numberCount_ = m_ * n_,
-        buffer_ = 0;
+  Generator(this._m, this._n)
+      : _numberCount = _m * _n,
+        _buffer = 0;
 
   void generate(Difficulty difficulty) {
     _setDifficulty(difficulty);
@@ -56,42 +55,42 @@ class Generator {
   void _setDifficulty(Difficulty difficulty) {
     _setRules(difficulty);
     if (difficulty == Difficulty.EASY) {
-      factor_ = .52;
-      guessDepth_ = 1;
+      _factor = .52;
+      _guessDepth = 1;
     } else if (difficulty == Difficulty.HARD) {
-      factor_ = .42;
-      guessDepth_ = 1;
+      _factor = .42;
+      _guessDepth = 1;
     }
   }
 
 /* Sets which rules the solver can apply */
   void _setRules(Difficulty difficulty) {
     if (difficulty == Difficulty.EASY) {
-      numberOfRules_ = easy_rules.length;
-      selectedRules_ =
-          List<int>.generate(numberOfRules_, (int i) => easy_rules[i]);
+      _numberOfRules = easy_rules.length;
+      _selectedRules =
+          List<int>.generate(_numberOfRules, (int i) => easy_rules[i]);
     } else {
-      numberOfRules_ = hard_rules.length;
-      selectedRules_ =
-          List<int>.generate(numberOfRules_, (int i) => hard_rules[i]);
+      _numberOfRules = hard_rules.length;
+      _selectedRules =
+          List<int>.generate(_numberOfRules, (int i) => hard_rules[i]);
     }
   }
 
 /* Creates the puzzle by importing a puzzle,
  * creating a loop, and removing numbers */
   void _createPuzzle() {
-    smallestCount_ = numberCount_;
-    bufferReachCount_ = 0;
+    _smallestCount = _numberCount;
+    _bufferReachCount = 0;
 
-    Import importer = Import(grid_);
-    importer.buildEmptyLattice(m_, n_);
+    Import importer = Import(_grid);
+    importer.buildEmptyLattice(_m, _n);
 
-    LoopGen loopgen = LoopGen(m_, n_, grid_);
+    LoopGen loopgen = LoopGen(_m, _n, _grid);
     loopgen.generate();
 
     _initArrays();
     _setCounts();
-    grid_.copy(smallestCountGrid_);
+    _grid.copy(_smallestCountGrid);
     _reduceNumbers();
   }
 
@@ -100,26 +99,26 @@ class Generator {
     _checkIfSolved();
     _displayPuzzle();
 
-    grid_.resetGrid();
+    _grid.resetGrid();
     _displayPuzzle();
   }
 
 /* Displays the puzzle, the total count of numbers, and a count of each type */
   void _displayPuzzle() {
-    Export exporter = Export(grid_);
+    Export exporter = Export(_grid);
     exporter.export();
   }
 
 /* Sets the counts of each number to the amount
  * contained before removal of numbers */
   void _setCounts() {
-    zeroCount_ = 0;
-    oneCount_ = 0;
-    twoCount_ = 0;
-    threeCount_ = 0;
-    for (int i = 1; i <= m_; i++) {
-      for (int j = 1; j <= n_; j++) {
-        Number oldNum = grid_.getNumber(i, j);
+    _zeroCount = 0;
+    _oneCount = 0;
+    _twoCount = 0;
+    _threeCount = 0;
+    for (int i = 1; i <= _m; i++) {
+      for (int j = 1; j <= _n; j++) {
+        Number oldNum = _grid.getNumber(i, j);
         _plusCounts(oldNum);
       }
     }
@@ -128,67 +127,67 @@ class Generator {
 /* Adds to a number's count */
   void _plusCounts(Number num) {
     if (num == Number.ZERO) {
-      zeroCount_++;
+      _zeroCount++;
     } else if (num == Number.ONE) {
-      oneCount_++;
+      _oneCount++;
     } else if (num == Number.TWO) {
-      twoCount_++;
+      _twoCount++;
     } else if (num == Number.THREE) {
-      threeCount_++;
+      _threeCount++;
     }
   }
 
 /* Subtracts from a number's count */
   void _minusCounts(Number num) {
     if (num == Number.ZERO) {
-      zeroCount_--;
+      _zeroCount--;
     } else if (num == Number.ONE) {
-      oneCount_--;
+      _oneCount--;
     } else if (num == Number.TWO) {
-      twoCount_--;
+      _twoCount--;
     } else if (num == Number.THREE) {
-      threeCount_--;
+      _threeCount--;
     }
   }
 
 /* allocate memory for creating loop */
   void _initArrays() {
-    canEliminate_ =
-        List<List<bool>>.generate(m_, (int i) => List<bool>.filled(n_, true));
-    oldNumbers_ = List<List<Number>>.generate(
-        m_,
+    _canEliminate =
+        List<List<bool>>.generate(_m, (int i) => List<bool>.filled(_n, true));
+    _oldNumbers = List<List<Number>>.generate(
+        _m,
         (int i) => List<Number>.generate(
-            n_, (int j) => grid_.getNumber(i + 1, j + 1)));
+            _n, (int j) => _grid.getNumber(i + 1, j + 1)));
   }
 
 /* Reduces numbers from the puzzle until a satisfactory number has been reached */
   void _reduceNumbers() {
     // Remove numbers until this count has been reached
-    while (numberCount_ > ((m_ * n_ * factor_) + 3)) {
+    while (_numberCount > ((_m * _n * _factor) + 3)) {
       /* Reset the smallest count and buffer incase the required amount
         of numbers cannot be removed. */
-      if (smallestCount_ > numberCount_) {
-        smallestCount_ = numberCount_;
-        grid_.clearAndCopy(smallestCountGrid_);
-        buffer_ = ((numberCount_ + (m_ * n_)) ~/ 2) - 2;
+      if (_smallestCount > _numberCount) {
+        _smallestCount = _numberCount;
+        _grid.clearAndCopy(_smallestCountGrid);
+        _buffer = ((_numberCount + (_m * _n)) ~/ 2) - 2;
       }
 
-      if (numberCount_ == buffer_) {
-        bufferReachCount_++;
+      if (_numberCount == _buffer) {
+        _bufferReachCount++;
       }
 
       /* If the count has past the buffer three times,
          * return the grid with the smallest count of
          * of numbers that is currently known. */
-      if (bufferReachCount_ == 3) {
-        smallestCountGrid_.clearAndCopy(grid_);
+      if (_bufferReachCount == 3) {
+        _smallestCountGrid.clearAndCopy(_grid);
         break;
       }
 
       _findNumberToRemove();
-      eligibleCoordinates_.clear();
+      _eligibleCoordinates.clear();
 
-      grid_.resetGrid();
+      _grid.resetGrid();
     }
   }
 
@@ -197,9 +196,9 @@ class Generator {
     _fillEligibleVector();
     bool coordsFound = false;
 
-    while (eligibleCoordinates_.isNotEmpty && !coordsFound) {
-      int random = r.nextInt(eligibleCoordinates_.length);
-      Coordinates attempt = eligibleCoordinates_.removeAt(random);
+    while (_eligibleCoordinates.isNotEmpty && !coordsFound) {
+      int random = r.nextInt(_eligibleCoordinates.length);
+      Coordinates attempt = _eligibleCoordinates.removeAt(random);
 
       // Checks if the number in question is needed to retain a balance
       if (_isBalanced(attempt.i, attempt.j)) {
@@ -210,34 +209,34 @@ class Generator {
           _setOldNumber(attempt.i, attempt.j);
           _markNecessary(attempt.i, attempt.j);
         } else {
-          ineligibleCoordinates_.add(attempt);
+          _ineligibleCoordinates.add(attempt);
           coordsFound = true;
-          numberCount_--;
-          _minusCounts(oldNumbers_[attempt.i - 1][attempt.j - 1]);
+          _numberCount--;
+          _minusCounts(_oldNumbers[attempt.i - 1][attempt.j - 1]);
         }
       }
     }
 
     // If no more candidates, bring back the previously removed number
-    if (!coordsFound && numberCount_ < m_ * n_) {
+    if (!coordsFound && _numberCount < _m * _n) {
       _getNecessaryCoordinate();
-      numberCount_++;
+      _numberCount++;
     }
   }
 
 /* Determines if the puzzle contains a proper ratio of Number types */
   bool _isBalanced(int i, int j) {
     double moa = 1.1;
-    Number num = grid_.getNumber(i, j);
+    Number num = _grid.getNumber(i, j);
     if (num == Number.THREE) {
-      return (threeCount_ * 2 * moa >= 3 * oneCount_ &&
-          threeCount_ * 5 * moa >= 3 * twoCount_);
+      return (_threeCount * 2 * moa >= 3 * _oneCount &&
+          _threeCount * 5 * moa >= 3 * _twoCount);
     } else if (num == Number.TWO) {
-      return (twoCount_ * 2.1 + 1 >= 5 * oneCount_ &&
-          twoCount_ * 3 * moa >= 5 * threeCount_);
+      return (_twoCount * 2.1 + 1 >= 5 * _oneCount &&
+          _twoCount * 3 * moa >= 5 * _threeCount);
     } else if (num == Number.ONE) {
-      return (oneCount_ * 3 * moa >= 2 * threeCount_ &&
-          oneCount_ * 5 * moa >= 2 * twoCount_);
+      return (_oneCount * 3 * moa >= 2 * _threeCount &&
+          _oneCount * 5 * moa >= 2 * _twoCount);
     } else {
       return false;
     }
@@ -245,28 +244,28 @@ class Generator {
 
 /* Adds Coordinates of Numbers that are eligible for elimination to a vector */
   void _fillEligibleVector() {
-    for (int i = 1; i < m_ + 1; i++) {
-      for (int j = 1; j < n_ + 1; j++) {
+    for (int i = 1; i < _m + 1; i++) {
+      for (int j = 1; j < _n + 1; j++) {
         if (_eligible(i, j)) {
           Coordinates coords = Coordinates(i, j);
-          eligibleCoordinates_.add(coords);
+          _eligibleCoordinates.add(coords);
         }
       }
     }
   }
 
   bool _checkIfSolved() {
-    List<Rule> rules_ = List<Rule>.generate(num_rules, initRules);
+    _rules = List<Rule>.generate(num_rules, initRules);
 
-    List<Contradiction> contradictions_ =
+    _contradictions =
         List<Contradiction>.generate(num_contradictions, initContradictions);
-    grid_.resetGrid();
+    _grid.resetGrid();
 
-    Solver solver = Solver(grid_, rules_, contradictions_, selectedRules_,
-        numberOfRules_, guessDepth_);
+    Solver solver = Solver(_grid, _rules, _contradictions, _selectedRules,
+        _numberOfRules, _guessDepth);
     solver.solve();
 
-    return grid_.isSolved;
+    return _grid.isSolved;
   }
 
 /* Pops Coordinates out of ineligible vector, marking
@@ -276,15 +275,15 @@ class Generator {
     bool found = false;
 
     while (!found) {
-      Coordinates popped = ineligibleCoordinates_.last;
-      if (grid_.getNumber(popped.i, popped.j) == Number.NONE) {
+      Coordinates popped = _ineligibleCoordinates.last;
+      if (_grid.getNumber(popped.i, popped.j) == Number.NONE) {
         _markNecessary(popped.i, popped.j);
         _setOldNumber(popped.i, popped.j);
-        ineligibleCoordinates_.add(popped);
-        _plusCounts(grid_.getNumber(popped.i, popped.j));
+        _ineligibleCoordinates.add(popped);
+        _plusCounts(_grid.getNumber(popped.i, popped.j));
         found = true;
       } else {
-        ineligibleCoordinates_.removeLast();
+        _ineligibleCoordinates.removeLast();
         _markEligible(popped.i, popped.j);
       }
     }
@@ -292,15 +291,15 @@ class Generator {
 
 /* Sets a space in the grid back to its original number */
   void _setOldNumber(int i, int j) {
-    grid_.setNumber(i, j, oldNumbers_[i - 1][j - 1]);
+    _grid.setNumber(i, j, _oldNumbers[i - 1][j - 1]);
   }
 
 /* Elimates a number at a set of coordinates */
   void _removeNumber(int i, int j) {
-    grid_.setNumber(i, j, Number.NONE);
-    grid_.resetGrid();
+    _grid.setNumber(i, j, Number.NONE);
+    _grid.resetGrid();
     Coordinates removed = Coordinates(i, j);
-    ineligibleCoordinates_.add(removed);
+    _ineligibleCoordinates.add(removed);
   }
 
 // /* Elimates a number at a set of coordinates */
@@ -312,7 +311,7 @@ class Generator {
 
 /* Determines if a Number at Coordinates is eligible for elimination */
   bool _eligible(int i, int j) {
-    if (canEliminate_[i - 1][j - 1] && (grid_.getNumber(i, j) != Number.NONE)) {
+    if (_canEliminate[i - 1][j - 1] && (_grid.getNumber(i, j) != Number.NONE)) {
       return true;
     } else {
       return false;
@@ -321,13 +320,13 @@ class Generator {
 
 /* Marks a Number at specific Coordinates as eligible for elimination */
   void _markEligible(int i, int j) {
-    canEliminate_[i - 1][j - 1] = true;
+    _canEliminate[i - 1][j - 1] = true;
   }
 
 /* Marks a Number at specific Coordinates as ineligible for elimination
  * due to its necessity to complete the puzzle at this configuration */
   void _markNecessary(int i, int j) {
-    canEliminate_[i - 1][j - 1] = false;
+    _canEliminate[i - 1][j - 1] = false;
   }
 
 // /* Another method for removing numbers */
