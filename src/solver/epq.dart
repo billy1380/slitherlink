@@ -1,5 +1,5 @@
-import '../shared/external/priority_queue.dart';
 import '../shared/structs.dart';
+import 'package:collection/collection.dart';
 
 int ComparePrioEdge(PrioEdge e1, PrioEdge e2) {
   return e1.priority.compareTo(e2.priority);
@@ -9,8 +9,7 @@ class EPQ {
   late int _m;
   late int _n;
 
-  PriorityQueue<PrioEdge> pq_ =
-      PriorityQueue<PrioEdge>(<PrioEdge>[], ComparePrioEdge);
+  PriorityQueue<PrioEdge> pq_ = PriorityQueue<PrioEdge>(ComparePrioEdge);
 
   void initEPQ(int m, int n) {
     assert(m > 0 && n > 0);
@@ -20,14 +19,14 @@ class EPQ {
 
     for (int i = 1; i < m - 1; i++) {
       for (int j = 1; j < n - 1; j++) {
-        pq_.push(createPrioEdge(0, i, j, true));
-        pq_.push(createPrioEdge(0, i, j, false));
+        pq_.add(createPrioEdge(0, i, j, true));
+        pq_.add(createPrioEdge(0, i, j, false));
       }
-      pq_.push(createPrioEdge(0, i, n - 1, false));
+      pq_.add(createPrioEdge(0, i, n - 1, false));
     }
 
     for (int j = 1; j < n - 1; j++) {
-      pq_.push(createPrioEdge(0, m - 1, j, true));
+      pq_.add(createPrioEdge(0, m - 1, j, true));
     }
   }
 
@@ -45,28 +44,27 @@ class EPQ {
   }
 
   int get size {
-    return pq_.size;
+    return pq_.length;
   }
 
   PrioEdge top() {
-    return pq_.top();
+    return pq_.first;
   }
 
   void push(PrioEdge pe) {
-    pq_.push(pe);
+    pq_.add(pe);
   }
 
   void pop() {
-    pq_.pop();
+    pq_.removeFirst();
   }
 
   void emplace(double prio, int i, int j, bool hLine) {
-    pq_.push(createPrioEdge(prio, i, j, hLine));
+    pq_.add(createPrioEdge(prio, i, j, hLine));
   }
 
   List<PrioEdge> copyPQToVector() {
-    List<PrioEdge> outputvec =
-        List<PrioEdge>.generate(pq_.size, (int i) => pq_[i]);
+    List<PrioEdge> outputvec = pq_.toList();
 
     return outputvec;
   }
@@ -74,7 +72,7 @@ class EPQ {
   void copyPQ(EPQ orig) {
     List<PrioEdge> prioEdgeVec = orig.copyPQToVector();
     for (int i = 0; i < prioEdgeVec.length; i++) {
-      pq_.push(prioEdgeVec[i]);
+      pq_.add(prioEdgeVec[i]);
     }
   }
 
@@ -85,7 +83,7 @@ class EPQ {
       PrioEdge cur = prioEdgeVec[i];
 
       if (cur.coords.i < pe.coords.i && cur.coords.j < pe.coords.j) {
-        pq_.push(prioEdgeVec[i]);
+        pq_.add(prioEdgeVec[i]);
       }
     }
   }
