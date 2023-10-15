@@ -7,29 +7,29 @@ import '../shared/structs.dart';
  * adjusted coordinates. */
 Coordinates rotateNumber(int i, int j, int m, int n, Orientation orient) {
   switch (orient) {
-    case Orientation.UPFLIP:
+    case Orientation.upFlip:
       i = m - i - 1;
       continue up;
     up:
-    case Orientation.UP:
+    case Orientation.up:
       return Coordinates(i, j);
-    case Orientation.DOWNFLIP:
+    case Orientation.downFlip:
       i = m - i - 1;
       continue down;
     down:
-    case Orientation.DOWN:
+    case Orientation.down:
       return Coordinates(m - i - 1, n - j - 1);
-    case Orientation.LEFTFLIP:
+    case Orientation.leftFlip:
       i = m - i - 1;
       continue left;
     left:
-    case Orientation.LEFT:
+    case Orientation.left:
       return Coordinates(n - j - 1, i);
-    case Orientation.RIGHTFLIP:
+    case Orientation.rightFlip:
       i = m - i - 1;
       continue right;
     right:
-    case Orientation.RIGHT:
+    case Orientation.right:
       return Coordinates(j, m - i - 1);
   }
 }

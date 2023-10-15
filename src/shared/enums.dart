@@ -1,36 +1,36 @@
 enum Edge {
-  EMPTY,
-  LINE,
-  NLINE,
+  empty,
+  line,
+  nLine,
 }
 
 enum Number {
-  NONE,
-  ZERO,
-  ONE,
-  TWO,
-  THREE,
+  none,
+  zero,
+  one,
+  two,
+  three,
 }
 
 enum Orientation {
-  UP,
-  DOWN,
-  LEFT,
-  RIGHT,
-  UPFLIP,
-  DOWNFLIP,
-  LEFTFLIP,
-  RIGHTFLIP
+  up,
+  down,
+  left,
+  right,
+  upFlip,
+  downFlip,
+  leftFlip,
+  rightFlip,
 }
 
 enum LoopCell {
-  UNKNOWN,
-  EXP,
-  NOEXP,
-  OUT,
+  unknown,
+  exp,
+  noExp,
+  out,
 }
 
 enum Difficulty {
-  EASY,
-  HARD,
+  easy,
+  hard,
 }

@@ -7,7 +7,7 @@ import 'epq.dart';
 import 'rotate.dart';
 import 'rule.dart';
 
-const int max_depth = 100;
+const int maxDepth = 100;
 
 class Solver {
   final Grid _grid;
@@ -33,14 +33,14 @@ class Solver {
     _epq.initEPQ(_grid.height, _grid.width);
 
     List<int> selectedPlusBasic = List<int>.generate(
-        selectLength + num_const_rules,
+        selectLength + numConstRules,
         (int i) => i < _selectedRules.length ? _selectedRules[i] : -1);
 
-    for (int i = 1; i <= num_const_rules; i++) {
-      selectedPlusBasic[selectLength + num_const_rules - i] = (num_rules - i);
+    for (int i = 1; i <= numConstRules; i++) {
+      selectedPlusBasic[selectLength + numConstRules - i] = (numRules - i);
     }
 
-    _selectLength = selectLength + num_const_rules;
+    _selectLength = selectLength + numConstRules;
     _applyRules(selectedPlusBasic);
     _selectLength = selectLength;
   }
@@ -69,7 +69,7 @@ class Solver {
     for (int i = 0; i < _grid.height; i++) {
       for (int j = 0; j < _grid.width; j++) {
         if (_grid.getContraMatrix(i, j)) {
-          for (int x = 0; x < num_contradictions; x++) {
+          for (int x = 0; x < numContradictions; x++) {
             for (Orientation orient in Orientation.values) {
               if (_contradictionApplies(i, j, _contradictions[x], orient)) {
                 return true;
@@ -164,7 +164,7 @@ class Solver {
 
         if (pe.h) {
           _makeHLineGuess(pe.coords.i, pe.coords.j, depth);
-          if (_grid.getHLine(pe.coords.i, pe.coords.j) == Edge.EMPTY) {
+          if (_grid.getHLine(pe.coords.i, pe.coords.j) == Edge.empty) {
             pe.priority = pe.priority - 1;
             _epq.push(pe);
           }
@@ -173,7 +173,7 @@ class Solver {
           }
         } else {
           _makeVLineGuess(pe.coords.i, pe.coords.j, depth);
-          if (_grid.getVLine(pe.coords.i, pe.coords.j) == Edge.EMPTY) {
+          if (_grid.getVLine(pe.coords.i, pe.coords.j) == Edge.empty) {
             pe.priority = pe.priority - 1;
             _epq.push(pe);
           }
@@ -205,7 +205,7 @@ class Solver {
     assert(0 <= i && i < _grid.height + 1 && 0 <= j && j < _grid.width);
     assert(depth >= 0);
 
-    if (_grid.getHLine(i, j) == Edge.EMPTY) {
+    if (_grid.getHLine(i, j) == Edge.empty) {
       /* there is only one case where the grid
          * will not be updated, which is handled
          * at the end of this iteration. */
@@ -215,7 +215,7 @@ class Solver {
       _grid.copy(lineGuess);
 
       /* make a LINE guess */
-      lineGuess.setHLine(i, j, Edge.LINE);
+      lineGuess.setHLine(i, j, Edge.line);
 
       Solver lineSolver = Solver.oldEpq(lineGuess, _rules, _contradictions,
           _selectedRules, _selectLength, depth, _epq);
@@ -229,10 +229,10 @@ class Solver {
       if (lineGuess.isSolved) {
         Grid nLineGuess = Grid();
         _grid.copy(nLineGuess);
-        nLineGuess.setHLine(i, j, Edge.NLINE);
+        nLineGuess.setHLine(i, j, Edge.nLine);
 
         Solver nLineSolver = Solver.oldEpq(nLineGuess, _rules, _contradictions,
-            _selectedRules, _selectLength, max_depth, _epq);
+            _selectedRules, _selectLength, maxDepth, _epq);
         nLineSolver.solve();
 
         _ruleCounts = _ruleCounts + nLineSolver._ruleCounts;
@@ -255,14 +255,14 @@ class Solver {
       }
       /* test for contradictions; if we encounter one we set the opposite line */
       else if (lineSolver.testContradictions()) {
-        _grid.setHLine(i, j, Edge.NLINE);
+        _grid.setHLine(i, j, Edge.nLine);
         return;
       } else {
         Grid nLineGuess = Grid();
         _grid.copy(nLineGuess);
 
         /* make an NLINE guess */
-        nLineGuess.setHLine(i, j, Edge.NLINE);
+        nLineGuess.setHLine(i, j, Edge.nLine);
         Solver nLineSolver = Solver.oldEpq(nLineGuess, _rules, _contradictions,
             _selectedRules, _selectLength, depth, _epq);
         nLineSolver.solve();
@@ -281,7 +281,7 @@ class Solver {
              * we know we can't conclude whether this is the single solution */
         else if (nLineGuess.isSolved) {
           lineSolver = Solver.oldEpq(lineGuess, _rules, _contradictions,
-              _selectedRules, _selectLength, max_depth, _epq);
+              _selectedRules, _selectLength, maxDepth, _epq);
           lineSolver.solve();
 
           _ruleCounts = _ruleCounts + lineSolver._ruleCounts;
@@ -304,7 +304,7 @@ class Solver {
         }
         /* again check for contradictions */
         else if (nLineSolver.testContradictions()) {
-          _grid.setHLine(i, j, Edge.LINE);
+          _grid.setHLine(i, j, Edge.line);
           return;
         } else {
           _grid.updated = false;
@@ -326,7 +326,7 @@ class Solver {
     assert(0 <= i && i < _grid.height && 0 <= j && j < _grid.width + 1);
     assert(depth >= 0);
 
-    if (_grid.getVLine(i, j) == Edge.EMPTY) {
+    if (_grid.getVLine(i, j) == Edge.empty) {
       /* there is only one case where the grid
          * will not be updated, which is handled
          * at the end of this iteration. */
@@ -336,7 +336,7 @@ class Solver {
       _grid.copy(lineGuess);
 
       /* make a LINE guess */
-      lineGuess.setVLine(i, j, Edge.LINE);
+      lineGuess.setVLine(i, j, Edge.line);
       Solver lineSolver = Solver.oldEpq(lineGuess, _rules, _contradictions,
           _selectedRules, _selectLength, depth, _epq);
       lineSolver.solve();
@@ -349,9 +349,9 @@ class Solver {
       if (lineGuess.isSolved) {
         Grid nLineGuess = Grid();
         _grid.copy(nLineGuess);
-        nLineGuess.setVLine(i, j, Edge.NLINE);
+        nLineGuess.setVLine(i, j, Edge.nLine);
         Solver nLineSolver = Solver.oldEpq(nLineGuess, _rules, _contradictions,
-            _selectedRules, _selectLength, max_depth, _epq);
+            _selectedRules, _selectLength, maxDepth, _epq);
         nLineSolver.solve();
 
         _ruleCounts = _ruleCounts + nLineSolver._ruleCounts;
@@ -374,14 +374,14 @@ class Solver {
       }
       /* test for contradictions; if we encounter one we set the opposite line */
       else if (lineSolver.testContradictions()) {
-        _grid.setVLine(i, j, Edge.NLINE);
+        _grid.setVLine(i, j, Edge.nLine);
         return;
       } else {
         Grid nLineGuess = Grid();
         _grid.copy(nLineGuess);
 
         /* make an NLINE guess */
-        nLineGuess.setVLine(i, j, Edge.NLINE);
+        nLineGuess.setVLine(i, j, Edge.nLine);
         Solver nLineSolver = Solver.oldEpq(nLineGuess, _rules, _contradictions,
             _selectedRules, _selectLength, depth, _epq);
         nLineSolver.solve();
@@ -400,7 +400,7 @@ class Solver {
              * we know we can't conclude whether this is the single solution */
         else if (nLineGuess.isSolved) {
           lineSolver = Solver.oldEpq(lineGuess, _rules, _contradictions,
-              _selectedRules, _selectLength, max_depth, _epq);
+              _selectedRules, _selectLength, maxDepth, _epq);
           lineSolver.solve();
 
           _ruleCounts = _ruleCounts + lineSolver._ruleCounts;
@@ -423,7 +423,7 @@ class Solver {
         }
         /* again check for contradictions */
         else if (nLineSolver.testContradictions()) {
-          _grid.setVLine(i, j, Edge.LINE);
+          _grid.setVLine(i, j, Edge.line);
           return;
         } else {
           _grid.updated = false;
@@ -505,21 +505,21 @@ class Solver {
           rotateHLine(pattern.coords.i, pattern.coords.j, m, n, orient);
 
       switch (orient) {
-        case Orientation.UPFLIP:
-        case Orientation.UP:
-        case Orientation.DOWNFLIP:
-        case Orientation.DOWN:
-          if (_grid.getHLine(adjusted.i + i, adjusted.j + j) == Edge.EMPTY) {
+        case Orientation.upFlip:
+        case Orientation.up:
+        case Orientation.downFlip:
+        case Orientation.down:
+          if (_grid.getHLine(adjusted.i + i, adjusted.j + j) == Edge.empty) {
             _grid.valid =
                 _grid.setHLine(adjusted.i + i, adjusted.j + j, pattern.edge);
             _grid.updated = true;
           }
           break;
-        case Orientation.LEFTFLIP:
-        case Orientation.LEFT:
-        case Orientation.RIGHTFLIP:
-        case Orientation.RIGHT:
-          if (_grid.getVLine(adjusted.i + i, adjusted.j + j) == Edge.EMPTY) {
+        case Orientation.leftFlip:
+        case Orientation.left:
+        case Orientation.rightFlip:
+        case Orientation.right:
+          if (_grid.getVLine(adjusted.i + i, adjusted.j + j) == Edge.empty) {
             _grid.valid =
                 _grid.setVLine(adjusted.i + i, adjusted.j + j, pattern.edge);
             _grid.updated = true;
@@ -535,21 +535,21 @@ class Solver {
           rotateVLine(pattern.coords.i, pattern.coords.j, m, n, orient);
 
       switch (orient) {
-        case Orientation.UPFLIP:
-        case Orientation.UP:
-        case Orientation.DOWNFLIP:
-        case Orientation.DOWN:
-          if (_grid.getVLine(adjusted.i + i, adjusted.j + j) == Edge.EMPTY) {
+        case Orientation.upFlip:
+        case Orientation.up:
+        case Orientation.downFlip:
+        case Orientation.down:
+          if (_grid.getVLine(adjusted.i + i, adjusted.j + j) == Edge.empty) {
             _grid.valid =
                 _grid.setVLine(adjusted.i + i, adjusted.j + j, pattern.edge);
             _grid.updated = true;
           }
           break;
-        case Orientation.LEFTFLIP:
-        case Orientation.LEFT:
-        case Orientation.RIGHTFLIP:
-        case Orientation.RIGHT:
-          if (_grid.getHLine(adjusted.i + i, adjusted.j + j) == Edge.EMPTY) {
+        case Orientation.leftFlip:
+        case Orientation.left:
+        case Orientation.rightFlip:
+        case Orientation.right:
+          if (_grid.getHLine(adjusted.i + i, adjusted.j + j) == Edge.empty) {
             _grid.valid =
                 _grid.setHLine(adjusted.i + i, adjusted.j + j, pattern.edge);
             _grid.updated = true;
@@ -589,18 +589,18 @@ class Solver {
           rotateHLine(pattern.coords.i, pattern.coords.j, m, n, orient);
 
       switch (orient) {
-        case Orientation.UPFLIP:
-        case Orientation.UP:
-        case Orientation.DOWNFLIP:
-        case Orientation.DOWN:
+        case Orientation.upFlip:
+        case Orientation.up:
+        case Orientation.downFlip:
+        case Orientation.down:
           if (pattern.edge != _grid.getHLine(adjusted.i + i, adjusted.j + j)) {
             return false;
           }
           break;
-        case Orientation.LEFTFLIP:
-        case Orientation.LEFT:
-        case Orientation.RIGHTFLIP:
-        case Orientation.RIGHT:
+        case Orientation.leftFlip:
+        case Orientation.left:
+        case Orientation.rightFlip:
+        case Orientation.right:
           if (pattern.edge != _grid.getVLine(adjusted.i + i, adjusted.j + j)) {
             return false;
           }
@@ -615,18 +615,18 @@ class Solver {
           rotateVLine(pattern.coords.i, pattern.coords.j, m, n, orient);
 
       switch (orient) {
-        case Orientation.UPFLIP:
-        case Orientation.UP:
-        case Orientation.DOWNFLIP:
-        case Orientation.DOWN:
+        case Orientation.upFlip:
+        case Orientation.up:
+        case Orientation.downFlip:
+        case Orientation.down:
           if (pattern.edge != _grid.getVLine(adjusted.i + i, adjusted.j + j)) {
             return false;
           }
           break;
-        case Orientation.LEFTFLIP:
-        case Orientation.LEFT:
-        case Orientation.RIGHTFLIP:
-        case Orientation.RIGHT:
+        case Orientation.leftFlip:
+        case Orientation.left:
+        case Orientation.rightFlip:
+        case Orientation.right:
           if (pattern.edge != _grid.getHLine(adjusted.i + i, adjusted.j + j)) {
             return false;
           }
@@ -669,18 +669,18 @@ class Solver {
           rotateHLine(pattern.coords.i, pattern.coords.j, m, n, orient);
 
       switch (orient) {
-        case Orientation.UPFLIP:
-        case Orientation.UP:
-        case Orientation.DOWNFLIP:
-        case Orientation.DOWN:
+        case Orientation.upFlip:
+        case Orientation.up:
+        case Orientation.downFlip:
+        case Orientation.down:
           if (pattern.edge != _grid.getHLine(adjusted.i + i, adjusted.j + j)) {
             return false;
           }
           break;
-        case Orientation.LEFTFLIP:
-        case Orientation.LEFT:
-        case Orientation.RIGHTFLIP:
-        case Orientation.RIGHT:
+        case Orientation.leftFlip:
+        case Orientation.left:
+        case Orientation.rightFlip:
+        case Orientation.right:
           if (pattern.edge != _grid.getVLine(adjusted.i + i, adjusted.j + j)) {
             return false;
           }
@@ -695,18 +695,18 @@ class Solver {
           rotateVLine(pattern.coords.i, pattern.coords.j, m, n, orient);
 
       switch (orient) {
-        case Orientation.UPFLIP:
-        case Orientation.UP:
-        case Orientation.DOWNFLIP:
-        case Orientation.DOWN:
+        case Orientation.upFlip:
+        case Orientation.up:
+        case Orientation.downFlip:
+        case Orientation.down:
           if (pattern.edge != _grid.getVLine(adjusted.i + i, adjusted.j + j)) {
             return false;
           }
           break;
-        case Orientation.LEFTFLIP:
-        case Orientation.LEFT:
-        case Orientation.RIGHTFLIP:
-        case Orientation.RIGHT:
+        case Orientation.leftFlip:
+        case Orientation.left:
+        case Orientation.rightFlip:
+        case Orientation.right:
           if (pattern.edge != _grid.getHLine(adjusted.i + i, adjusted.j + j)) {
             return false;
           }

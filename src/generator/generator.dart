@@ -23,7 +23,7 @@ class Generator {
 
   int _buffer;
   late int _bufferReachCount;
-  late int _zeroCount;
+  // late int _zeroCount;
   late int _oneCount;
   late int _twoCount;
   late int _threeCount;
@@ -54,10 +54,10 @@ class Generator {
 /* Sets the difficulty of the puzzle by imposing limitiations on the solver's capabilities */
   void _setDifficulty(Difficulty difficulty) {
     _setRules(difficulty);
-    if (difficulty == Difficulty.EASY) {
+    if (difficulty == Difficulty.easy) {
       _factor = .52;
       _guessDepth = 1;
-    } else if (difficulty == Difficulty.HARD) {
+    } else if (difficulty == Difficulty.hard) {
       _factor = .42;
       _guessDepth = 1;
     }
@@ -65,14 +65,14 @@ class Generator {
 
 /* Sets which rules the solver can apply */
   void _setRules(Difficulty difficulty) {
-    if (difficulty == Difficulty.EASY) {
-      _numberOfRules = easy_rules.length;
+    if (difficulty == Difficulty.easy) {
+      _numberOfRules = easyRules.length;
       _selectedRules =
-          List<int>.generate(_numberOfRules, (int i) => easy_rules[i]);
+          List<int>.generate(_numberOfRules, (int i) => easyRules[i]);
     } else {
-      _numberOfRules = hard_rules.length;
+      _numberOfRules = hardRules.length;
       _selectedRules =
-          List<int>.generate(_numberOfRules, (int i) => hard_rules[i]);
+          List<int>.generate(_numberOfRules, (int i) => hardRules[i]);
     }
   }
 
@@ -112,7 +112,7 @@ class Generator {
 /* Sets the counts of each number to the amount
  * contained before removal of numbers */
   void _setCounts() {
-    _zeroCount = 0;
+    // _zeroCount = 0;
     _oneCount = 0;
     _twoCount = 0;
     _threeCount = 0;
@@ -126,26 +126,26 @@ class Generator {
 
 /* Adds to a number's count */
   void _plusCounts(Number num) {
-    if (num == Number.ZERO) {
-      _zeroCount++;
-    } else if (num == Number.ONE) {
+    if (num == Number.zero) {
+      // _zeroCount++;
+    } else if (num == Number.one) {
       _oneCount++;
-    } else if (num == Number.TWO) {
+    } else if (num == Number.two) {
       _twoCount++;
-    } else if (num == Number.THREE) {
+    } else if (num == Number.three) {
       _threeCount++;
     }
   }
 
 /* Subtracts from a number's count */
   void _minusCounts(Number num) {
-    if (num == Number.ZERO) {
-      _zeroCount--;
-    } else if (num == Number.ONE) {
+    if (num == Number.zero) {
+      // _zeroCount--;
+    } else if (num == Number.one) {
       _oneCount--;
-    } else if (num == Number.TWO) {
+    } else if (num == Number.two) {
       _twoCount--;
-    } else if (num == Number.THREE) {
+    } else if (num == Number.three) {
       _threeCount--;
     }
   }
@@ -228,13 +228,13 @@ class Generator {
   bool _isBalanced(int i, int j) {
     double moa = 1.1;
     Number num = _grid.getNumber(i, j);
-    if (num == Number.THREE) {
+    if (num == Number.three) {
       return (_threeCount * 2 * moa >= 3 * _oneCount &&
           _threeCount * 5 * moa >= 3 * _twoCount);
-    } else if (num == Number.TWO) {
+    } else if (num == Number.two) {
       return (_twoCount * 2.1 + 1 >= 5 * _oneCount &&
           _twoCount * 3 * moa >= 5 * _threeCount);
-    } else if (num == Number.ONE) {
+    } else if (num == Number.one) {
       return (_oneCount * 3 * moa >= 2 * _threeCount &&
           _oneCount * 5 * moa >= 2 * _twoCount);
     } else {
@@ -255,10 +255,10 @@ class Generator {
   }
 
   bool _checkIfSolved() {
-    _rules = List<Rule>.generate(num_rules, initRules);
+    _rules = List<Rule>.generate(numRules, initRules);
 
     _contradictions =
-        List<Contradiction>.generate(num_contradictions, initContradictions);
+        List<Contradiction>.generate(numContradictions, initContradictions);
     _grid.resetGrid();
 
     Solver solver = Solver(_grid, _rules, _contradictions, _selectedRules,
@@ -276,7 +276,7 @@ class Generator {
 
     while (!found) {
       Coordinates popped = _ineligibleCoordinates.last;
-      if (_grid.getNumber(popped.i, popped.j) == Number.NONE) {
+      if (_grid.getNumber(popped.i, popped.j) == Number.none) {
         _markNecessary(popped.i, popped.j);
         _setOldNumber(popped.i, popped.j);
         _ineligibleCoordinates.add(popped);
@@ -296,7 +296,7 @@ class Generator {
 
 /* Elimates a number at a set of coordinates */
   void _removeNumber(int i, int j) {
-    _grid.setNumber(i, j, Number.NONE);
+    _grid.setNumber(i, j, Number.none);
     _grid.resetGrid();
     Coordinates removed = Coordinates(i, j);
     _ineligibleCoordinates.add(removed);
@@ -311,7 +311,7 @@ class Generator {
 
 /* Determines if a Number at Coordinates is eligible for elimination */
   bool _eligible(int i, int j) {
-    if (_canEliminate[i - 1][j - 1] && (_grid.getNumber(i, j) != Number.NONE)) {
+    if (_canEliminate[i - 1][j - 1] && (_grid.getNumber(i, j) != Number.none)) {
       return true;
     } else {
       return false;

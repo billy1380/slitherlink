@@ -15,7 +15,7 @@ void main(List<String> argc) {
     int n = int.tryParse(argc[1])!;
     String difficstr = argc[2];
 
-    Difficulty diffic = (difficstr == "e") ? Difficulty.EASY : Difficulty.HARD;
+    Difficulty diffic = (difficstr == "e") ? Difficulty.easy : Difficulty.hard;
 
     startTime = DateTime.now();
     Generator g = Generator(m, n);

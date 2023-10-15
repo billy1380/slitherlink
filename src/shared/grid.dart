@@ -53,13 +53,13 @@ class Grid extends Lattice {
   void resetGrid() {
     for (int i = 1; i < height; i++) {
       for (int j = 1; j < width - 1; j++) {
-        hlines[i][j] = Edge.EMPTY;
+        hlines[i][j] = Edge.empty;
       }
     }
 
     for (int i = 1; i < height - 1; i++) {
       for (int j = 1; j < width; j++) {
-        vlines[i][j] = Edge.EMPTY;
+        vlines[i][j] = Edge.empty;
       }
     }
 
@@ -154,12 +154,12 @@ class Grid extends Lattice {
   bool setHLine(int i, int j, Edge edge) {
     assert(0 <= i && i < m + 1 && 0 <= j && j < n);
 
-    if (edge == Edge.EMPTY) {
+    if (edge == Edge.empty) {
       return true;
     }
 
     Edge prevEdge = getHLine(i, j);
-    if (prevEdge == Edge.EMPTY) {
+    if (prevEdge == Edge.empty) {
       hlines[i][j] = edge;
     } else if (prevEdge != edge) {
       return false;
@@ -168,7 +168,7 @@ class Grid extends Lattice {
     }
 
     // Update contour information
-    if (edge == Edge.LINE) {
+    if (edge == Edge.line) {
       _updateContourMatrix(i, j, true);
     }
 
@@ -199,7 +199,7 @@ class Grid extends Lattice {
     assert(0 <= i && i < m && 0 <= j && j < n + 1);
 
     Edge prevEdge = getVLine(i, j);
-    if (prevEdge == Edge.EMPTY) {
+    if (prevEdge == Edge.empty) {
       vlines[i][j] = edge;
     } else if (prevEdge != edge) {
       return false;
@@ -208,7 +208,7 @@ class Grid extends Lattice {
     }
 
     // Update contour information
-    if (edge == Edge.LINE) {
+    if (edge == Edge.line) {
       _updateContourMatrix(i, j, false);
     }
 
@@ -263,21 +263,21 @@ class Grid extends Lattice {
     Number number = numbers[i][j];
 
     /* determine number of lines around number */
-    int numLines = (hlines[i][j] == Edge.LINE ? 1 : 0) +
-        (hlines[i + 1][j] == Edge.LINE ? 1 : 0) +
-        (vlines[i][j] == Edge.LINE ? 1 : 0) +
-        (vlines[i][j + 1] == Edge.LINE ? 1 : 0);
+    int numLines = (hlines[i][j] == Edge.line ? 1 : 0) +
+        (hlines[i + 1][j] == Edge.line ? 1 : 0) +
+        (vlines[i][j] == Edge.line ? 1 : 0) +
+        (vlines[i][j + 1] == Edge.line ? 1 : 0);
 
     switch (number) {
-      case Number.NONE:
+      case Number.none:
         return true;
-      case Number.ZERO:
+      case Number.zero:
         return numLines == 0;
-      case Number.ONE:
+      case Number.one:
         return numLines == 1;
-      case Number.TWO:
+      case Number.two:
         return numLines == 2;
-      case Number.THREE:
+      case Number.three:
         return numLines == 3;
     }
   }

@@ -18,13 +18,13 @@ void main(List<String> argc) {
   DateTime startTime, endTime;
   startTime = DateTime.now();
 
-  List<Rule> rules = List<Rule>.generate(num_rules, initRules);
+  List<Rule> rules = List<Rule>.generate(numRules, initRules);
 
   List<Contradiction> contradictions =
-      List<Contradiction>.generate(num_contradictions, initContradictions);
+      List<Contradiction>.generate(numContradictions, initContradictions);
 
-  List<int> selectedRules = List<int>.filled(num_rules - num_const_rules, -1);
-  for (int i = 0; i < num_rules - num_const_rules; i++) {
+  List<int> selectedRules = List<int>.filled(numRules - numConstRules, -1);
+  for (int i = 0; i < numRules - numConstRules; i++) {
     selectedRules[i] = i;
   }
 
@@ -39,7 +39,7 @@ void main(List<String> argc) {
     Export exporter = Export(grid);
 
     Solver solver = Solver(grid, rules, contradictions, selectedRules,
-        num_rules - num_const_rules, 100);
+        numRules - numConstRules, 100);
     solver.solve();
 
     exporter.export();

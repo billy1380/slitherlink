@@ -51,13 +51,13 @@ class Export {
  * enumeration into a human readable 0-3 or blank space. */
   String _formatNumber(int i, int j) {
     switch (_lattice.getNumber(i, j)) {
-      case Number.ZERO:
+      case Number.zero:
         return "0";
-      case Number.ONE:
+      case Number.one:
         return "1";
-      case Number.TWO:
+      case Number.two:
         return "2";
-      case Number.THREE:
+      case Number.three:
         return "3";
       default:
         return blank;
@@ -68,9 +68,9 @@ class Export {
  * enumeration into a human readable '-', 'x' or blank space. */
   String _formatHLine(int i, int j) {
     switch (_lattice.getHLine(i, j)) {
-      case Edge.LINE:
+      case Edge.line:
         return hline;
-      case Edge.NLINE:
+      case Edge.nLine:
         return ex;
       default:
         return blank;
@@ -81,9 +81,9 @@ class Export {
  * enumeration into a human readable '|', 'x' or blank space. */
   String _formatVLine(int i, int j) {
     switch (_lattice.getVLine(i, j)) {
-      case Edge.LINE:
+      case Edge.line:
         return vline;
-      case Edge.NLINE:
+      case Edge.nLine:
         return ex;
       default:
         return blank;

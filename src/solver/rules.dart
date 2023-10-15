@@ -5,7 +5,7 @@
 import '../shared/enums.dart';
 import 'rule.dart';
 
-final Rule empty_rule = Rule(-1, -1);
+final Rule emptyRule = Rule(-1, -1);
 
 Rule initRules(int i) {
   // Lattice * before;
@@ -26,11 +26,11 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addHLinePattern(1, 0, Edge.NLINE);
-    r.addHLinePattern(1, 1, Edge.NLINE);
-    r.addVLinePattern(0, 1, Edge.NLINE);
+    r.addHLinePattern(1, 0, Edge.nLine);
+    r.addHLinePattern(1, 1, Edge.nLine);
+    r.addVLinePattern(0, 1, Edge.nLine);
 
-    r.addVLineDiff(1, 1, Edge.NLINE);
+    r.addVLineDiff(1, 1, Edge.nLine);
   } else if (i == 1) {
     /**
      * Rule #2
@@ -44,11 +44,11 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addHLinePattern(1, 0, Edge.LINE);
-    r.addVLinePattern(0, 1, Edge.LINE);
+    r.addHLinePattern(1, 0, Edge.line);
+    r.addVLinePattern(0, 1, Edge.line);
 
-    r.addVLineDiff(1, 1, Edge.NLINE);
-    r.addHLineDiff(1, 1, Edge.NLINE);
+    r.addVLineDiff(1, 1, Edge.nLine);
+    r.addHLineDiff(1, 1, Edge.nLine);
   } else if (i == 2) {
     /**
      * Rule #3
@@ -62,11 +62,11 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addHLinePattern(1, 0, Edge.LINE);
-    r.addHLinePattern(1, 1, Edge.LINE);
+    r.addHLinePattern(1, 0, Edge.line);
+    r.addHLinePattern(1, 1, Edge.line);
 
-    r.addVLineDiff(0, 1, Edge.NLINE);
-    r.addVLineDiff(1, 1, Edge.NLINE);
+    r.addVLineDiff(0, 1, Edge.nLine);
+    r.addVLineDiff(1, 1, Edge.nLine);
   } else if (i == 3) {
     /**
      * Rule #4
@@ -80,11 +80,11 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addHLinePattern(1, 0, Edge.LINE);
-    r.addVLinePattern(0, 1, Edge.NLINE);
-    r.addVLinePattern(1, 1, Edge.NLINE);
+    r.addHLinePattern(1, 0, Edge.line);
+    r.addVLinePattern(0, 1, Edge.nLine);
+    r.addVLinePattern(1, 1, Edge.nLine);
 
-    r.addHLineDiff(1, 1, Edge.LINE);
+    r.addHLineDiff(1, 1, Edge.line);
   } else if (i == 4) {
     /**
      * Rule #5
@@ -98,11 +98,11 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addHLinePattern(1, 0, Edge.LINE);
-    r.addHLinePattern(1, 1, Edge.NLINE);
-    r.addVLinePattern(0, 1, Edge.NLINE);
+    r.addHLinePattern(1, 0, Edge.line);
+    r.addHLinePattern(1, 1, Edge.nLine);
+    r.addVLinePattern(0, 1, Edge.nLine);
 
-    r.addVLineDiff(1, 1, Edge.LINE);
+    r.addVLineDiff(1, 1, Edge.line);
   } else if (i == 5) {
     /**
      * Rule #6
@@ -114,12 +114,12 @@ Rule initRules(int i) {
 
     r = Rule(1, 1);
 
-    r.addNumberPattern(0, 0, Number.ONE);
-    r.addHLinePattern(0, 0, Edge.LINE);
+    r.addNumberPattern(0, 0, Number.one);
+    r.addHLinePattern(0, 0, Edge.line);
 
-    r.addHLineDiff(1, 0, Edge.NLINE);
-    r.addVLineDiff(0, 0, Edge.NLINE);
-    r.addVLineDiff(0, 1, Edge.NLINE);
+    r.addHLineDiff(1, 0, Edge.nLine);
+    r.addVLineDiff(0, 0, Edge.nLine);
+    r.addVLineDiff(0, 1, Edge.nLine);
   } else if (i == 6) {
     /**
      * Rule #7
@@ -131,12 +131,12 @@ Rule initRules(int i) {
 
     r = Rule(1, 1);
 
-    r.addNumberPattern(0, 0, Number.ONE);
-    r.addHLinePattern(1, 0, Edge.NLINE);
-    r.addVLinePattern(0, 0, Edge.NLINE);
-    r.addVLinePattern(0, 1, Edge.NLINE);
+    r.addNumberPattern(0, 0, Number.one);
+    r.addHLinePattern(1, 0, Edge.nLine);
+    r.addVLinePattern(0, 0, Edge.nLine);
+    r.addVLinePattern(0, 1, Edge.nLine);
 
-    r.addHLineDiff(0, 0, Edge.LINE);
+    r.addHLineDiff(0, 0, Edge.line);
   } else if (i == 7) {
     /**
      * Rule #8
@@ -148,12 +148,12 @@ Rule initRules(int i) {
 
     r = Rule(1, 1);
 
-    r.addNumberPattern(0, 0, Number.TWO);
-    r.addHLinePattern(0, 0, Edge.LINE);
-    r.addVLinePattern(0, 0, Edge.LINE);
+    r.addNumberPattern(0, 0, Number.two);
+    r.addHLinePattern(0, 0, Edge.line);
+    r.addVLinePattern(0, 0, Edge.line);
 
-    r.addHLineDiff(1, 0, Edge.NLINE);
-    r.addVLineDiff(0, 1, Edge.NLINE);
+    r.addHLineDiff(1, 0, Edge.nLine);
+    r.addVLineDiff(0, 1, Edge.nLine);
   } else if (i == 8) {
     /**
      * Rule #9
@@ -165,12 +165,12 @@ Rule initRules(int i) {
 
     r = Rule(1, 1);
 
-    r.addNumberPattern(0, 0, Number.TWO);
-    r.addHLinePattern(1, 0, Edge.NLINE);
-    r.addVLinePattern(0, 1, Edge.NLINE);
+    r.addNumberPattern(0, 0, Number.two);
+    r.addHLinePattern(1, 0, Edge.nLine);
+    r.addVLinePattern(0, 1, Edge.nLine);
 
-    r.addHLineDiff(0, 0, Edge.LINE);
-    r.addVLineDiff(0, 0, Edge.LINE);
+    r.addHLineDiff(0, 0, Edge.line);
+    r.addVLineDiff(0, 0, Edge.line);
   } else if (i == 9) {
     /**
      * Rule #10
@@ -182,12 +182,12 @@ Rule initRules(int i) {
 
     r = Rule(1, 1);
 
-    r.addNumberPattern(0, 0, Number.TWO);
-    r.addHLinePattern(0, 0, Edge.LINE);
-    r.addHLinePattern(1, 0, Edge.LINE);
+    r.addNumberPattern(0, 0, Number.two);
+    r.addHLinePattern(0, 0, Edge.line);
+    r.addHLinePattern(1, 0, Edge.line);
 
-    r.addVLineDiff(0, 0, Edge.NLINE);
-    r.addVLineDiff(0, 1, Edge.NLINE);
+    r.addVLineDiff(0, 0, Edge.nLine);
+    r.addVLineDiff(0, 1, Edge.nLine);
   } else if (i == 10) {
     /**
      * Rule #11
@@ -199,12 +199,12 @@ Rule initRules(int i) {
 
     r = Rule(1, 1);
 
-    r.addNumberPattern(0, 0, Number.TWO);
-    r.addVLinePattern(0, 0, Edge.NLINE);
-    r.addVLinePattern(0, 1, Edge.NLINE);
+    r.addNumberPattern(0, 0, Number.two);
+    r.addVLinePattern(0, 0, Edge.nLine);
+    r.addVLinePattern(0, 1, Edge.nLine);
 
-    r.addHLineDiff(0, 0, Edge.LINE);
-    r.addHLineDiff(1, 0, Edge.LINE);
+    r.addHLineDiff(0, 0, Edge.line);
+    r.addHLineDiff(1, 0, Edge.line);
   } else if (i == 11) {
     /**
      * Rule #12
@@ -216,12 +216,12 @@ Rule initRules(int i) {
 
     r = Rule(1, 1);
 
-    r.addNumberPattern(0, 0, Number.THREE);
-    r.addHLinePattern(0, 0, Edge.NLINE);
+    r.addNumberPattern(0, 0, Number.three);
+    r.addHLinePattern(0, 0, Edge.nLine);
 
-    r.addVLineDiff(0, 0, Edge.LINE);
-    r.addVLineDiff(0, 1, Edge.LINE);
-    r.addHLineDiff(1, 0, Edge.LINE);
+    r.addVLineDiff(0, 0, Edge.line);
+    r.addVLineDiff(0, 1, Edge.line);
+    r.addHLineDiff(1, 0, Edge.line);
   } else if (i == 12) {
     /** Rule 13
      * Before         After
@@ -237,12 +237,12 @@ Rule initRules(int i) {
 
     r = Rule(3, 3);
 
-    r.addNumberPattern(1, 1, Number.ONE);
-    r.addVLinePattern(0, 2, Edge.LINE);
-    r.addHLinePattern(1, 2, Edge.NLINE);
+    r.addNumberPattern(1, 1, Number.one);
+    r.addVLinePattern(0, 2, Edge.line);
+    r.addHLinePattern(1, 2, Edge.nLine);
 
-    r.addVLineDiff(1, 1, Edge.NLINE);
-    r.addHLineDiff(2, 1, Edge.NLINE);
+    r.addVLineDiff(1, 1, Edge.nLine);
+    r.addHLineDiff(2, 1, Edge.nLine);
   } else if (i == 13) {
     /** Rule 14
      * Before         After
@@ -258,12 +258,12 @@ Rule initRules(int i) {
 
     r = Rule(3, 3);
 
-    r.addNumberPattern(1, 1, Number.ONE);
-    r.addVLinePattern(0, 2, Edge.LINE);
-    r.addVLinePattern(1, 1, Edge.NLINE);
-    r.addHLinePattern(2, 1, Edge.NLINE);
+    r.addNumberPattern(1, 1, Number.one);
+    r.addVLinePattern(0, 2, Edge.line);
+    r.addVLinePattern(1, 1, Edge.nLine);
+    r.addHLinePattern(2, 1, Edge.nLine);
 
-    r.addHLineDiff(1, 2, Edge.NLINE);
+    r.addHLineDiff(1, 2, Edge.nLine);
   } else if (i == 14) {
     /** Rule 15
      * Before         After
@@ -279,12 +279,12 @@ Rule initRules(int i) {
 
     r = Rule(3, 3);
 
-    r.addNumberPattern(1, 1, Number.ONE);
-    r.addVLinePattern(2, 1, Edge.NLINE);
-    r.addHLinePattern(2, 0, Edge.NLINE);
+    r.addNumberPattern(1, 1, Number.one);
+    r.addVLinePattern(2, 1, Edge.nLine);
+    r.addHLinePattern(2, 0, Edge.nLine);
 
-    r.addVLineDiff(1, 1, Edge.NLINE);
-    r.addHLineDiff(2, 1, Edge.NLINE);
+    r.addVLineDiff(1, 1, Edge.nLine);
+    r.addHLineDiff(2, 1, Edge.nLine);
   } else if (i == 15) {
     /** Rule 16
      * Before         After
@@ -300,13 +300,13 @@ Rule initRules(int i) {
 
     r = Rule(3, 3);
 
-    r.addNumberPattern(1, 1, Number.ONE);
-    r.addVLinePattern(0, 1, Edge.LINE);
-    r.addVLinePattern(0, 2, Edge.LINE);
-    r.addHLinePattern(1, 2, Edge.NLINE);
-    r.addHLinePattern(1, 0, Edge.NLINE);
+    r.addNumberPattern(1, 1, Number.one);
+    r.addVLinePattern(0, 1, Edge.line);
+    r.addVLinePattern(0, 2, Edge.line);
+    r.addHLinePattern(1, 2, Edge.nLine);
+    r.addHLinePattern(1, 0, Edge.nLine);
 
-    r.addHLineDiff(1, 1, Edge.LINE);
+    r.addHLineDiff(1, 1, Edge.line);
   } else if (i == 16) {
     /** Rule 17
      * Before         After
@@ -322,13 +322,13 @@ Rule initRules(int i) {
 
     r = Rule(3, 3);
 
-    r.addNumberPattern(1, 1, Number.TWO);
-    r.addVLinePattern(2, 1, Edge.NLINE);
-    r.addHLinePattern(2, 0, Edge.NLINE);
-    r.addHLinePattern(1, 1, Edge.NLINE);
+    r.addNumberPattern(1, 1, Number.two);
+    r.addVLinePattern(2, 1, Edge.nLine);
+    r.addHLinePattern(2, 0, Edge.nLine);
+    r.addHLinePattern(1, 1, Edge.nLine);
 
-    r.addHLineDiff(2, 1, Edge.LINE);
-    r.addVLineDiff(1, 1, Edge.LINE);
+    r.addHLineDiff(2, 1, Edge.line);
+    r.addVLineDiff(1, 1, Edge.line);
   } else if (i == 17) {
     /** Rule 18
      * Before         After
@@ -344,14 +344,14 @@ Rule initRules(int i) {
 
     r = Rule(3, 3);
 
-    r.addNumberPattern(1, 1, Number.TWO);
-    r.addVLinePattern(0, 1, Edge.NLINE);
-    r.addVLinePattern(0, 2, Edge.NLINE);
-    r.addHLinePattern(1, 2, Edge.NLINE);
-    r.addHLinePattern(2, 2, Edge.NLINE);
+    r.addNumberPattern(1, 1, Number.two);
+    r.addVLinePattern(0, 1, Edge.nLine);
+    r.addVLinePattern(0, 2, Edge.nLine);
+    r.addHLinePattern(1, 2, Edge.nLine);
+    r.addHLinePattern(2, 2, Edge.nLine);
 
-    r.addHLineDiff(1, 0, Edge.LINE);
-    r.addVLineDiff(2, 2, Edge.LINE);
+    r.addHLineDiff(1, 0, Edge.line);
+    r.addVLineDiff(2, 2, Edge.line);
   } else if (i == 18) {
     /** Rule 19
      * Before         After
@@ -367,12 +367,12 @@ Rule initRules(int i) {
 
     r = Rule(3, 3);
 
-    r.addNumberPattern(1, 1, Number.TWO);
-    r.addVLinePattern(0, 1, Edge.NLINE);
-    r.addVLinePattern(0, 2, Edge.NLINE);
-    r.addHLinePattern(1, 2, Edge.NLINE);
+    r.addNumberPattern(1, 1, Number.two);
+    r.addVLinePattern(0, 1, Edge.nLine);
+    r.addVLinePattern(0, 2, Edge.nLine);
+    r.addHLinePattern(1, 2, Edge.nLine);
 
-    r.addHLineDiff(1, 0, Edge.LINE);
+    r.addHLineDiff(1, 0, Edge.line);
   } else if (i == 19) {
     /** Rule 20
      * Before         After
@@ -388,12 +388,12 @@ Rule initRules(int i) {
 
     r = Rule(3, 3);
 
-    r.addNumberPattern(1, 1, Number.THREE);
-    r.addVLinePattern(0, 2, Edge.LINE);
+    r.addNumberPattern(1, 1, Number.three);
+    r.addVLinePattern(0, 2, Edge.line);
 
-    r.addHLineDiff(2, 1, Edge.LINE);
-    r.addHLineDiff(1, 2, Edge.NLINE);
-    r.addVLineDiff(1, 1, Edge.LINE);
+    r.addHLineDiff(2, 1, Edge.line);
+    r.addHLineDiff(1, 2, Edge.nLine);
+    r.addVLineDiff(1, 1, Edge.line);
   } else if (i == 20) {
     /** Rule 21
      * Before         After
@@ -409,12 +409,12 @@ Rule initRules(int i) {
 
     r = Rule(3, 3);
 
-    r.addNumberPattern(1, 1, Number.THREE);
-    r.addVLinePattern(2, 1, Edge.NLINE);
-    r.addHLinePattern(2, 0, Edge.NLINE);
+    r.addNumberPattern(1, 1, Number.three);
+    r.addVLinePattern(2, 1, Edge.nLine);
+    r.addHLinePattern(2, 0, Edge.nLine);
 
-    r.addHLineDiff(2, 1, Edge.LINE);
-    r.addVLineDiff(1, 1, Edge.LINE);
+    r.addHLineDiff(2, 1, Edge.line);
+    r.addVLineDiff(1, 1, Edge.line);
   } else if (i == 21) {
     /** Rule 22
      * Before         After
@@ -428,12 +428,12 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addNumberPattern(0, 0, Number.THREE);
-    r.addNumberPattern(0, 1, Number.ONE);
-    r.addVLinePattern(1, 0, Edge.NLINE);
-    r.addVLinePattern(1, 1, Edge.NLINE);
+    r.addNumberPattern(0, 0, Number.three);
+    r.addNumberPattern(0, 1, Number.one);
+    r.addVLinePattern(1, 0, Edge.nLine);
+    r.addVLinePattern(1, 1, Edge.nLine);
 
-    r.addHLineDiff(1, 0, Edge.LINE);
+    r.addHLineDiff(1, 0, Edge.line);
   } else if (i == 22) {
     /** Rule 23
      * Before         After
@@ -449,15 +449,15 @@ Rule initRules(int i) {
 
     r = Rule(3, 3);
 
-    r.addVLinePattern(0, 1, Edge.NLINE);
-    r.addVLinePattern(0, 2, Edge.NLINE);
-    r.addVLinePattern(2, 2, Edge.NLINE);
-    r.addHLinePattern(1, 2, Edge.LINE);
-    r.addHLinePattern(1, 0, Edge.NLINE);
-    r.addHLinePattern(2, 0, Edge.NLINE);
-    r.addHLinePattern(2, 2, Edge.NLINE);
+    r.addVLinePattern(0, 1, Edge.nLine);
+    r.addVLinePattern(0, 2, Edge.nLine);
+    r.addVLinePattern(2, 2, Edge.nLine);
+    r.addHLinePattern(1, 2, Edge.line);
+    r.addHLinePattern(1, 0, Edge.nLine);
+    r.addHLinePattern(2, 0, Edge.nLine);
+    r.addHLinePattern(2, 2, Edge.nLine);
 
-    r.addVLineDiff(2, 1, Edge.LINE);
+    r.addVLineDiff(2, 1, Edge.line);
   } else if (i == 23) {
     /** Rule 24
      * Before         After
@@ -470,11 +470,11 @@ Rule initRules(int i) {
 
     r = Rule(1, 1);
 
-    r.addVLinePattern(0, 0, Edge.LINE);
-    r.addVLinePattern(0, 1, Edge.LINE);
-    r.addHLinePattern(0, 0, Edge.LINE);
+    r.addVLinePattern(0, 0, Edge.line);
+    r.addVLinePattern(0, 1, Edge.line);
+    r.addHLinePattern(0, 0, Edge.line);
 
-    r.addHLineDiff(1, 0, Edge.NLINE);
+    r.addHLineDiff(1, 0, Edge.nLine);
   } else if (i == 24) {
     /** Rule 25
      * Before         After
@@ -488,13 +488,13 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addNumberPattern(0, 0, Number.ONE);
-    r.addNumberPattern(1, 1, Number.ONE);
-    r.addVLinePattern(0, 0, Edge.NLINE);
-    r.addHLinePattern(0, 0, Edge.NLINE);
+    r.addNumberPattern(0, 0, Number.one);
+    r.addNumberPattern(1, 1, Number.one);
+    r.addVLinePattern(0, 0, Edge.nLine);
+    r.addHLinePattern(0, 0, Edge.nLine);
 
-    r.addHLineDiff(2, 1, Edge.NLINE);
-    r.addVLineDiff(1, 2, Edge.NLINE);
+    r.addHLineDiff(2, 1, Edge.nLine);
+    r.addVLineDiff(1, 2, Edge.nLine);
   } else if (i == 25) {
     /** Rule 26
      * Before         After
@@ -508,12 +508,12 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addNumberPattern(1, 1, Number.ONE);
-    r.addVLinePattern(0, 1, Edge.NLINE);
-    r.addHLinePattern(1, 0, Edge.NLINE);
+    r.addNumberPattern(1, 1, Number.one);
+    r.addVLinePattern(0, 1, Edge.nLine);
+    r.addHLinePattern(1, 0, Edge.nLine);
 
-    r.addHLineDiff(1, 1, Edge.NLINE);
-    r.addVLineDiff(1, 1, Edge.NLINE);
+    r.addHLineDiff(1, 1, Edge.nLine);
+    r.addVLineDiff(1, 1, Edge.nLine);
   } else if (i == 26) {
     /** Rule 27
      * Before         After
@@ -527,12 +527,12 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addNumberPattern(0, 1, Number.TWO);
-    r.addHLinePattern(0, 1, Edge.NLINE);
-    r.addHLinePattern(1, 0, Edge.LINE);
+    r.addNumberPattern(0, 1, Number.two);
+    r.addHLinePattern(0, 1, Edge.nLine);
+    r.addHLinePattern(1, 0, Edge.line);
 
-    r.addVLineDiff(0, 2, Edge.LINE);
-    r.addVLineDiff(1, 1, Edge.NLINE);
+    r.addVLineDiff(0, 2, Edge.line);
+    r.addVLineDiff(1, 1, Edge.nLine);
   } else if (i == 27) {
     /** Rule 28
      * Before         After
@@ -546,12 +546,12 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addNumberPattern(0, 1, Number.TWO);
-    r.addHLinePattern(1, 0, Edge.LINE);
-    r.addVLinePattern(1, 1, Edge.LINE);
+    r.addNumberPattern(0, 1, Number.two);
+    r.addHLinePattern(1, 0, Edge.line);
+    r.addVLinePattern(1, 1, Edge.line);
 
-    r.addHLineDiff(0, 1, Edge.LINE);
-    r.addVLineDiff(0, 2, Edge.LINE);
+    r.addHLineDiff(0, 1, Edge.line);
+    r.addVLineDiff(0, 2, Edge.line);
   } else if (i == 28) {
     /** Rule 29
      * Before         After
@@ -565,13 +565,13 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addNumberPattern(0, 0, Number.THREE);
-    r.addNumberPattern(1, 1, Number.ONE);
-    r.addHLinePattern(0, 0, Edge.LINE);
-    r.addVLinePattern(0, 0, Edge.LINE);
+    r.addNumberPattern(0, 0, Number.three);
+    r.addNumberPattern(1, 1, Number.one);
+    r.addHLinePattern(0, 0, Edge.line);
+    r.addVLinePattern(0, 0, Edge.line);
 
-    r.addHLineDiff(2, 1, Edge.NLINE);
-    r.addVLineDiff(1, 2, Edge.NLINE);
+    r.addHLineDiff(2, 1, Edge.nLine);
+    r.addVLineDiff(1, 2, Edge.nLine);
   } else if (i == 29) {
     /** Rule 30
      * Before         After
@@ -585,13 +585,13 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addNumberPattern(0, 0, Number.THREE);
-    r.addNumberPattern(1, 1, Number.ONE);
-    r.addHLinePattern(2, 1, Edge.NLINE);
-    r.addVLinePattern(1, 2, Edge.NLINE);
+    r.addNumberPattern(0, 0, Number.three);
+    r.addNumberPattern(1, 1, Number.one);
+    r.addHLinePattern(2, 1, Edge.nLine);
+    r.addVLinePattern(1, 2, Edge.nLine);
 
-    r.addHLineDiff(0, 0, Edge.LINE);
-    r.addVLineDiff(0, 0, Edge.LINE);
+    r.addHLineDiff(0, 0, Edge.line);
+    r.addVLineDiff(0, 0, Edge.line);
   } else if (i == 30) {
     /**
      * Rule #31
@@ -603,12 +603,12 @@ Rule initRules(int i) {
 
     r = Rule(1, 1);
 
-    r.addNumberPattern(0, 0, Number.ZERO);
+    r.addNumberPattern(0, 0, Number.zero);
 
-    r.addHLineDiff(0, 0, Edge.NLINE);
-    r.addHLineDiff(1, 0, Edge.NLINE);
-    r.addVLineDiff(0, 0, Edge.NLINE);
-    r.addVLineDiff(0, 1, Edge.NLINE);
+    r.addHLineDiff(0, 0, Edge.nLine);
+    r.addHLineDiff(1, 0, Edge.nLine);
+    r.addVLineDiff(0, 0, Edge.nLine);
+    r.addVLineDiff(0, 1, Edge.nLine);
   } else if (i == 31) {
     /**
      * Rule 32
@@ -622,13 +622,13 @@ Rule initRules(int i) {
 
     r = Rule(2, 2);
 
-    r.addNumberPattern(1, 0, Number.THREE);
-    r.addNumberPattern(0, 1, Number.THREE);
+    r.addNumberPattern(1, 0, Number.three);
+    r.addNumberPattern(0, 1, Number.three);
 
-    r.addHLineDiff(0, 1, Edge.LINE);
-    r.addHLineDiff(2, 0, Edge.LINE);
-    r.addVLineDiff(1, 0, Edge.LINE);
-    r.addVLineDiff(0, 2, Edge.LINE);
+    r.addHLineDiff(0, 1, Edge.line);
+    r.addHLineDiff(2, 0, Edge.line);
+    r.addVLineDiff(1, 0, Edge.line);
+    r.addVLineDiff(0, 2, Edge.line);
   } else if (i == 32) {
     /**
      * Rule 33
@@ -644,16 +644,16 @@ Rule initRules(int i) {
 
     r = Rule(3, 2);
 
-    r.addNumberPattern(1, 0, Number.THREE);
-    r.addNumberPattern(1, 1, Number.THREE);
+    r.addNumberPattern(1, 0, Number.three);
+    r.addNumberPattern(1, 1, Number.three);
 
-    r.addVLineDiff(1, 0, Edge.LINE);
-    r.addVLineDiff(1, 1, Edge.LINE);
-    r.addVLineDiff(1, 2, Edge.LINE);
-    r.addVLineDiff(0, 1, Edge.NLINE);
-    r.addVLineDiff(2, 1, Edge.NLINE);
+    r.addVLineDiff(1, 0, Edge.line);
+    r.addVLineDiff(1, 1, Edge.line);
+    r.addVLineDiff(1, 2, Edge.line);
+    r.addVLineDiff(0, 1, Edge.nLine);
+    r.addVLineDiff(2, 1, Edge.nLine);
   } else {
-    r = empty_rule;
+    r = emptyRule;
   }
 
   return r;

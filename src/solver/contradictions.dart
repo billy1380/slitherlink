@@ -1,7 +1,7 @@
 import '../shared/enums.dart';
 import 'contradiction.dart';
 
-final Contradiction empty_contradiction = Contradiction(-1, -1);
+final Contradiction emptyContradiction = Contradiction(-1, -1);
 
 /* Initializes the contradictions array with each contradiction
  * used by the Solver to complete the grid. By convention the
@@ -22,10 +22,10 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(2, 2);
 
-    c.addHLinePattern(1, 0, Edge.NLINE);
-    c.addHLinePattern(1, 1, Edge.NLINE);
-    c.addVLinePattern(0, 1, Edge.NLINE);
-    c.addVLinePattern(1, 1, Edge.LINE);
+    c.addHLinePattern(1, 0, Edge.nLine);
+    c.addHLinePattern(1, 1, Edge.nLine);
+    c.addVLinePattern(0, 1, Edge.nLine);
+    c.addVLinePattern(1, 1, Edge.line);
   } else if (i == 1) {
     /**
      * Contradiction #02
@@ -36,9 +36,9 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(1, 2);
 
-    c.addHLinePattern(1, 0, Edge.LINE);
-    c.addHLinePattern(1, 1, Edge.LINE);
-    c.addVLinePattern(0, 1, Edge.LINE);
+    c.addHLinePattern(1, 0, Edge.line);
+    c.addHLinePattern(1, 1, Edge.line);
+    c.addVLinePattern(0, 1, Edge.line);
   } else if (i == 2) {
     /**
      * Contradiction #03
@@ -48,10 +48,10 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(1, 1);
 
-    c.addHLinePattern(0, 0, Edge.LINE);
-    c.addVLinePattern(0, 0, Edge.LINE);
-    c.addHLinePattern(1, 0, Edge.LINE);
-    c.addVLinePattern(0, 1, Edge.LINE);
+    c.addHLinePattern(0, 0, Edge.line);
+    c.addVLinePattern(0, 0, Edge.line);
+    c.addHLinePattern(1, 0, Edge.line);
+    c.addVLinePattern(0, 1, Edge.line);
   } else if (i == 3) {
     /**
      * Contradiction #04
@@ -61,9 +61,9 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(1, 1);
 
-    c.addNumberPattern(0, 0, Number.THREE);
-    c.addHLinePattern(0, 0, Edge.NLINE);
-    c.addVLinePattern(0, 0, Edge.NLINE);
+    c.addNumberPattern(0, 0, Number.three);
+    c.addHLinePattern(0, 0, Edge.nLine);
+    c.addVLinePattern(0, 0, Edge.nLine);
   } else if (i == 4) {
     /**
      * Contradiction #05
@@ -73,9 +73,9 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(1, 1);
 
-    c.addNumberPattern(0, 0, Number.THREE);
-    c.addVLinePattern(0, 0, Edge.NLINE);
-    c.addVLinePattern(0, 1, Edge.NLINE);
+    c.addNumberPattern(0, 0, Number.three);
+    c.addVLinePattern(0, 0, Edge.nLine);
+    c.addVLinePattern(0, 1, Edge.nLine);
   } else if (i == 5) {
     /**
      * Contradiction #06
@@ -85,10 +85,10 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(1, 1);
 
-    c.addNumberPattern(0, 0, Number.TWO);
-    c.addHLinePattern(0, 0, Edge.LINE);
-    c.addHLinePattern(1, 0, Edge.LINE);
-    c.addVLinePattern(0, 0, Edge.LINE);
+    c.addNumberPattern(0, 0, Number.two);
+    c.addHLinePattern(0, 0, Edge.line);
+    c.addHLinePattern(1, 0, Edge.line);
+    c.addVLinePattern(0, 0, Edge.line);
   } else if (i == 6) {
     /**
      * Contradiction #07
@@ -98,10 +98,10 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(1, 1);
 
-    c.addNumberPattern(0, 0, Number.TWO);
-    c.addHLinePattern(0, 0, Edge.NLINE);
-    c.addHLinePattern(1, 0, Edge.NLINE);
-    c.addVLinePattern(0, 0, Edge.NLINE);
+    c.addNumberPattern(0, 0, Number.two);
+    c.addHLinePattern(0, 0, Edge.nLine);
+    c.addHLinePattern(1, 0, Edge.nLine);
+    c.addVLinePattern(0, 0, Edge.nLine);
   } else if (i == 7) {
     /**
      * Contradiction #08
@@ -111,9 +111,9 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(1, 1);
 
-    c.addNumberPattern(0, 0, Number.ONE);
-    c.addHLinePattern(0, 0, Edge.LINE);
-    c.addVLinePattern(0, 0, Edge.LINE);
+    c.addNumberPattern(0, 0, Number.one);
+    c.addHLinePattern(0, 0, Edge.line);
+    c.addVLinePattern(0, 0, Edge.line);
   } else if (i == 8) {
     /**
      * Contradiction #09
@@ -123,9 +123,9 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(1, 1);
 
-    c.addNumberPattern(0, 0, Number.ONE);
-    c.addVLinePattern(0, 0, Edge.LINE);
-    c.addVLinePattern(0, 1, Edge.LINE);
+    c.addNumberPattern(0, 0, Number.one);
+    c.addVLinePattern(0, 0, Edge.line);
+    c.addVLinePattern(0, 1, Edge.line);
   } else if (i == 9) {
     /**
      * Contradiction #10
@@ -135,11 +135,11 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(1, 1);
 
-    c.addNumberPattern(0, 0, Number.ONE);
-    c.addVLinePattern(0, 0, Edge.NLINE);
-    c.addVLinePattern(0, 1, Edge.NLINE);
-    c.addHLinePattern(0, 0, Edge.NLINE);
-    c.addHLinePattern(1, 0, Edge.NLINE);
+    c.addNumberPattern(0, 0, Number.one);
+    c.addVLinePattern(0, 0, Edge.nLine);
+    c.addVLinePattern(0, 1, Edge.nLine);
+    c.addHLinePattern(0, 0, Edge.nLine);
+    c.addHLinePattern(1, 0, Edge.nLine);
   } else if (i == 10) {
     /**
      * Contradiction #11
@@ -149,10 +149,10 @@ Contradiction initContradictions(int i) {
      */
     c = Contradiction(1, 1);
 
-    c.addNumberPattern(0, 0, Number.ZERO);
-    c.addVLinePattern(0, 0, Edge.LINE);
+    c.addNumberPattern(0, 0, Number.zero);
+    c.addVLinePattern(0, 0, Edge.line);
   } else {
-    c = empty_contradiction;
+    c = emptyContradiction;
   }
 
   return c;

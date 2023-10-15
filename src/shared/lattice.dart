@@ -38,11 +38,11 @@ class Lattice {
     this.n = n;
 
     numbers = List<List<Number>>.generate(
-        this.m, (int i) => List<Number>.filled(this.n, Number.NONE));
+        this.m, (int i) => List<Number>.filled(this.n, Number.none));
     hlines = List<List<Edge>>.generate(
-        this.m + 1, (int i) => List<Edge>.filled(this.n, Edge.EMPTY));
+        this.m + 1, (int i) => List<Edge>.filled(this.n, Edge.empty));
     vlines = List<List<Edge>>.generate(
-        this.m, (int i) => List<Edge>.filled(this.n + 1, Edge.EMPTY));
+        this.m, (int i) => List<Edge>.filled(this.n + 1, Edge.empty));
 
     init_ = true;
 
@@ -124,15 +124,15 @@ class Lattice {
     if (init_) {
       for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-          numbers[i][j] = Number.NONE;
-          hlines[i][j] = Edge.EMPTY;
-          vlines[i][j] = Edge.EMPTY;
+          numbers[i][j] = Number.none;
+          hlines[i][j] = Edge.empty;
+          vlines[i][j] = Edge.empty;
         }
-        vlines[i][n] = Edge.EMPTY;
+        vlines[i][n] = Edge.empty;
       }
 
       for (int j = 0; j < n; j++) {
-        hlines[m][j] = Edge.EMPTY;
+        hlines[m][j] = Edge.empty;
       }
     }
   }

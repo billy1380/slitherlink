@@ -1,15 +1,14 @@
 import '../shared/structs.dart';
 import 'package:collection/collection.dart';
 
-int ComparePrioEdge(PrioEdge e1, PrioEdge e2) {
-  return e1.priority.compareTo(e2.priority);
-}
+int comparePrioEdge(PrioEdge e1, PrioEdge e2) =>
+    e1.priority.compareTo(e2.priority);
 
 class EPQ {
   late int _m;
   late int _n;
 
-  PriorityQueue<PrioEdge> pq_ = PriorityQueue<PrioEdge>(ComparePrioEdge);
+  PriorityQueue<PrioEdge> pq_ = PriorityQueue<PrioEdge>(comparePrioEdge);
 
   void initEPQ(int m, int n) {
     assert(m > 0 && n > 0);

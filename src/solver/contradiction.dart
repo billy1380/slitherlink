@@ -49,15 +49,15 @@ class Contradiction {
  * since I believe they are all square in terms of dimensions. */
   int getNumberHeight(Orientation orient) {
     switch (orient) {
-      case Orientation.UP:
-      case Orientation.DOWN:
-      case Orientation.UPFLIP:
-      case Orientation.DOWNFLIP:
+      case Orientation.up:
+      case Orientation.down:
+      case Orientation.upFlip:
+      case Orientation.downFlip:
         return _m;
-      case Orientation.LEFT:
-      case Orientation.RIGHT:
-      case Orientation.LEFTFLIP:
-      case Orientation.RIGHTFLIP:
+      case Orientation.left:
+      case Orientation.right:
+      case Orientation.leftFlip:
+      case Orientation.rightFlip:
         return _n;
     }
   }
@@ -66,15 +66,15 @@ class Contradiction {
  * orientation. In its upright position, its width is n_. */
   int getNumberWidth(Orientation orient) {
     switch (orient) {
-      case Orientation.UP:
-      case Orientation.DOWN:
-      case Orientation.UPFLIP:
-      case Orientation.DOWNFLIP:
+      case Orientation.up:
+      case Orientation.down:
+      case Orientation.upFlip:
+      case Orientation.downFlip:
         return _n;
-      case Orientation.LEFT:
-      case Orientation.RIGHT:
-      case Orientation.LEFTFLIP:
-      case Orientation.RIGHTFLIP:
+      case Orientation.left:
+      case Orientation.right:
+      case Orientation.leftFlip:
+      case Orientation.rightFlip:
         return _m;
     }
   }

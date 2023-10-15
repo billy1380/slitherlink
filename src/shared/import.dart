@@ -57,18 +57,18 @@ class Import {
         _importHLineRow(i + 1, contents[lineIndex]);
       }
       for (int j = 0; j < n + 2; j++) {
-        _lattice.setHLine(0, j, Edge.NLINE);
-        _lattice.setHLine(m + 2, j, Edge.NLINE);
+        _lattice.setHLine(0, j, Edge.nLine);
+        _lattice.setHLine(m + 2, j, Edge.nLine);
       }
 
       /* vertical lines */
       for (int j = 0; j < n + 3; j++) {
-        _lattice.setVLine(0, j, Edge.NLINE);
-        _lattice.setVLine(m + 1, j, Edge.NLINE);
+        _lattice.setVLine(0, j, Edge.nLine);
+        _lattice.setVLine(m + 1, j, Edge.nLine);
       }
       for (int i = 0; i < m + 2; i++) {
-        _lattice.setVLine(i, 0, Edge.NLINE);
-        _lattice.setVLine(i, n + 2, Edge.NLINE);
+        _lattice.setVLine(i, 0, Edge.nLine);
+        _lattice.setVLine(i, n + 2, Edge.nLine);
       }
 
       for (int i = 0; i < m; i++) {
@@ -106,27 +106,27 @@ class Import {
     _lattice.initUpdateMatrix();
 
     for (int i = 0; i < m + 1; i++) {
-      _lattice.setHLine(i + 1, 0, Edge.NLINE);
+      _lattice.setHLine(i + 1, 0, Edge.nLine);
     }
 
     for (int i = 0; i < m + 2; i++) {
-      _lattice.setVLine(i, 0, Edge.NLINE);
-      _lattice.setVLine(i, n + 2, Edge.NLINE);
+      _lattice.setVLine(i, 0, Edge.nLine);
+      _lattice.setVLine(i, n + 2, Edge.nLine);
     }
 
     for (int j = 0; j < n + 3; j++) {
-      _lattice.setVLine(0, j, Edge.NLINE);
-      _lattice.setVLine(m + 1, j, Edge.NLINE);
+      _lattice.setVLine(0, j, Edge.nLine);
+      _lattice.setVLine(m + 1, j, Edge.nLine);
     }
 
     for (int j = 0; j < n + 2; j++) {
-      _lattice.setHLine(0, j, Edge.NLINE);
-      _lattice.setHLine(m + 2, j, Edge.NLINE);
+      _lattice.setHLine(0, j, Edge.nLine);
+      _lattice.setHLine(m + 2, j, Edge.nLine);
     }
 
     for (int j = 0; j < m + 3; j++) {
-      _lattice.setHLine(j, 0, Edge.NLINE);
-      _lattice.setHLine(j, n + 1, Edge.NLINE);
+      _lattice.setHLine(j, 0, Edge.nLine);
+      _lattice.setHLine(j, n + 1, Edge.nLine);
     }
   }
 
@@ -138,19 +138,19 @@ class Import {
       String c = row[j];
       switch (c) {
         case "0":
-          _lattice.setNumber(i, j + 1, Number.ZERO);
+          _lattice.setNumber(i, j + 1, Number.zero);
           break;
         case "1":
-          _lattice.setNumber(i, j + 1, Number.ONE);
+          _lattice.setNumber(i, j + 1, Number.one);
           break;
         case "2":
-          _lattice.setNumber(i, j + 1, Number.TWO);
+          _lattice.setNumber(i, j + 1, Number.two);
           break;
         case "3":
-          _lattice.setNumber(i, j + 1, Number.THREE);
+          _lattice.setNumber(i, j + 1, Number.three);
           break;
         default:
-          _lattice.setNumber(i, j + 1, Number.NONE);
+          _lattice.setNumber(i, j + 1, Number.none);
           break;
       }
     }
@@ -160,22 +160,22 @@ class Import {
  * interpreting '-' and 'x' as their corresponding values in
  * the Number enumeration. */
   void _importHLineRow(int i, String row) {
-    _lattice.setHLine(i, 0, Edge.NLINE);
+    _lattice.setHLine(i, 0, Edge.nLine);
     for (int j = 0; j < row.length; j++) {
       String c = row[j];
       switch (c) {
         case "-":
-          _lattice.setHLine(i, j + 1, Edge.LINE);
+          _lattice.setHLine(i, j + 1, Edge.line);
           break;
         case "x":
-          _lattice.setHLine(i, j + 1, Edge.NLINE);
+          _lattice.setHLine(i, j + 1, Edge.nLine);
           break;
         default:
-          _lattice.setHLine(i, j + 1, Edge.EMPTY);
+          _lattice.setHLine(i, j + 1, Edge.empty);
           break;
       }
     }
-    _lattice.setHLine(i, row.length + 1, Edge.NLINE);
+    _lattice.setHLine(i, row.length + 1, Edge.nLine);
   }
 
 /* Helper function for reading a line from stdin and
@@ -186,13 +186,13 @@ class Import {
       String c = row[j];
       switch (c) {
         case "-":
-          _lattice.setVLine(i, j + 1, Edge.LINE);
+          _lattice.setVLine(i, j + 1, Edge.line);
           break;
         case "x":
-          _lattice.setVLine(i, j + 1, Edge.NLINE);
+          _lattice.setVLine(i, j + 1, Edge.nLine);
           break;
         default:
-          _lattice.setVLine(i, j + 1, Edge.EMPTY);
+          _lattice.setVLine(i, j + 1, Edge.empty);
           break;
       }
     }

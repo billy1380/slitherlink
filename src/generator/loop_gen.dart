@@ -26,16 +26,16 @@ class LoopGen {
 
         switch (lines) {
           case 0:
-            _grid.setNumber(i, j, Number.ZERO);
+            _grid.setNumber(i, j, Number.zero);
             break;
           case 1:
-            _grid.setNumber(i, j, Number.ONE);
+            _grid.setNumber(i, j, Number.one);
             break;
           case 2:
-            _grid.setNumber(i, j, Number.TWO);
+            _grid.setNumber(i, j, Number.two);
             break;
           case 3:
-            _grid.setNumber(i, j, Number.THREE);
+            _grid.setNumber(i, j, Number.three);
             break;
         }
       }
@@ -72,13 +72,13 @@ class LoopGen {
 
 /* check whether a particular cell is inside the loop */
   bool _inLoop(int i, int j) {
-    return _loop[i][j] == LoopCell.EXP || _loop[i][j] == LoopCell.NOEXP;
+    return _loop[i][j] == LoopCell.exp || _loop[i][j] == LoopCell.noExp;
   }
 
 /* allocate memory for creating loop */
   void _initArray() {
     _loop = List<List<LoopCell>>.generate(
-        _m, (int i) => List<LoopCell>.filled(_n, LoopCell.UNKNOWN));
+        _m, (int i) => List<LoopCell>.filled(_n, LoopCell.unknown));
   }
 
 /* Fill grid entirely with numbers that make a loop */
@@ -98,10 +98,10 @@ class LoopGen {
 
       next = _addCell(cur);
 
-      if (_loop[cur.i][cur.j] == LoopCell.EXP) {
+      if (_loop[cur.i][cur.j] == LoopCell.exp) {
         _addAvailable(cur, avail);
       }
-      if (_loop[next.i][next.j] == LoopCell.EXP) {
+      if (_loop[next.i][next.j] == LoopCell.exp) {
         _addAvailable(next, avail);
       }
     }
@@ -120,7 +120,7 @@ class LoopGen {
     Coordinates newpos = _pickDirection(cur);
 
     /* and verify it's a valid choice */
-    if (!_inBounds(newpos) || _loop[newpos.i][newpos.j] != LoopCell.UNKNOWN) {
+    if (!_inBounds(newpos) || _loop[newpos.i][newpos.j] != LoopCell.unknown) {
       return cur;
     }
 
@@ -130,12 +130,12 @@ class LoopGen {
         !adjacencyList.d &&
         !adjacencyList.l &&
         !adjacencyList.r) {
-      _loop[newpos.i][newpos.j] = LoopCell.OUT;
+      _loop[newpos.i][newpos.j] = LoopCell.out;
       return newpos;
     }
 
     _loop[newpos.i][newpos.j] =
-        (_validCell(newpos, cur)) ? LoopCell.EXP : LoopCell.OUT;
+        (_validCell(newpos, cur)) ? LoopCell.exp : LoopCell.out;
     return newpos;
   }
 
@@ -161,7 +161,7 @@ class LoopGen {
         !adjacencyList.d &&
         !adjacencyList.l &&
         !adjacencyList.r) {
-      _loop[cur.i][cur.j] = LoopCell.NOEXP;
+      _loop[cur.i][cur.j] = LoopCell.noExp;
       return false;
     }
 
@@ -211,9 +211,9 @@ class LoopGen {
       return false;
     }
 
-    valid = valid && _loop[coords.i][coords.j] != LoopCell.NOEXP;
-    valid = valid && _loop[coords.i][coords.j] != LoopCell.OUT;
-    valid = valid && _loop[coords.i][coords.j] != LoopCell.EXP;
+    valid = valid && _loop[coords.i][coords.j] != LoopCell.noExp;
+    valid = valid && _loop[coords.i][coords.j] != LoopCell.out;
+    valid = valid && _loop[coords.i][coords.j] != LoopCell.exp;
 
     Coordinates shift = Coordinates(coords.i - cur.i, coords.j - cur.j);
 
@@ -246,8 +246,8 @@ class LoopGen {
       valid = valid && _cellOpen(coords.i + shift.i, coords.j - 1);
     }
 
-    if (!valid && _loop[coords.i][coords.j] == LoopCell.UNKNOWN) {
-      _loop[coords.i][coords.j] = LoopCell.OUT;
+    if (!valid && _loop[coords.i][coords.j] == LoopCell.unknown) {
+      _loop[coords.i][coords.j] = LoopCell.out;
     }
 
     return valid;
@@ -257,8 +257,8 @@ class LoopGen {
   bool _cellOpen(int i, int j) {
     Coordinates coords = Coordinates(i, j);
     return !_inBounds(coords) ||
-        _loop[coords.i][coords.j] == LoopCell.UNKNOWN ||
-        _loop[coords.i][coords.j] == LoopCell.OUT;
+        _loop[coords.i][coords.j] == LoopCell.unknown ||
+        _loop[coords.i][coords.j] == LoopCell.out;
   }
 
 /* check whether a particular set of coordinates are within the bounds of the grid */
