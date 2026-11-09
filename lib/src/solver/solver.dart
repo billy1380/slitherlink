@@ -25,7 +25,7 @@ class Solver {
     return _multipleSolutions;
   }
 
-/* Constructor takes a grid as input to solve */
+  /// Constructor takes a grid as input to solve
   Solver(this._grid, this._rules, this._contradictions, this._selectedRules,
       int selectLength, this._depth)
       : _multipleSolutions = false,
@@ -45,7 +45,7 @@ class Solver {
     _selectLength = selectLength;
   }
 
-/* Constructor for when the EPQ should be passed down. */
+  /// Constructor for when the EPQ should be passed down.
   Solver.oldEpq(this._grid, this._rules, this._contradictions,
       this._selectedRules, this._selectLength, this._depth, EPQ oldEPQ)
       : _multipleSolutions = false,
@@ -58,9 +58,9 @@ class Solver {
     _multipleSolutions = false;
   }
 
-/* Runs a loop testing each contradiction in each orientation in
- * each valid position on the grid, checking if the contradiction
- * applies, and, if so, returning true. */
+  /// Runs a loop testing each contradiction in each orientation in
+  /// each valid position on the grid, checking if the contradiction
+  /// applies, and, if so, returning true.
   bool testContradictions() {
     if (_grid.containsClosedContours && !_grid.isSolved) {
       return true;
@@ -84,8 +84,8 @@ class Solver {
     return false;
   }
 
-/* Apply a combination of deterministic rules and
- * recursive guessing to find a solution to a puzzle */
+  /// Apply a combination of deterministic rules and
+  /// recursive guessing to find a solution to a puzzle
   void solve() {
     _grid.updated = true;
     while (_grid.updated && !_grid.isSolved) {
@@ -151,7 +151,7 @@ class Solver {
 
   bool get _upq => true;
 
-/* Make a guess in each valid position in the graph */
+  /// Make a guess in each valid position in the graph
   void _solveDepth(int depth) {
     bool usingPrioQueue = _upq;
 
@@ -200,7 +200,7 @@ class Solver {
     }
   }
 
-/* Horizontal guess at the given location to the given depth */
+  /// Horizontal guess at the given location to the given depth
   void _makeHLineGuess(int i, int j, int depth) {
     assert(0 <= i && i < _grid.height + 1 && 0 <= j && j < _grid.width);
     assert(depth >= 0);
@@ -321,7 +321,7 @@ class Solver {
     }
   }
 
-/* Vertical guess at the given location to the given depth */
+  /// Vertical guess at the given location to the given depth
   void _makeVLineGuess(int i, int j, int depth) {
     assert(0 <= i && i < _grid.height && 0 <= j && j < _grid.width + 1);
     assert(depth >= 0);
@@ -440,8 +440,8 @@ class Solver {
     }
   }
 
-/* Checks for the intersection between lineGuess and nLineGuess grids
- * and applies any intersection to the canonical grid. */
+  /// Checks for the intersection between lineGuess and nLineGuess grids
+  /// and applies any intersection to the canonical grid.
   void _intersectGrids(Grid lineGuess, Grid nLineGuess) {
     assert(lineGuess.height == nLineGuess.height &&
         lineGuess.width == nLineGuess.width);
@@ -467,10 +467,10 @@ class Solver {
     }
   }
 
-/* Runs a loop checking each rule in each orientation in each valid
- * position on the grid, checking if the rule applies, and, if so,
- * applying it, and continue updating them until there are no longer
- * any changes being made. */
+  /// Runs a loop checking each rule in each orientation in each valid
+  /// position on the grid, checking if the rule applies, and, if so,
+  /// applying it, and continue updating them until there are no longer
+  /// any changes being made.
   void _applyRules(List<int> selectedRules) {
     while (_grid.updated) {
       _grid.updated = false;
@@ -491,9 +491,9 @@ class Solver {
     }
   }
 
-/* Applies a rule in a given orientation to a given region of the
- * grid, overwriting all old values with any applicable values from
- * the after_ lattice for that rule. */
+  /// Applies a rule in a given orientation to a given region of the
+  /// grid, overwriting all old values with any applicable values from
+  /// the after_ lattice for that rule.
   void _applyRule(int i, int j, Rule rule, Orientation orient) {
     int m = rule.height;
     int n = rule.width;
@@ -559,10 +559,10 @@ class Solver {
     }
   }
 
-/* Checks if a rule in a given orientation applies to a given
- * region of the grid by checking all non-empty values in the
- * before_ lattice and verifying they correspond to the values
- * in the grid. */
+  /// Checks if a rule in a given orientation applies to a given
+  /// region of the grid by checking all non-empty values in the
+  /// before_ lattice and verifying they correspond to the values
+  /// in the grid.
   bool _ruleApplies(int i, int j, Rule rule, Orientation orient) {
     int m = rule.height;
     int n = rule.width;
@@ -637,10 +637,10 @@ class Solver {
     return true;
   }
 
-/* Checks if a contradiction in a given orientation applies to
- * a given region of the grid by checking all non-empty values
- * in the before_ lattice and verifying they correspond to the
- * values in the grid. */
+  /// Checks if a contradiction in a given orientation applies to
+  /// a given region of the grid by checking all non-empty values
+  /// in the before_ lattice and verifying they correspond to the
+  /// values in the grid.
   bool _contradictionApplies(
       int i, int j, Contradiction contradiction, Orientation orient) {
     int m = contradiction.height;

@@ -80,9 +80,7 @@ class Grid extends Lattice {
     _numOpenLoops = 0;
   }
 
-/*
- * Copies grid for the purpose of making a guess.
- */
+  /// Copies grid for the purpose of making a guess.
   void copy(Grid newGrid) {
     newGrid.initArrays(height, width);
     newGrid.initUpdateMatrix();
@@ -145,11 +143,10 @@ class Grid extends Lattice {
     }
   }
 
-/*;
- * Set a horizontal line to a given edge type, checking to see if this change overwrites
- * any previous value set to that position. If a line is added, create a new contour and
- * attempt to merge that contour to any adjacent contours.
- */
+  /// ;
+  /// Set a horizontal line to a given edge type, checking to see if this change overwrites
+  /// any previous value set to that position. If a line is added, create a new contour and
+  /// attempt to merge that contour to any adjacent contours.
   @override
   bool setHLine(int i, int j, Edge edge) {
     assert(0 <= i && i < m + 1 && 0 <= j && j < n);
@@ -189,11 +186,9 @@ class Grid extends Lattice {
     return true;
   }
 
-/*
- * Set a vertical line to a given edge type, checking to see if this change overwrites
- * any previous value set to that position. If a line is added, create a new contour and
- * attempt to merge that contour to any adjacent contours.
- */
+  /// Set a vertical line to a given edge type, checking to see if this change overwrites
+  /// any previous value set to that position. If a line is added, create a new contour and
+  /// attempt to merge that contour to any adjacent contours.
   @override
   bool setVLine(int i, int j, Edge edge) {
     assert(0 <= i && i < m && 0 <= j && j < n + 1);
@@ -229,10 +224,8 @@ class Grid extends Lattice {
     return true;
   }
 
-/*
- * Set a horizontal line to a given edge type, but allows overwrites.
- * Intended for the purpose of puzzle creation.
- */
+  /// Set a horizontal line to a given edge type, but allows overwrites.
+  /// Intended for the purpose of puzzle creation.
   bool changeHLine(int i, int j, Edge edge) {
     assert(0 <= i && i < m + 1 && 0 <= j && j < n);
 
@@ -241,10 +234,8 @@ class Grid extends Lattice {
     return true;
   }
 
-/*
- * Set a vertical line to a given edge type, but allows overwrites.
- * Intended for the purpose of puzzle creation.
- */
+  /// Set a vertical line to a given edge type, but allows overwrites.
+  /// Intended for the purpose of puzzle creation.
   bool changeVLine(int i, int j, Edge edge) {
     assert(0 <= i && i < m && 0 <= j && j < n + 1);
 
@@ -253,10 +244,8 @@ class Grid extends Lattice {
     return true;
   }
 
-/*
- * Check whether a given number has been satisfied with the proper number of lines
- * surrounding it.
- */
+  /// Check whether a given number has been satisfied with the proper number of lines
+  /// surrounding it.
   bool numberSatisfied(int i, int j) {
     assert(0 <= i && i < m && 0 <= j && j < n);
 
@@ -282,10 +271,8 @@ class Grid extends Lattice {
     }
   }
 
-/*
- * Checks if the puzzle is solved by assuring that there is only one contour
- * and that each number has been satisfied
- */
+  /// Checks if the puzzle is solved by assuring that there is only one contour
+  /// and that each number has been satisfied
   bool get isSolved {
     if (_numOpenLoops != 0 || _numClosedLoops != 1) {
       return false;
@@ -302,10 +289,8 @@ class Grid extends Lattice {
     return true;
   }
 
-/*
- * Checks if there are any closed contours with the intention of detecting
- * prematurely closed contours
- */
+  /// Checks if there are any closed contours with the intention of detecting
+  /// prematurely closed contours
   bool get containsClosedContours {
     return (_numClosedLoops > 0);
   }
@@ -330,12 +315,10 @@ class Grid extends Lattice {
     init_ = true;
   }
 
-/*
- * Updates the information on the endpoints of our contours according to what
- * new line has been added. We use this 2D array to keep track of the endpoints now
- * instead of a vector. Also keeps track of the current number of open
- * and closed loops in our grid
- */
+  /// Updates the information on the endpoints of our contours according to what
+  /// new line has been added. We use this 2D array to keep track of the endpoints now
+  /// instead of a vector. Also keeps track of the current number of open
+  /// and closed loops in our grid
   void _updateContourMatrix(int i, int j, bool hline) {
     int i2 = i;
     int j2 = j;

@@ -3,11 +3,11 @@ import 'contradiction.dart';
 
 final Contradiction emptyContradiction = Contradiction(-1, -1);
 
-/* Initializes the contradictions array with each contradiction
- * used by the Solver to complete the grid. By convention the
- * contradictions will be represented with width <= height,
- * although each contradiction will be applied in each possible
- * orientation. */
+/// Initializes the contradictions array with each contradiction
+/// used by the Solver to complete the grid. By convention the
+/// contradictions will be represented with width <= height,
+/// although each contradiction will be applied in each possible
+/// orientation.
 Contradiction initContradictions(int i) {
   Contradiction c;
 

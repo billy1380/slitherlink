@@ -1,10 +1,10 @@
 import '../shared/enums.dart';
 import '../shared/structs.dart';
 
-/* Translates coordinates for a number on a lattice in a
- * given orientation to the coordinates for that number
- * in its canonical orientation and returns the new
- * adjusted coordinates. */
+/// Translates coordinates for a number on a lattice in a
+/// given orientation to the coordinates for that number
+/// in its canonical orientation and returns the new
+/// adjusted coordinates.
 Coordinates rotateNumber(int i, int j, int m, int n, Orientation orient) {
   switch (orient) {
     case Orientation.upFlip:
@@ -34,18 +34,18 @@ Coordinates rotateNumber(int i, int j, int m, int n, Orientation orient) {
   }
 }
 
-/* Translates coordinates for a horizontal edge on a
- * lattice in a given orientation to the coordinates
- * for that edge in its canonical orientation and
- * returns the new adjusted coordinates. */
+/// Translates coordinates for a horizontal edge on a
+/// lattice in a given orientation to the coordinates
+/// for that edge in its canonical orientation and
+/// returns the new adjusted coordinates.
 Coordinates rotateHLine(int i, int j, int m, int n, Orientation orient) {
   return rotateNumber(i, j, m + 1, n, orient);
 }
 
-/* Translates coordinates for a vertical edge on a
- * lattice in a given orientation to the coordinates
- * for that edge in its canonical orientation and
- * returns the new adjusted coordinates. */
+/// Translates coordinates for a vertical edge on a
+/// lattice in a given orientation to the coordinates
+/// for that edge in its canonical orientation and
+/// returns the new adjusted coordinates.
 Coordinates rotateVLine(int i, int j, int m, int n, Orientation orient) {
   return rotateNumber(i, j, m, n + 1, orient);
 }

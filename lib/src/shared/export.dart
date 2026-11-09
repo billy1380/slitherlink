@@ -4,10 +4,10 @@ import 'lattice.dart';
 class Export {
   final Lattice _lattice;
 
-/* Constructor taking as input a lattice to be exported */
+  /// Constructor taking as input a lattice to be exported
   const Export(this._lattice);
 
-/* Outputs a lattice to stdout in a human readable format */
+  /// Outputs a lattice to stdout in a human readable format
   void export() {
     int m = _lattice.height;
     int n = _lattice.width;
@@ -47,8 +47,8 @@ class Export {
     print(buffer.toString());
   }
 
-/* Helper function for formatting a value from the Number
- * enumeration into a human readable 0-3 or blank space. */
+  /// Helper function for formatting a value from the Number
+  /// enumeration into a human readable 0-3 or blank space.
   String _formatNumber(int i, int j) {
     switch (_lattice.getNumber(i, j)) {
       case Number.zero:
@@ -64,8 +64,8 @@ class Export {
     }
   }
 
-/* Helper function for formatting a value from the Number
- * enumeration into a human readable '-', 'x' or blank space. */
+  /// Helper function for formatting a value from the Number
+  /// enumeration into a human readable '-', 'x' or blank space.
   String _formatHLine(int i, int j) {
     switch (_lattice.getHLine(i, j)) {
       case Edge.line:
@@ -77,8 +77,8 @@ class Export {
     }
   }
 
-/* Helper function for formatting a value from the Number
- * enumeration into a human readable '|', 'x' or blank space. */
+  /// Helper function for formatting a value from the Number
+  /// enumeration into a human readable '|', 'x' or blank space.
   String _formatVLine(int i, int j) {
     switch (_lattice.getVLine(i, j)) {
       case Edge.line:

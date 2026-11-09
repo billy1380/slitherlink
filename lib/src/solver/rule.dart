@@ -61,8 +61,8 @@ class Rule {
 
   Rule(this._m, this._n);
 
-/* Gives the height of the number grid based on a given
- * orientation. In its upright position, its height is m_. */
+  /// Gives the height of the number grid based on a given
+  /// orientation. In its upright position, its height is m_.
   int getNumberHeight(Orientation orient) {
     switch (orient) {
       case Orientation.up:
@@ -78,8 +78,8 @@ class Rule {
     }
   }
 
-/* Gives the width of the number grid based on a given
- * orientation. In its upright position, its width is n_. */
+  /// Gives the width of the number grid based on a given
+  /// orientation. In its upright position, its width is n_.
   int getNumberWidth(Orientation orient) {
     switch (orient) {
       case Orientation.up:

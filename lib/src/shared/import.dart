@@ -16,8 +16,8 @@ class Import {
 
   Import(this._lattice);
 
-/* Initializes a lattice from the lines of a puzzle file: dimensions
- * then separate grids for numbers, horizontal lines, and vertical lines. */
+  /// Initializes a lattice from the lines of a puzzle file: dimensions
+  /// then separate grids for numbers, horizontal lines, and vertical lines.
   void buildLattice(List<String> lines) {
     List<String> contents = _removeCommentsAndEmptyLines(lines);
 
@@ -89,7 +89,7 @@ class Import {
     return cleanedLines;
   }
 
-/* Initializes an empty lattice based on given dimensions */
+  /// Initializes an empty lattice based on given dimensions
   void buildEmptyLattice(int m, int n) {
     _lattice.initArrays(m + 2, n + 2);
     _lattice.initUpdateMatrix();
@@ -119,9 +119,9 @@ class Import {
     }
   }
 
-/* Helper function for reading a line from stdin and
- * interpreting 0-3 as their corresponding values in
- * the Number enumeration. */
+  /// Helper function for reading a line from stdin and
+  /// interpreting 0-3 as their corresponding values in
+  /// the Number enumeration.
   void _importNumberRow(int i, String row) {
     for (int j = 0; j < row.length; j++) {
       String c = row[j];
@@ -145,9 +145,9 @@ class Import {
     }
   }
 
-/* Helper function for reading a line from stdin and
- * interpreting '-' and 'x' as their corresponding values in
- * the Number enumeration. */
+  /// Helper function for reading a line from stdin and
+  /// interpreting '-' and 'x' as their corresponding values in
+  /// the Number enumeration.
   void _importHLineRow(int i, String row) {
     _lattice.setHLine(i, 0, Edge.nLine);
     for (int j = 0; j < row.length; j++) {
@@ -167,9 +167,9 @@ class Import {
     _lattice.setHLine(i, row.length + 1, Edge.nLine);
   }
 
-/* Helper function for reading a line from stdin and
- * interpreting '-' and 'x' as their corresponding values in
- * the Number enumeration. */
+  /// Helper function for reading a line from stdin and
+  /// interpreting '-' and 'x' as their corresponding values in
+  /// the Number enumeration.
   void _importVLineRow(int i, String row) {
     for (int j = 0; j < row.length; j++) {
       String c = row[j];

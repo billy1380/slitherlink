@@ -1,7 +1,7 @@
-/* Initializes the rules array with each deterministic rule
- * used by the Solver to complete the grid. By convention the
- * rules will be represented with width <= height, although
- * each rule will be applied in each possible orientation. */
+/// Initializes the rules array with each deterministic rule
+/// used by the Solver to complete the grid. By convention the
+/// rules will be represented with width <= height, although
+/// each rule will be applied in each possible orientation.
 import '../shared/enums.dart';
 import 'rule.dart';
 

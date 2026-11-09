@@ -43,10 +43,10 @@ class Contradiction {
 
   Contradiction(this._m, this._n);
 
-/* Gives the height of the number grid based on a given
- * orientation. In its upright position, its height is m_.
- * These functions all seem unnecessary for contradictions
- * since I believe they are all square in terms of dimensions. */
+  /// Gives the height of the number grid based on a given
+  /// orientation. In its upright position, its height is m_.
+  /// These functions all seem unnecessary for contradictions
+  /// since I believe they are all square in terms of dimensions.
   int getNumberHeight(Orientation orient) {
     switch (orient) {
       case Orientation.up:
@@ -62,8 +62,8 @@ class Contradiction {
     }
   }
 
-/* Gives the width of the number grid based on a given
- * orientation. In its upright position, its width is n_. */
+  /// Gives the width of the number grid based on a given
+  /// orientation. In its upright position, its width is n_.
   int getNumberWidth(Orientation orient) {
     switch (orient) {
       case Orientation.up:
