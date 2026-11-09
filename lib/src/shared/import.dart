@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:logging/logging.dart';
 
 import 'enums.dart';
@@ -18,65 +16,56 @@ class Import {
 
   Import(this._lattice);
 
-/* Reads from stdin and initializes a lattice based on given
- * dimensions and three separate grids, one each for numbers,
- * horizontal lines, and vertical lines. */
-  void buildLattice(String filename) {
-    File slkfile = File(filename);
+/* Initializes a lattice from the lines of a puzzle file: dimensions
+ * then separate grids for numbers, horizontal lines, and vertical lines. */
+  void buildLattice(List<String> lines) {
+    List<String> contents = _removeCommentsAndEmptyLines(lines);
 
-    if (slkfile.existsSync()) {
-      List<String> contents = slkfile.readAsLinesSync();
+    int lineIndex = 0;
 
-      contents = _removeCommentsAndEmptyLines(contents);
+    /* get dimensions */
+    int m, n;
+    String dimsLine = contents[lineIndex];
+    List<String> splitDims = dimsLine.split(" ");
 
-      int lineIndex = 0;
+    assert(splitDims.length == 2,
+        "There should only be 2 dimentions delimited by a space");
 
-      /* get dimensions */
-      int m, n;
-      String dimsLine = contents[lineIndex];
-      List<String> splitDims = dimsLine.split(" ");
+    m = int.parse(splitDims.first);
+    n = int.parse(splitDims.last);
 
-      assert(splitDims.length == 2,
-          "There should only be 2 dimentions delimited by a space");
+    _lattice.initArrays(m + 2, n + 2);
+    _lattice.initUpdateMatrix();
 
-      m = int.parse(splitDims.first);
-      n = int.parse(splitDims.last);
+    /* numbers */
+    for (int i = 0; i < m; i++) {
+      lineIndex++;
+      _importNumberRow(i + 1, contents[lineIndex]);
+    }
 
-      _lattice.initArrays(m + 2, n + 2);
-      _lattice.initUpdateMatrix();
+    /* horizontal lines */
+    for (int i = 0; i < m + 1; i++) {
+      lineIndex++;
+      _importHLineRow(i + 1, contents[lineIndex]);
+    }
+    for (int j = 0; j < n + 2; j++) {
+      _lattice.setHLine(0, j, Edge.nLine);
+      _lattice.setHLine(m + 2, j, Edge.nLine);
+    }
 
-      /* numbers */
-      for (int i = 0; i < m; i++) {
-        lineIndex++;
-        _importNumberRow(i + 1, contents[lineIndex]);
-      }
+    /* vertical lines */
+    for (int j = 0; j < n + 3; j++) {
+      _lattice.setVLine(0, j, Edge.nLine);
+      _lattice.setVLine(m + 1, j, Edge.nLine);
+    }
+    for (int i = 0; i < m + 2; i++) {
+      _lattice.setVLine(i, 0, Edge.nLine);
+      _lattice.setVLine(i, n + 2, Edge.nLine);
+    }
 
-      /* horizontal lines */
-      for (int i = 0; i < m + 1; i++) {
-        lineIndex++;
-        _importHLineRow(i + 1, contents[lineIndex]);
-      }
-      for (int j = 0; j < n + 2; j++) {
-        _lattice.setHLine(0, j, Edge.nLine);
-        _lattice.setHLine(m + 2, j, Edge.nLine);
-      }
-
-      /* vertical lines */
-      for (int j = 0; j < n + 3; j++) {
-        _lattice.setVLine(0, j, Edge.nLine);
-        _lattice.setVLine(m + 1, j, Edge.nLine);
-      }
-      for (int i = 0; i < m + 2; i++) {
-        _lattice.setVLine(i, 0, Edge.nLine);
-        _lattice.setVLine(i, n + 2, Edge.nLine);
-      }
-
-      for (int i = 0; i < m; i++) {
-        lineIndex++;
-        _importVLineRow(i + 1, contents[lineIndex]);
-      }
-    } else {
-      logger.severe("Unable to open file");
+    for (int i = 0; i < m; i++) {
+      lineIndex++;
+      _importVLineRow(i + 1, contents[lineIndex]);
     }
   }
 

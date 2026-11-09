@@ -1,6 +1,5 @@
 import '../shared/constants.dart';
 import '../shared/enums.dart';
-import '../shared/export.dart';
 import '../shared/grid.dart';
 import '../shared/import.dart';
 import '../shared/random.dart';
@@ -11,6 +10,13 @@ import '../solver/rule.dart';
 import '../solver/rules.dart';
 import '../solver/solver.dart';
 import 'loop_gen.dart';
+
+class GeneratedPuzzle {
+  final Grid puzzle;
+  final Grid solution;
+
+  const GeneratedPuzzle(this.puzzle, this.solution);
+}
 
 class Generator {
   final int _m;
@@ -45,10 +51,10 @@ class Generator {
       : _numberCount = _m * _n,
         _buffer = 0;
 
-  void generate(Difficulty difficulty) {
+  GeneratedPuzzle generate(Difficulty difficulty) {
     _setDifficulty(difficulty);
     _createPuzzle();
-    _displayFinalPuzzle();
+    return _finalPuzzle();
   }
 
 /* Sets the difficulty of the puzzle by imposing limitiations on the solver's capabilities */
@@ -94,19 +100,17 @@ class Generator {
     _reduceNumbers();
   }
 
-/* Prints the puzzle in its final state, both solved and unsolved */
-  void _displayFinalPuzzle() {
+/* The puzzle in its final state, both solved and unsolved */
+  GeneratedPuzzle _finalPuzzle() {
     _checkIfSolved();
-    _displayPuzzle();
+    Grid solved = Grid();
+    _grid.copy(solved);
 
     _grid.resetGrid();
-    _displayPuzzle();
-  }
+    Grid unsolved = Grid();
+    _grid.copy(unsolved);
 
-/* Displays the puzzle, the total count of numbers, and a count of each type */
-  void _displayPuzzle() {
-    Export exporter = Export(_grid);
-    exporter.export();
+    return GeneratedPuzzle(unsolved, solved);
   }
 
 /* Sets the counts of each number to the amount
@@ -163,7 +167,13 @@ class Generator {
 /* Reduces numbers from the puzzle until a satisfactory number has been reached */
   void _reduceNumbers() {
     // Remove numbers until this count has been reached
+    // The loop stalls when no number can be removed, so give up and keep the smallest grid.
+    int attempts = 0;
     while (_numberCount > ((_m * _n * _factor) + 3)) {
+      if (attempts++ > _m * _n * 50) {
+        _smallestCountGrid.clearAndCopy(_grid);
+        break;
+      }
       /* Reset the smallest count and buffer incase the required amount
         of numbers cannot be removed. */
       if (_smallestCount > _numberCount) {

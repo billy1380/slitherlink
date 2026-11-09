@@ -8,14 +8,14 @@
       "name": "Generator",
       "request": "launch",
       "type": "dart",
-      "program": "src/generator/main.dart",
+      "program": "bin/generator.dart",
       "args": ["7", "7", "d"]
     },
     {
       "name": "Solver",
       "request": "launch",
       "type": "dart",
-      "program": "src/solver/main.dart",
+      "program": "bin/solver.dart",
       "args": [
         "puzzles/01.slk",
         "puzzles/02.slk",

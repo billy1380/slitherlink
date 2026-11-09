@@ -1,8 +1,9 @@
 import 'package:logging/logging.dart';
 
-import '../shared/enums.dart';
-import '../shared/logging.dart';
-import 'generator.dart';
+import 'package:slither_links/src/shared/enums.dart';
+import 'package:slither_links/src/shared/export.dart';
+import 'package:slither_links/src/shared/logging.dart';
+import 'package:slither_links/src/generator/generator.dart';
 
 void main(List<String> argc) {
   setupLogging();
@@ -21,7 +22,9 @@ void main(List<String> argc) {
     Generator g = Generator(m, n);
     //one square for left/right top/bottom boundries
 
-    g.generate(diffic);
+    GeneratedPuzzle result = g.generate(diffic);
+    Export(result.solution).export();
+    Export(result.puzzle).export();
 
     endTime = DateTime.now();
     double diff =
