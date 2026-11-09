@@ -21,6 +21,12 @@ class Solver {
   bool _multipleSolutions;
   int _ruleCounts;
 
+  Iterator<void>? _steps;
+
+  // Rules the constructor leaves for the first steps of the solve.
+  List<int>? _initialRules;
+  int _initialLength = 0;
+
   bool get hasMultipleSolutions {
     return _multipleSolutions;
   }
@@ -40,8 +46,8 @@ class Solver {
       selectedPlusBasic[selectLength + numConstRules - i] = (numRules - i);
     }
 
-    _selectLength = selectLength + numConstRules;
-    _applyRules(selectedPlusBasic);
+    _initialRules = selectedPlusBasic;
+    _initialLength = selectLength + numConstRules;
     _selectLength = selectLength;
   }
 
@@ -87,16 +93,37 @@ class Solver {
   /// Apply a combination of deterministic rules and
   /// recursive guessing to find a solution to a puzzle
   void solve() {
+    for (final _ in _solveSteps()) {}
+  }
+
+  /// Does the next smallest piece of [solve], one grid cell of a rule pass,
+  /// so callers can spread a long solve over time. Returns true once the
+  /// solve is over.
+  bool solveStep() {
+    _steps ??= _solveSteps().iterator;
+
+    return !_steps!.moveNext();
+  }
+
+  Iterable<void> _solveSteps() sync* {
+    final initial = _initialRules;
+    if (initial != null) {
+      _initialRules = null;
+      _selectLength = _initialLength;
+      yield* _applyRulesSteps(initial);
+      _selectLength = _initialLength - numConstRules;
+    }
+
     _grid.updated = true;
     while (_grid.updated && !_grid.isSolved) {
-      _applyRules(_selectedRules);
+      yield* _applyRulesSteps(_selectedRules);
 
       for (int d = 0; d < _depth; d++) {
         if (!_grid.updated &&
             !testContradictions() &&
             !_grid.isSolved &&
             !_multipleSolutions) {
-          _solveDepth(d);
+          yield* _solveDepthSteps(d);
         }
       }
     }
@@ -149,59 +176,39 @@ class Solver {
   //   epqSize_ = epq_.size;
   // }
 
-  bool get _upq => true;
-
   /// Make a guess in each valid position in the graph
-  void _solveDepth(int depth) {
-    bool usingPrioQueue = _upq;
+  Iterable<void> _solveDepthSteps(int depth) sync* {
+    int initSize = _epq.size;
+    int guesses = 0;
 
-    if (usingPrioQueue) {
-      int initSize = _epq.size;
-      int guesses = 0;
+    while (!_epq.isEmpty && guesses++ < initSize && !_multipleSolutions) {
+      PrioEdge pe = _epq.top();
 
-      while (!_epq.isEmpty && guesses++ < initSize && !_multipleSolutions) {
-        PrioEdge pe = _epq.top();
-
-        if (pe.h) {
-          _makeHLineGuess(pe.coords.i, pe.coords.j, depth);
-          if (_grid.getHLine(pe.coords.i, pe.coords.j) == Edge.empty) {
-            pe.priority = pe.priority - 1;
-            _epq.push(pe);
-          }
-          if (_grid.updated) {
-            break;
-          }
-        } else {
-          _makeVLineGuess(pe.coords.i, pe.coords.j, depth);
-          if (_grid.getVLine(pe.coords.i, pe.coords.j) == Edge.empty) {
-            pe.priority = pe.priority - 1;
-            _epq.push(pe);
-          }
-          if (_grid.updated) {
-            break;
-          }
+      if (pe.h) {
+        yield* _makeHLineGuessSteps(pe.coords.i, pe.coords.j, depth);
+        if (_grid.getHLine(pe.coords.i, pe.coords.j) == Edge.empty) {
+          pe.priority = pe.priority - 1;
+          _epq.push(pe);
         }
-        _epq.pop();
-      }
-    } else {
-      for (int i = 0; i < _grid.height + 1; i++) {
-        for (int j = 0; j < _grid.width; j++) {
-          _applyRules(_selectedRules);
-          _makeHLineGuess(i, j, depth);
+        if (_grid.updated) {
+          break;
+        }
+      } else {
+        yield* _makeVLineGuessSteps(pe.coords.i, pe.coords.j, depth);
+        if (_grid.getVLine(pe.coords.i, pe.coords.j) == Edge.empty) {
+          pe.priority = pe.priority - 1;
+          _epq.push(pe);
+        }
+        if (_grid.updated) {
+          break;
         }
       }
-
-      for (int i = 0; i < _grid.height; i++) {
-        for (int j = 0; j < _grid.width + 1; j++) {
-          _applyRules(_selectedRules);
-          _makeVLineGuess(i, j, depth);
-        }
-      }
+      _epq.pop();
     }
   }
 
   /// Horizontal guess at the given location to the given depth
-  void _makeHLineGuess(int i, int j, int depth) {
+  Iterable<void> _makeHLineGuessSteps(int i, int j, int depth) sync* {
     assert(0 <= i && i < _grid.height + 1 && 0 <= j && j < _grid.width);
     assert(depth >= 0);
 
@@ -219,7 +226,7 @@ class Solver {
 
       Solver lineSolver = Solver.oldEpq(lineGuess, _rules, _contradictions,
           _selectedRules, _selectLength, depth, _epq);
-      lineSolver.solve();
+      yield* lineSolver._solveSteps();
 
       _ruleCounts = _ruleCounts + lineSolver._ruleCounts;
 
@@ -233,7 +240,7 @@ class Solver {
 
         Solver nLineSolver = Solver.oldEpq(nLineGuess, _rules, _contradictions,
             _selectedRules, _selectLength, maxDepth, _epq);
-        nLineSolver.solve();
+        yield* nLineSolver._solveSteps();
 
         _ruleCounts = _ruleCounts + nLineSolver._ruleCounts;
         if (nLineSolver.testContradictions()) {
@@ -265,7 +272,7 @@ class Solver {
         nLineGuess.setHLine(i, j, Edge.nLine);
         Solver nLineSolver = Solver.oldEpq(nLineGuess, _rules, _contradictions,
             _selectedRules, _selectLength, depth, _epq);
-        nLineSolver.solve();
+        yield* nLineSolver._solveSteps();
 
         _ruleCounts = _ruleCounts + nLineSolver._ruleCounts;
 
@@ -282,7 +289,7 @@ class Solver {
         else if (nLineGuess.isSolved) {
           lineSolver = Solver.oldEpq(lineGuess, _rules, _contradictions,
               _selectedRules, _selectLength, maxDepth, _epq);
-          lineSolver.solve();
+          yield* lineSolver._solveSteps();
 
           _ruleCounts = _ruleCounts + lineSolver._ruleCounts;
           if (lineSolver.testContradictions()) {
@@ -322,7 +329,7 @@ class Solver {
   }
 
   /// Vertical guess at the given location to the given depth
-  void _makeVLineGuess(int i, int j, int depth) {
+  Iterable<void> _makeVLineGuessSteps(int i, int j, int depth) sync* {
     assert(0 <= i && i < _grid.height && 0 <= j && j < _grid.width + 1);
     assert(depth >= 0);
 
@@ -339,7 +346,7 @@ class Solver {
       lineGuess.setVLine(i, j, Edge.line);
       Solver lineSolver = Solver.oldEpq(lineGuess, _rules, _contradictions,
           _selectedRules, _selectLength, depth, _epq);
-      lineSolver.solve();
+      yield* lineSolver._solveSteps();
 
       _ruleCounts = _ruleCounts + lineSolver._ruleCounts;
 
@@ -352,7 +359,7 @@ class Solver {
         nLineGuess.setVLine(i, j, Edge.nLine);
         Solver nLineSolver = Solver.oldEpq(nLineGuess, _rules, _contradictions,
             _selectedRules, _selectLength, maxDepth, _epq);
-        nLineSolver.solve();
+        yield* nLineSolver._solveSteps();
 
         _ruleCounts = _ruleCounts + nLineSolver._ruleCounts;
         if (nLineSolver.testContradictions()) {
@@ -384,7 +391,7 @@ class Solver {
         nLineGuess.setVLine(i, j, Edge.nLine);
         Solver nLineSolver = Solver.oldEpq(nLineGuess, _rules, _contradictions,
             _selectedRules, _selectLength, depth, _epq);
-        nLineSolver.solve();
+        yield* nLineSolver._solveSteps();
 
         _ruleCounts = _ruleCounts + nLineSolver._ruleCounts;
 
@@ -401,7 +408,7 @@ class Solver {
         else if (nLineGuess.isSolved) {
           lineSolver = Solver.oldEpq(lineGuess, _rules, _contradictions,
               _selectedRules, _selectLength, maxDepth, _epq);
-          lineSolver.solve();
+          yield* lineSolver._solveSteps();
 
           _ruleCounts = _ruleCounts + lineSolver._ruleCounts;
           if (lineSolver.testContradictions()) {
@@ -471,7 +478,8 @@ class Solver {
   /// position on the grid, checking if the rule applies, and, if so,
   /// applying it, and continue updating them until there are no longer
   /// any changes being made.
-  void _applyRules(List<int> selectedRules) {
+  /// It pauses after each grid cell.
+  Iterable<void> _applyRulesSteps(List<int> selectedRules) sync* {
     while (_grid.updated) {
       _grid.updated = false;
       for (int i = 0; i < _grid.height; i++) {
@@ -486,6 +494,7 @@ class Solver {
             }
           }
           _grid.setUpdateMatrix(i, j, false);
+          yield null;
         }
       }
     }

@@ -57,6 +57,8 @@ class Generator {
   bool _finished = false;
   bool _removing = false;
   bool _coordsFound = false;
+  Solver? _solver;
+  Coordinates? _attempt;
   GeneratedPuzzle? _result;
 
   GeneratedPuzzle generate(Difficulty difficulty) {
@@ -72,6 +74,8 @@ class Generator {
     _attempts = 0;
     _finished = false;
     _removing = false;
+    _solver = null;
+    _attempt = null;
     _result = null;
   }
 
@@ -222,11 +226,13 @@ class Generator {
       _removing = true;
     }
 
-    if (_eligibleCoordinates.isNotEmpty && !_coordsFound) {
-      _tryRemoval();
+    if (_solver != null) {
+      if (_solver!.solveStep()) _endRemoval();
+    } else if (_eligibleCoordinates.isNotEmpty && !_coordsFound) {
+      _startRemoval();
     }
 
-    if (_eligibleCoordinates.isEmpty || _coordsFound) {
+    if (_solver == null && (_eligibleCoordinates.isEmpty || _coordsFound)) {
       // If no more candidates, bring back the previously removed number
       if (!_coordsFound && _numberCount < _m * _n) {
         _getNecessaryCoordinate();
@@ -246,8 +252,9 @@ class Generator {
     return true;
   }
 
-  /// Tries to remove one random eligible number while keeping exactly one solution
-  void _tryRemoval() {
+  /// Takes one random eligible number out and starts checking the puzzle still
+  /// has exactly one solution, which [_endRemoval] decides once solved
+  void _startRemoval() {
     int random = r.nextInt(_eligibleCoordinates.length);
     Coordinates attempt = _eligibleCoordinates.removeAt(random);
 
@@ -255,16 +262,28 @@ class Generator {
     if (_isBalanced(attempt.i, attempt.j)) {
       _removeNumber(attempt.i, attempt.j);
 
-      // If unsolvable, bring number back and look for another
-      if (!_checkIfSolved()) {
-        _setOldNumber(attempt.i, attempt.j);
-        _markNecessary(attempt.i, attempt.j);
-      } else {
-        _ineligibleCoordinates.add(attempt);
-        _coordsFound = true;
-        _numberCount--;
-        _minusCounts(_oldNumbers[attempt.i - 1][attempt.j - 1]);
-      }
+      _grid.resetGrid();
+      _solver = Solver(_grid, _rules, _contradictions, _selectedRules,
+          _numberOfRules, _guessDepth);
+      _attempt = attempt;
+    }
+  }
+
+  void _endRemoval() {
+    Coordinates attempt = _attempt!;
+    bool solved = _grid.isSolved;
+    _solver = null;
+    _attempt = null;
+
+    // If unsolvable, bring number back and look for another
+    if (!solved) {
+      _setOldNumber(attempt.i, attempt.j);
+      _markNecessary(attempt.i, attempt.j);
+    } else {
+      _ineligibleCoordinates.add(attempt);
+      _coordsFound = true;
+      _numberCount--;
+      _minusCounts(_oldNumbers[attempt.i - 1][attempt.j - 1]);
     }
   }
 
@@ -296,16 +315,6 @@ class Generator {
         }
       }
     }
-  }
-
-  bool _checkIfSolved() {
-    _grid.resetGrid();
-
-    Solver solver = Solver(_grid, _rules, _contradictions, _selectedRules,
-        _numberOfRules, _guessDepth);
-    solver.solve();
-
-    return _grid.isSolved;
   }
 
   /// Pops Coordinates out of ineligible vector, marking
